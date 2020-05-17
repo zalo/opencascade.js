@@ -161,7 +161,7 @@ def build():
   add_function_support = 'add_func' in sys.argv
   args = '-std=c++1z -s NO_EXIT_RUNTIME=1 -s EXPORTED_RUNTIME_METHODS=["UTF8ToString"]'
   args += ' -O3'
-  args += ' --llvm-lto 3'
+  args += ' -flto --gc-sections --print-gc-sections --relax'
   if add_function_support:
     args += ' -s RESERVED_FUNCTION_POINTERS=20 -s EXTRA_EXPORTED_RUNTIME_METHODS=["addFunction"]'  
   if wasm:
@@ -173,14 +173,25 @@ def build():
   else:
     args += ' -s NO_DYNAMIC_EXECUTION=1'
   emcc_args = args.split(' ')
-  emcc_args += ['-s', 'TOTAL_MEMORY=%d' % (64*1024*1024)]
+  emcc_args += ['-s', 'INITIAL_MEMORY=%d' % (64*1024*1024)]
   emcc_args += ['-s', 'ALLOW_MEMORY_GROWTH=1']
+  emcc_args += ['-s', 'MAXIMUM_MEMORY=-1']
   emcc_args += '-s EXPORT_NAME="opencascade"'.split(' ')
   emcc_args += '-s MODULARIZE=1'.split(' ')
   emcc_args += ['-s', 'EXTRA_EXPORTED_RUNTIME_METHODS=["FS"]']
   emcc_args += ['-s', 'EXPORT_ES6=1']
   emcc_args += ['-s', 'USE_ES6_IMPORT_META=0']
   emcc_args += ['-s', 'AGGRESSIVE_VARIABLE_ELIMINATION=1']
+  emcc_args += ['-s', 'USE_SDL=0']
+  emcc_args += ['-s', 'USE_SDL_MIXER=0']
+  emcc_args += ['-s', 'ELIMINATE_DUPLICATE_FUNCTIONS=1']
+  emcc_args += ['-s', 'ELIMINATE_DUPLICATE_FUNCTIONS_DUMP_EQUIVALENT_FUNCTIONS=1']
+  emcc_args += ['-s', 'EVAL_CTORS=1']
+  emcc_args += ['-s', 'FETCH_SUPPORT_INDEXEDDB=0']
+  emcc_args += ['-s', 'GL_TRACK_ERRORS=0']
+  emcc_args += ['-s', 'ERROR_ON_UNDEFINED_SYMBOLS=0']
+
+# bin/wasm-opt ../dist/opencascade.wasm.wasm --post-emscripten -O4 --code-folding --dce --duplicate-function-elimination --duplicate-import-elimination --remove-unused-module-elements --remove-unused-names --remove-unused-nonfunction-module-elements --vacuum --ignore-implicit-traps --low-memory-unused --dae-optimizing -c -o ../dist/opencascade.wasm.wasm.2
 
   # Debugging options
   # emcc_args += ['-s', 'ASSERTIONS=2']
@@ -231,9 +242,9 @@ def build():
       '-D3RDPARTY_FREETYPE_INCLUDE_DIR_freetype2=../freetype/freetype2-VER-2-10-1/include/freetype',
       '-D3RDPARTY_FREETYPE_INCLUDE_DIR_ft2build=../freetype/freetype2-VER-2-10-1/include',
       '-DBUILD_LIBRARY_TYPE=Static',
-      '-DCMAKE_CXX_FLAGS="-DIGNORE_NO_ATOMICS=1 -frtti"',
+      '-DCMAKE_CXX_FLAGS="-DIGNORE_NO_ATOMICS=1 -frtti -O3 -ffunction-sections -fdata-sections -fno-exceptions"',
       '-D3RDPARTY_INCLUDE_DIRS=../regal/regal-master/src/apitrace/thirdparty/khronos/\;../fontconfig/fontconfig-2.13.92',
-      '-DUSE_GLES2=ON',
+      '-DUSE_GLES2=OFF',
       '-DBUILD_MODULE_Draw=OFF',
       '-DBUILD_ADDITIONAL_TOOLKITS=OFF',
       '-DBUILD_MODULE_Visualization=OFF',
