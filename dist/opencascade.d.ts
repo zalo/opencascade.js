@@ -355,7 +355,7 @@ declare module opencascade {
     }
     class GC_MakeArcOfCircle {
         constructor(Circ: gp_Circ, Alpha1: Standard_Real, Alpha2: Standard_Real, Sense: Standard_Boolean);
-        constructor(P1: gp_Pnt, P2: gp_Pnt, P3: gp_Pnt);
+        constructor(P1: gp_Pnt, V: gp_Vec, P3: gp_Pnt);
         Value(): Handle_Geom_TrimmedCurve;
     }
     class GC_MakeSegment {
