@@ -210,7 +210,7 @@ def build():
   else:
     args += ' -s NO_DYNAMIC_EXECUTION=1'
   emcc_args = args.split(' ')
-  emcc_args += ['-s', 'TOTAL_MEMORY=%d' % (64*1024*1024)]
+  emcc_args += ['-s', 'TOTAL_MEMORY=%d' % (128*1024*1024)]
   emcc_args += ['-s', 'ALLOW_MEMORY_GROWTH=1']
   emcc_args += '-s EXPORT_NAME="opencascade"'.split(' ')
   emcc_args += '-s MODULARIZE=1'.split(' ')
