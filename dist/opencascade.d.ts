@@ -1298,6 +1298,11 @@ declare module opencascade {
         Perform(): Standard_Boolean;
         GetResult(): TopoDS_Shape;
     }
+    class ShapeUpgrade_UnifySameDomain extends ShapeUpgrade_Tool {
+        constructor(theShape: TopoDS_Shape, UnifyEdges?: Standard_Boolean, UnifyFaces?: Standard_Boolean, ConcatBSplines?: Standard_Boolean);
+        Build(): void;
+        Shape(): TopoDS_Shape;
+    }
     class ShapeUpgrade_Tool {
     }
     class gp_Lin {
