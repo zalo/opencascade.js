@@ -91,6 +91,7 @@ INCLUDES = [
   os.path.join('.', 'occt', 'src', 'ShapeFix', 'ShapeFix_Face.hxx'),
   os.path.join('.', 'occt', 'src', 'ShapeFix', 'ShapeFix_Shape.hxx'),
   os.path.join('.', 'occt', 'src', 'ShapeUpgrade', 'ShapeUpgrade_RemoveInternalWires.hxx'),
+  os.path.join('.', 'occt', 'src', 'ShapeUpgrade', 'ShapeUpgrade_UnifySameDomain.hxx'),
   os.path.join('.', 'occt', 'src', 'BRepBuilderAPI', 'BRepBuilderAPI_MakeSolid.hxx'),
   os.path.join('.', 'occt', 'src', 'STEPControl', 'STEPControl_Writer.hxx'),
   os.path.join('.', 'occt', 'src', 'BRepPrimAPI', 'BRepPrimAPI_MakeBox.hxx'),
