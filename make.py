@@ -81,6 +81,7 @@ INCLUDES = [
   os.path.join('.', 'occt', 'src', 'Geom2d', 'Geom2d_TrimmedCurve.hxx'),
   os.path.join('.', 'occt', 'src', 'GCE2d', 'GCE2d_MakeSegment.hxx'),
   os.path.join('.', 'occt', 'src', 'BRepLib', 'BRepLib.hxx'),
+  os.path.join('.', 'occt', 'src', 'BRepLib', 'BRepLib_FuseEdges.hxx'),
   os.path.join('.', 'occt', 'src', 'BRepOffsetAPI', 'BRepOffsetAPI_MakeOffset.hxx'),
   os.path.join('.', 'occt', 'src', 'BRepOffsetAPI', 'BRepOffsetAPI_MakeOffsetShape.hxx'),
   os.path.join('.', 'occt', 'src', 'BRepOffsetAPI', 'BRepOffsetAPI_MakeThickSolid.hxx'),
