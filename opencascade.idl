@@ -4005,7 +4005,7 @@ interface ShapeFix_Solid {
 	void ShapeFix_Solid([Const, Ref] TopoDS_Solid shape);
 	void Init([Const, Ref] TopoDS_Solid solid);
 	Standard_Boolean Perform([Const, Ref] optional Handle_Message_ProgressIndicator theProgress);
-	[Value] SolidFromShell(
+	[Value] TopoDS_Solid SolidFromShell(
 		[Const, Ref] TopoDS_Shell shell
 	);
 	[Value] TopoDS_Solid Solid();
