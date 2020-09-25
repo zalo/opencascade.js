@@ -1291,6 +1291,15 @@ declare module opencascade {
     }
     class BRepAlgoAPI_BooleanOperation {
     }
+    class ShapeUpgrade_RemoveInternalWires extends ShapeUpgrade_Tool {
+        constructor(theShape: TopoDS_Shape);
+        MinArea(): Standard_Real;
+        RemoveFaceMode(): Standard_Boolean;
+        Perform(): Standard_Boolean;
+        GetResult(): TopoDS_Shape;
+    }
+    class ShapeUpgrade_Tool {
+    }
     class gp_Lin {
         constructor();
         constructor(A1: gp_Ax1);
