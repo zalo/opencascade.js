@@ -1277,14 +1277,17 @@ declare module opencascade {
     class BRepAlgoAPI_Fuse extends BRepAlgoAPI_BooleanOperation {
         constructor(S1: TopoDS_Shape, S2: TopoDS_Shape);
         SetFuzzyValue(theFuzz: Standard_Real): void;
+        Build(): void;
     }
     class BRepAlgoAPI_Cut {
         constructor(S1: TopoDS_Shape, S2: TopoDS_Shape);
         SetFuzzyValue(theFuzz: Standard_Real): void;
+        Build(): void;
     }
     class BRepAlgoAPI_Common extends BRepAlgoAPI_BooleanOperation {
         constructor(S1: TopoDS_Shape, S2: TopoDS_Shape);
         SetFuzzyValue(theFuzz: Standard_Real): void;
+        Build(): void;
     }
     class BRepAlgoAPI_BooleanOperation {
     }
