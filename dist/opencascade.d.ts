@@ -1350,6 +1350,11 @@ declare module opencascade {
         BuildCurve3d(E: TopoDS_Edge, Tolerance?: Standard_Real, Continuity?: GeomAbs_Shape, MaxDegree?: Standard_Integer, MaxSegment?: Standard_Integer): Standard_Boolean;
         BuildCurves3d(S: TopoDS_Shape): Standard_Boolean;
     }
+    class BRepLib_FuseEdges {
+        constructor(theShape: TopoDS_Shape, PerformNow?: Standard_Boolean);
+        Shape(): TopoDS_Shape;
+        Perform(): void;
+    }
     class BRepOffsetAPI_ThruSections extends BRepBuilderAPI_MakeShape {
         constructor(isSolid?: Standard_Boolean, ruled?: Standard_Boolean, pres3d?: Standard_Real);
         AddWire(wire: TopoDS_Wire): void;
