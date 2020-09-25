@@ -3476,6 +3476,9 @@ interface BRepAlgoAPI_Fuse {
 		[Const, Ref] TopoDS_Shape S1,
 		[Const, Ref] TopoDS_Shape S2
 	);
+	void SetFuzzyValue(
+		[Const] Standard_Real theFuzz
+	);
 };
 BRepAlgoAPI_Fuse implements BRepAlgoAPI_BooleanOperation;
 
@@ -3484,6 +3487,9 @@ interface BRepAlgoAPI_Cut{
 		[Const, Ref] TopoDS_Shape S1,
 		[Const, Ref] TopoDS_Shape S2
 	);
+	void SetFuzzyValue(
+		[Const] Standard_Real theFuzz
+	);
 };
 BRepAlgoAPI_Cut implements BRepAlgoAPI_BooleanOperation;
 
@@ -3491,6 +3497,9 @@ interface BRepAlgoAPI_Common {
 	void BRepAlgoAPI_Common(
 		[Const, Ref] TopoDS_Shape S1,
 		[Const, Ref] TopoDS_Shape S2
+	);
+	void SetFuzzyValue(
+		[Const] Standard_Real theFuzz
 	);
 };
 BRepAlgoAPI_Common implements BRepAlgoAPI_BooleanOperation;
