@@ -3479,6 +3479,7 @@ interface BRepAlgoAPI_Fuse {
 	void SetFuzzyValue(
 		[Const] Standard_Real theFuzz
 	);
+	void Build();
 };
 BRepAlgoAPI_Fuse implements BRepAlgoAPI_BooleanOperation;
 
@@ -3490,6 +3491,7 @@ interface BRepAlgoAPI_Cut{
 	void SetFuzzyValue(
 		[Const] Standard_Real theFuzz
 	);
+	void Build();
 };
 BRepAlgoAPI_Cut implements BRepAlgoAPI_BooleanOperation;
 
@@ -3501,6 +3503,7 @@ interface BRepAlgoAPI_Common {
 	void SetFuzzyValue(
 		[Const] Standard_Real theFuzz
 	);
+	void Build();
 };
 BRepAlgoAPI_Common implements BRepAlgoAPI_BooleanOperation;
 
