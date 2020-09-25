@@ -355,7 +355,7 @@ declare module opencascade {
     }
     class GC_MakeArcOfCircle {
         constructor(Circ: gp_Circ, Alpha1: Standard_Real, Alpha2: Standard_Real, Sense: Standard_Boolean);
-        constructor(P1: gp_Pnt, V: gp_Vec, P3: gp_Pnt);
+        constructor(P1: gp_Pnt, P2: gp_Pnt, P3: gp_Pnt);
         Value(): Handle_Geom_TrimmedCurve;
     }
     class GC_MakeSegment {
@@ -1276,12 +1276,15 @@ declare module opencascade {
     type GeomAbs_SurfaceType = "GeomAbs_Plane" | "GeomAbs_Cylinder" | "GeomAbs_Cone" | "GeomAbs_Sphere" | "GeomAbs_Torus" | "GeomAbs_BezierSurface" | "GeomAbs_BSplineSurface" | "GeomAbs_SurfaceOfRevolution" | "GeomAbs_SurfaceOfExtrusion" | "GeomAbs_OffsetSurface" | "GeomAbs_OtherSurface";
     class BRepAlgoAPI_Fuse extends BRepAlgoAPI_BooleanOperation {
         constructor(S1: TopoDS_Shape, S2: TopoDS_Shape);
+        SetFuzzyValue(theFuzz: Standard_Real): void;
     }
     class BRepAlgoAPI_Cut {
         constructor(S1: TopoDS_Shape, S2: TopoDS_Shape);
+        SetFuzzyValue(theFuzz: Standard_Real): void;
     }
     class BRepAlgoAPI_Common extends BRepAlgoAPI_BooleanOperation {
         constructor(S1: TopoDS_Shape, S2: TopoDS_Shape);
+        SetFuzzyValue(theFuzz: Standard_Real): void;
     }
     class BRepAlgoAPI_BooleanOperation {
     }
