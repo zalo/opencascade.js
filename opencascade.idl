@@ -4015,7 +4015,7 @@ interface ShapeFix_Solid {
 	void SetMinTolerance([Const] Standard_Real mintol);
 	void SetMaxTolerance([Const] Standard_Real maxtol);
 	Standard_Integer FixShellMode ();
-	Standard_Boolean CreateOpenShellMode();
+	Standard_Boolean CreateOpenSolidMode();
 };
 
 interface TopoDS_CompSolid {
