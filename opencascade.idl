@@ -3533,7 +3533,7 @@ interface ShapeUpgrade_UnifySameDomain {
 		[Const] optional Standard_Boolean UnifyFaces = true,
 		[Const] optional Standard_Boolean ConcatBSplines = false
 	);
-	Standard_Boolean Build();
+	void Build();
 	[Const, Ref] TopoDS_Shape Shape();
 };
 ShapeUpgrade_UnifySameDomain implements ShapeUpgrade_Tool;
