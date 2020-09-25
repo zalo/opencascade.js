@@ -3616,6 +3616,15 @@ interface BRepLib {
 	static Standard_Boolean BuildCurves3d([Const, Ref] TopoDS_Shape S);
 };
 
+interface BRepLib_FuseEdges {
+	void BRepLib_FuseEdges (
+		[Const, Ref] TopoDS_Shape theShape,
+		[Const] optional Standard_Boolean PerformNow = false
+	);
+	[Value] TopoDS_Shape Shape();
+	void Perform();
+};
+
 interface BRepOffsetAPI_ThruSections {
 	void BRepOffsetAPI_ThruSections(
 		[Const] optional Standard_Boolean isSolid = true,
