@@ -4003,26 +4003,19 @@ interface ShapeFix_Shell {
 interface ShapeFix_Solid {
 	void ShapeFix_Solid();
 	void ShapeFix_Solid([Const, Ref] TopoDS_Solid shape);
-	void Init([Const, Ref] TopoDS_Solid shell);
+	void Init([Const, Ref] TopoDS_Solid solid);
 	Standard_Boolean Perform([Const, Ref] optional Handle_Message_ProgressIndicator theProgress);
-	Standard_Boolean FixFaceOrientation(
-		[Const, Ref] TopoDS_Solid shell,
-		[Const] optional Standard_Boolean isAccountMultiConex = true,
-		[Const] optional Standard_Boolean NonManifold = false
+	[Value] SolidFromShell(
+		[Const, Ref] TopoDS_Shell shell
 	);
 	[Value] TopoDS_Solid Solid();
 	[Value] TopoDS_Shape Shape();
-	Standard_Integer NbShells();
-	[Value] TopoDS_Compound ErrorFaces();
 	Standard_Boolean Status([Const] ShapeExtend_Status status);
-	// [Value] Handle_ShapeFix_Face FixFaceTool();
-	// void SetMsgRegistrator([Const, Ref] Handle_ShapeExtend_BasicMsgRegistrator msgreg);
 	void SetPrecision([Const] Standard_Real preci);
 	void SetMinTolerance([Const] Standard_Real mintol);
 	void SetMaxTolerance([Const] Standard_Real maxtol);
-	[Ref] Standard_Integer FixFaceMode();
-	[Ref] Standard_Integer FixOrientationMode();
-	void SetNonManifoldFlag([Const] Standard_Boolean isNonManifold);
+	[Ref] Standard_Integer FixShellMode ();
+	[Ref] Standard_Boolean CreateOpenShellMode();
 };
 
 interface TopoDS_CompSolid {
