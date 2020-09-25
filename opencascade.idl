@@ -3521,42 +3521,7 @@ interface ShapeUpgrade_RemoveInternalWires {
 	[Const, Ref] TopoDS_Shape GetResult();
 };
 ShapeUpgrade_RemoveInternalWires implements ShapeUpgrade_Tool;
-
 interface ShapeUpgrade_Tool{};
-
-interface ShapeFix_Shape {
-	void ShapeFix_Shape(
-		[Const, Ref] TopoDS_Shape shape
-	);
-	void SetPrecision (
-		[Const] Standard_Real preci
-	);
-	void SetMinTolerance (
-		[Const] Standard_Real mintol
-	);
-	void SetMaxTolerance (
-		[Const] Standard_Real maxtol
-	);
-
-	[Ref] Standard_Integer FixSolidMode();
-	[Ref] Standard_Integer FixShellMode();
-	[Ref] Standard_Integer FixFaceMode();
-	[Ref] Standard_Integer FixWireMode();
-	[Ref] Standard_Integer FixSameParameterMode();
-	[Ref] Standard_Integer FixVertexPositionMode();
-	[Ref] Standard_Integer FixVertexTolMode();
-	[Const, Ref] TopoDS_Shape Shape();
-};
-ShapeFix_Shape implements ShapeFix_Root;
-
-interface ShapeFix_Root {
-	void SetMinTolerance (
-		[Const] Standard_Real mintol
-	);
-	void SetMaxTolerance (
-		[Const] Standard_Real mintol
-	);
-};
 
 interface gp_Lin{
     void gp_Lin();
@@ -3934,7 +3899,7 @@ interface ShapeFix_Shape {
 	void Init([Const, Ref] TopoDS_Shape shape);
 	Standard_Boolean Perform([Const, Ref] optional Handle_Message_ProgressIndicator theProgress);
 	[Value] TopoDS_Shape Shape();
-	// [Value] Handle_ShapeFix_Solid FixSolidTool();
+	[Value] Handle_ShapeFix_Solid FixSolidTool();
 	[Value] Handle_ShapeFix_Shell FixShellTool();
 	// [Value] Handle_ShapeFix_Face FixFaceTool();
 	// [Value] Handle_ShapeFix_Wire FixWireTool();
