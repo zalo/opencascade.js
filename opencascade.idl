@@ -3511,6 +3511,53 @@ interface BRepAlgoAPI_BooleanOperation{
 };
 BRepAlgoAPI_BooleanOperation implements BRepBuilderAPI_MakeShape;
 
+interface ShapeUpgrade_RemoveInternalWires {
+	void ShapeUpgrade_RemoveInternalWires(
+		[Const, Ref] TopoDS_Shape theShape
+	);
+	[Ref] Standard_Real MinArea();
+	[Ref] Standard_Boolean RemoveFaceMode();
+	Standard_Boolean Perform();
+	[Const, Ref] TopoDS_Shape GetResult();
+};
+ShapeUpgrade_RemoveInternalWires implements ShapeUpgrade_Tool;
+
+interface ShapeUpgrade_Tool{};
+
+interface ShapeFix_Shape {
+	void ShapeFix_Shape(
+		[Const, Ref] TopoDS_Shape shape
+	);
+	void SetPrecision (
+		[Const] Standard_Real preci
+	);
+	void SetMinTolerance (
+		[Const] Standard_Real mintol
+	);
+	void SetMaxTolerance (
+		[Const] Standard_Real maxtol
+	);
+
+	[Ref] Standard_Integer FixSolidMode();
+	[Ref] Standard_Integer FixShellMode();
+	[Ref] Standard_Integer FixFaceMode();
+	[Ref] Standard_Integer FixWireMode();
+	[Ref] Standard_Integer FixSameParameterMode();
+	[Ref] Standard_Integer FixVertexPositionMode();
+	[Ref] Standard_Integer FixVertexTolMode();
+	[Const, Ref] TopoDS_Shape Shape();
+};
+ShapeFix_Shape implements ShapeFix_Root;
+
+interface ShapeFix_Root {
+	void SetMinTolerance (
+		[Const] Standard_Real mintol
+	);
+	void SetMaxTolerance (
+		[Const] Standard_Real mintol
+	);
+};
+
 interface gp_Lin{
     void gp_Lin();
     void gp_Lin([Const, Ref] gp_Ax1 A1);
