@@ -3529,9 +3529,9 @@ ShapeUpgrade_RemoveInternalWires implements ShapeUpgrade_Tool;
 interface ShapeUpgrade_UnifySameDomain {
 	void ShapeUpgrade_UnifySameDomain(
 		[Const, Ref] TopoDS_Shape theShape,
-		[Const] Standard_Boolean UnifyEdges = true,
-		[Const] Standard_Boolean UnifyFaces = true,
-		[Const] Standard_Boolean ConcatBSplines = false)
+		[Const] optional Standard_Boolean UnifyEdges = true,
+		[Const] optional Standard_Boolean UnifyFaces = true,
+		[Const] optional Standard_Boolean ConcatBSplines = false)
 	);
 	Standard_Boolean Build();
 	[Const, Ref] TopoDS_Shape Shape();
