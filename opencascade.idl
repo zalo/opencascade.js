@@ -3519,10 +3519,10 @@ interface ShapeUpgrade_RemoveInternalWires {
 	void ShapeUpgrade_RemoveInternalWires(
 		[Const, Ref] TopoDS_Shape theShape
 	);
-	[Ref] Standard_Real MinArea();
-	[Ref] Standard_Boolean RemoveFaceMode();
+	Standard_Real MinArea();
+	Standard_Boolean RemoveFaceMode();
 	Standard_Boolean Perform();
-	[Const, Ref] TopoDS_Shape GetResult();
+	[Value] TopoDS_Shape GetResult();
 };
 ShapeUpgrade_RemoveInternalWires implements ShapeUpgrade_Tool;
 interface ShapeUpgrade_Tool{};
@@ -4014,8 +4014,8 @@ interface ShapeFix_Solid {
 	void SetPrecision([Const] Standard_Real preci);
 	void SetMinTolerance([Const] Standard_Real mintol);
 	void SetMaxTolerance([Const] Standard_Real maxtol);
-	[Ref] Standard_Integer FixShellMode ();
-	[Ref] Standard_Boolean CreateOpenShellMode();
+	Standard_Integer FixShellMode ();
+	Standard_Boolean CreateOpenShellMode();
 };
 
 interface TopoDS_CompSolid {
