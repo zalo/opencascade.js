@@ -3531,7 +3531,7 @@ interface ShapeUpgrade_UnifySameDomain {
 		[Const, Ref] TopoDS_Shape theShape,
 		[Const] optional Standard_Boolean UnifyEdges = true,
 		[Const] optional Standard_Boolean UnifyFaces = true,
-		[Const] optional Standard_Boolean ConcatBSplines = false)
+		[Const] optional Standard_Boolean ConcatBSplines = false
 	);
 	Standard_Boolean Build();
 	[Const, Ref] TopoDS_Shape Shape();
