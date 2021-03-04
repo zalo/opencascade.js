@@ -1623,7 +1623,7 @@ interface gp_Trsf2d{
 	void PreMultiply([Const, Ref]gp_Trsf2d T);
 	[Const] Standard_Real Value ([Const] Standard_Integer Row, [Const] Standard_Integer Col);
 	[Value] gp_Trsf2d Inverted();
-	[Const, Ref] gp_XY TranslationPart();
+	//[Const, Ref] gp_XY TranslationPart();
 	[Const] Standard_Real ScaleFactor();
 	[Value] gp_Trsf2d Multiplied([Const, Ref]gp_Trsf2d T);
 };
