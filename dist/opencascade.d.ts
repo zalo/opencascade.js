@@ -278,6 +278,35 @@ declare module opencascade {
         IsCompletelyInside(theOther: Bnd_OBB): Standard_Boolean;
         Add(theOther: Bnd_OBB): void;
     }
+    class Bnd_Box2d {
+        constructor();
+        SetWhole(): void;
+        SetVoid(): void;
+        Set(thePnt: gp_Pnt2d): void;
+        Set(thePnt: gp_Pnt2d, theDir: gp_Dir2d): void;
+        Update(aXMin: Standard_Real, aYMin: Standard_Real, aXMax: Standard_Real, aYMax: Standard_Real): void;
+        Update(X: Standard_Real, Y: Standard_Real): void;
+        GetGap(): Standard_Real;
+        SetGap(theTol: Standard_Real): void;
+        Enlarge(theTol: Standard_Real): void;
+        OpenXmin(): void;
+        OpenXmax(): void;
+        OpenYmin(): void;
+        OpenYmax(): void;
+        IsOpenXmin(): Standard_Boolean;
+        IsOpenXmax(): Standard_Boolean;
+        IsOpenYmin(): Standard_Boolean;
+        IsOpenYmax(): Standard_Boolean;
+        IsWhole(): Standard_Boolean;
+        IsVoid(): Standard_Boolean;
+        Transformed(T: gp_Trsf2d): Bnd_Box2d;
+        Add(Other: Bnd_Box2d): void;
+        Add(P: gp_Pnt2d, D: gp_Dir2d): void;
+        IsOut(P: gp_Pnt2d): Standard_Boolean;
+        IsOut(theOther: Bnd_Box2d, theTrsf: gp_Trsf2d): Standard_Boolean;
+        IsOut(T1: gp_Trsf2d, Other: Bnd_Box2d, T2: gp_Trsf2d): Standard_Boolean;
+        SquareExtent(): Standard_Real;
+    }
     class BRepBndLib {
         constructor();
         Add(S: TopoDS_Shape, B: Bnd_Box, useTriangulation?: Standard_Boolean): void;
@@ -352,6 +381,16 @@ declare module opencascade {
         Y(): Standard_Real;
         Z(): Standard_Real;
         IsEqual(Other: gp_XYZ, Tolerance: Standard_Real): Standard_Boolean;
+    }
+    class gp_XY {
+        constructor(X: Standard_Real, Y: Standard_Real);
+        SetCoord(Xp: Standard_Real, Yp: Standard_Real): void;
+        SetX(X: Standard_Real): void;
+        SetY(Y: Standard_Real): void;
+        Coord(Index: Standard_Integer): Standard_Real;
+        X(): Standard_Real;
+        Y(): Standard_Real;
+        IsEqual(Other: gp_XY, Tolerance: Standard_Real): Standard_Boolean;
     }
     class GC_MakeArcOfCircle {
         constructor(Circ: gp_Circ, Alpha1: Standard_Real, Alpha2: Standard_Real, Sense: Standard_Boolean);
@@ -617,6 +656,20 @@ declare module opencascade {
         ScaleFactor(): Standard_Real;
         Multiplied(T: gp_Trsf): gp_Trsf;
     }
+    class gp_Trsf2d {
+        constructor();
+        SetMirror(A1: gp_Ax2d): void;
+        SetTranslation(V: gp_Vec2d): void;
+        SetTranslationPart(V: gp_Vec2d): void;
+        SetRotation(P: gp_Pnt2d, Ang: Standard_Real): void;
+        SetScaleFactor(S: Standard_Real): void;
+        Multiply(T: gp_Trsf2d): void;
+        PreMultiply(T: gp_Trsf2d): void;
+        Value(Row: Standard_Integer, Col: Standard_Integer): Standard_Real;
+        Inverted(): gp_Trsf2d;
+        ScaleFactor(): Standard_Real;
+        Multiplied(T: gp_Trsf2d): gp_Trsf2d;
+    }
     class BRepBuilderAPI_Transform {
         constructor(S: TopoDS_Shape, T: gp_Trsf, Copy?: Standard_Boolean);
     }
@@ -778,6 +831,8 @@ declare module opencascade {
         Degenerated(E: TopoDS_Edge): Standard_Boolean;
         Range(E: TopoDS_Edge, First: Standard_Real, Last: Standard_Real): void;
         Range(E: TopoDS_Edge, F: TopoDS_Face, First: Standard_Real, Last: Standard_Real): void;
+        UVPoints(E: TopoDS_Edge, F: TopoDS_Face, First: gp_Pnt2d, Last: gp_Pnt2d): void;
+        SetUVPoints(E: TopoDS_Edge, F: TopoDS_Face, PFirst: gp_Pnt2d, PLast: gp_Pnt2d): void;
         HasContinuity(E: TopoDS_Edge, F1: TopoDS_Face, F2: TopoDS_Face): Standard_Boolean;
         HasContinuity(E: TopoDS_Edge): Standard_Boolean;
         Parameter(V: TopoDS_Vertex, E: TopoDS_Edge): Standard_Real;
@@ -785,6 +840,11 @@ declare module opencascade {
         Pnt(V: TopoDS_Vertex): gp_Pnt;
         Parameters(V: TopoDS_Vertex, F: TopoDS_Face): gp_Pnt2d;
         MaxTolerance(theShape: TopoDS_Shape, theSubShape: TopAbs_ShapeEnum): Standard_Real;
+    }
+    class BRepTools {
+        AddUVBounds(F: TopoDS_Face, B: Bnd_Box2d): void;
+        UVBounds(F: TopoDS_Face, UMin: Standard_Real, UMax: Standard_Real, VMin: Standard_Real, VMax: Standard_Real): void;
+        UpdateFaceUVPoints(F: TopoDS_Face): void;
     }
     class Poly_Polygon3D {
         constructor(Nodes: TColgp_Array1OfPnt);
@@ -896,6 +956,12 @@ declare module opencascade {
     class gp_Dir2d {
         constructor();
         constructor(Xv: Standard_Real, Yv: Standard_Real);
+    }
+    class gp_Vec2d {
+        constructor();
+        constructor(Xv: Standard_Real, Yv: Standard_Real);
+        X(): Standard_Real;
+        Y(): Standard_Real;
     }
     class gp_Ax2d {
         constructor();
@@ -1051,6 +1117,15 @@ declare module opencascade {
         Value(theIndex: Standard_Integer): gp_Pnt;
         SetValue(Index: Standard_Integer, Value: gp_Pnt): void;
     }
+    class TColgp_Array1OfPnt2d {
+        constructor();
+        constructor(theLower: Standard_Integer, theUpper: Standard_Integer);
+        Length(): Standard_Integer;
+        Lower(): Standard_Integer;
+        Upper(): Standard_Integer;
+        Value(theIndex: Standard_Integer): gp_Pnt2d;
+        SetValue(Index: Standard_Integer, Value: gp_Pnt2d): void;
+    }
     class TColgp_Array1OfDir {
         constructor();
         constructor(theLower: Standard_Integer, theUpper: Standard_Integer);
@@ -1125,6 +1200,10 @@ declare module opencascade {
         HasUVNodes(): Standard_Boolean;
         Nodes(): TColgp_Array1OfPnt;
         ChangeNodes(): TColgp_Array1OfPnt;
+        Node(theIndex: Standard_Integer): gp_Pnt;
+        UVNodes(): TColgp_Array1OfPnt2d;
+        ChangeUVNodes(): TColgp_Array1OfPnt2d;
+        UVNode(theIndex: Standard_Integer): gp_Pnt2d;
         Triangles(): Poly_Array1OfTriangle;
         ChangeTriangles(): Poly_Array1OfTriangle;
         HasNormals(): Standard_Boolean;
