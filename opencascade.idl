@@ -2231,7 +2231,7 @@ interface BRep_Tool {
 	);
 };
 
-interface BRep_Tools {
+interface BRepTools {
 	static void AddUVBounds(
 		[Const, Ref] TopoDS_Face F,
 		[Ref] Bnd_Box2d B
