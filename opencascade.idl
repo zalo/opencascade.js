@@ -2510,6 +2510,18 @@ interface gp_Dir2d {
 	);
 };
 
+interface gp_Vec2d {
+	void gp_Vec2d();
+	// void gp_Dir2d([Const, Ref] gp_Vec2d V);
+	// void gp_Dir2d([Const, Ref] gp_XY Coord);
+	void gp_Vec2d(
+		[Const] Standard_Real Xv,
+		[Const] Standard_Real Yv
+	);
+	Standard_Real X();
+	Standard_Real Y();
+};
+
 interface gp_Ax2d {
 	void gp_Ax2d();
 	void gp_Ax2d(
@@ -2732,6 +2744,24 @@ interface TColgp_Array1OfPnt {
 	void SetValue(
 		[Const] Standard_Integer Index,
 		[Const, Ref] gp_Pnt Value
+	);
+};
+
+interface TColgp_Array1OfPnt2d {
+	void TColgp_Array1OfPnt2d();
+	void TColgp_Array1OfPnt2d(
+		[Const] Standard_Integer theLower,
+		[Const] Standard_Integer theUpper
+	);
+	Standard_Integer Length();
+	Standard_Integer Lower();
+	Standard_Integer Upper();
+	[Const, Ref] gp_Pnt2d Value(
+		[Const] Standard_Integer theIndex
+	);
+	void SetValue(
+		[Const] Standard_Integer Index,
+		[Const, Ref] gp_Pnt2d Value
 	);
 };
 
