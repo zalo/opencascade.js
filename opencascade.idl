@@ -813,6 +813,77 @@ interface Bnd_OBB {
 	// );
 };
 
+interface Bnd_Box2d {
+	void Bnd_Box2d();
+	void SetWhole();
+	void SetVoid();
+	void Set([Const, Ref] gp_Pnt2d thePnt);
+	void Set(
+		[Const, Ref] gp_Pnt2d thePnt,
+		[Const, Ref] gp_Dir2d theDir
+	);
+	void Update(
+		[Const] Standard_Real aXMin,
+		[Const] Standard_Real aYMin,
+		[Const] Standard_Real aXMax,
+		[Const] Standard_Real aYMax
+	);
+	void Update(
+		[Const] Standard_Real X,
+		[Const] Standard_Real Y
+	);
+	Standard_Real GetGap();
+	void SetGap([Const] Standard_Real theTol);
+	void Enlarge([Const] Standard_Real theTol);
+	void Get(
+		[Ref] Standard_Real theXmin,
+		[Ref] Standard_Real theYmin
+		[Ref] Standard_Real theXmax,
+		[Ref] Standard_Real theYmax
+	);
+	void OpenXmin();
+	void OpenXmax();
+	void OpenYmin();
+	void OpenYmax();
+	Standard_Boolean IsOpenXmin();
+	Standard_Boolean IsOpenXmax();
+	Standard_Boolean IsOpenYmin();
+	Standard_Boolean IsOpenYmax();
+	Standard_Boolean IsWhole();
+	Standard_Boolean IsVoid();
+	[Value] Bnd_Box2d Transformed([Const, Ref] gp_Trsf2d T);
+	void Add([Const, Ref] Bnd_Box2d Other);
+	// void Add([Const, Ref] gp_Pnt2d P);
+	void Add(
+		[Const, Ref] gp_Pnt2d P,
+		[Const, Ref] gp_Dir2d D
+	);
+	// void Add([Const, Ref] gp_Dir D);
+	Standard_Boolean IsOut([Const, Ref] gp_Pnt P);
+	// Standard_Boolean IsOut([Const, Ref] gp_Lin L);
+	// Standard_Boolean IsOut([Const, Ref] gp_Pln L);
+	// Standard_Boolean IsOut([Const, Ref] Bnd_Box2d Other);
+	Standard_Boolean IsOut(
+		[Const, Ref] Bnd_Box2d Other,
+		[Const, Ref] gp_Trsf2d T
+	);
+	Standard_Boolean IsOut(
+		[Const, Ref] gp_Trsf2d T1,
+		[Const, Ref] Bnd_Box2d Other,
+		[Const, Ref] gp_Trsf2d T2
+	);
+	// Standard_Boolean IsOut(
+	// 	[Const, Ref] gp_Pnt2d P1,
+	// 	[Const, Ref] gp_Pnt2d P2,
+	// 	[Const, Ref] gp_Dir2d D
+	// );
+	Standard_Real Distance([Const, Ref] Bnd_Box2d Other);
+	void Dump();
+	Standard_Real SquareExtent();
+	[Value] Bnd_Box2d FinitePart();
+	Standard_Boolean HasFinitePart();
+};
+
 // Full interface
 // fd47711d682be943f0e0a13d1fb54911b0499c31
 interface BRepBndLib {
@@ -1521,6 +1592,22 @@ interface gp_Trsf{
 	[Value] gp_Trsf Multiplied([Const, Ref]gp_Trsf T);
 };
 
+interface gp_Trsf2d{
+	void gp_Trsf2d();
+	void SetMirror([Const, Ref]gp_Ax2d A1);
+	void SetTranslation([Const, Ref]gp_Vec2d V);
+	void SetTranslationPart([Const, Ref]gp_Vec2d V);
+	void SetRotation([Const, Ref]gp_Pnt2d P, [Const]Standard_Real Ang);
+	void SetScaleFactor([Const]Standard_Real S);
+	void Multiply([Const, Ref]gp_Trsf2d T);
+	void PreMultiply([Const, Ref]gp_Trsf2d T);
+	[Const] Standard_Real Value ([Const] Standard_Integer Row, [Const] Standard_Integer Col);
+	[Value] gp_Trsf2d Inverted();
+	[Const, Ref] gp_XY TranslationPart();
+	[Const] Standard_Real ScaleFactor();
+	[Value] gp_Trsf2d Multiplied([Const, Ref]gp_Trsf2d T);
+};
+
 interface BRepBuilderAPI_Transform{
 	void BRepBuilderAPI_Transform(
 		[Const, Ref] TopoDS_Shape S,
@@ -2062,12 +2149,12 @@ interface BRep_Tool {
 	// 	[Ref] gp_Pnt2d PFirst,
 	// 	[Ref] gp_Pnt2d PLast
 	// );
-	// static void UVPoints(
-	// 	[Const, Ref] TopoDS_Edge E,
-	// 	[Const, Ref] TopoDS_Face F,
-	// 	[Ref] gp_Pnt2d First,
-	// 	[Ref] gp_Pnt2d Last
-	// );
+	static void UVPoints(
+		[Const, Ref] TopoDS_Edge E,
+		[Const, Ref] TopoDS_Face F,
+		[Ref] gp_Pnt2d First,
+		[Ref] gp_Pnt2d Last
+	);
 	// static void SetUVPoints(
 	// 	[Const, Ref] TopoDS_Edge E,
 	// 	[Const, Ref] Handle_Geom_Surface S,
@@ -2075,12 +2162,12 @@ interface BRep_Tool {
 	// 	[Const, Ref] gp_Pnt2d PFirst,
 	// 	[Const, Ref] gp_Pnt2d PLast
 	// );
-	// static void SetUVPoints(
-	// 	[Const, Ref] TopoDS_Edge E,
-	// 	[Const, Ref] TopoDS_Face F,
-	// 	[Const, Ref] gp_Pnt2d PFirst,
-	// 	[Const, Ref] gp_Pnt2d PLast
-	// );
+	static void SetUVPoints(
+		[Const, Ref] TopoDS_Edge E,
+		[Const, Ref] TopoDS_Face F,
+		[Const, Ref] gp_Pnt2d PFirst,
+		[Const, Ref] gp_Pnt2d PLast
+	);
 	static Standard_Boolean HasContinuity(
 		[Const, Ref] TopoDS_Edge E,
 		[Const, Ref] TopoDS_Face F1,
@@ -2134,6 +2221,20 @@ interface BRep_Tool {
 	static Standard_Real MaxTolerance(
 		[Const, Ref] TopoDS_Shape theShape,
 		[Const] TopAbs_ShapeEnum theSubShape
+	);
+	static void AddUVBounds(
+		[Const, Ref] TopoDS_Face F,
+		[Ref] Bnd_Box2d B
+	);
+	static void UVBounds(
+		[Const, Ref] TopoDS_Face F,
+		Standard_Real UMin,
+		Standard_Real UMax,
+		Standard_Real VMin,
+		Standard_Real VMax
+	);
+	static void UpdateFaceUVPoints(
+		[Const, Ref] TopoDS_Face F
 	);
 };
 
@@ -2824,11 +2925,11 @@ interface Poly_Triangulation {
 	Standard_Boolean HasUVNodes();
 	[Const, Ref] TColgp_Array1OfPnt Nodes();
 	[Ref] TColgp_Array1OfPnt ChangeNodes();
-	// [Const, Ref] gp_Pnt Node([Const] Standard_Integer theIndex);
+	[Const, Ref] gp_Pnt Node([Const] Standard_Integer theIndex);
 	// [Ref] gp_Pnt ChangeNode([Const] Standard_Integer theIndex);
-	// [Const, Ref] TColgp_Array1OfPnt2d UVNodes();
-	// [Ref] TColgp_Array1OfPnt2d ChangeUVNodes();
-	// [Const, Ref] gp_Pnt2d UVNode([Const] Standard_Integer theIndex);
+	[Const, Ref] TColgp_Array1OfPnt2d UVNodes();
+	[Ref] TColgp_Array1OfPnt2d ChangeUVNodes();
+	[Const, Ref] gp_Pnt2d UVNode([Const] Standard_Integer theIndex);
 	[Const, Ref] Poly_Array1OfTriangle Triangles();
 	[Ref] Poly_Array1OfTriangle ChangeTriangles();
 	// [Const, Ref] Poly_Triangle Triangle([Const] Standard_Integer theIndex);
