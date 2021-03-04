@@ -835,12 +835,12 @@ interface Bnd_Box2d {
 	Standard_Real GetGap();
 	void SetGap([Const] Standard_Real theTol);
 	void Enlarge([Const] Standard_Real theTol);
-	void Get(
-		[Ref] Standard_Real theXmin,
-		[Ref] Standard_Real theYmin,
-		[Ref] Standard_Real theXmax,
-		[Ref] Standard_Real theYmax
-	);
+	//void Get(
+	//	[Ref] Standard_Real theXmin,
+	//	[Ref] Standard_Real theYmin,
+	//	[Ref] Standard_Real theXmax,
+	//	[Ref] Standard_Real theYmax
+	//);
 	void OpenXmin();
 	void OpenXmax();
 	void OpenYmin();
@@ -858,30 +858,17 @@ interface Bnd_Box2d {
 		[Const, Ref] gp_Pnt2d P,
 		[Const, Ref] gp_Dir2d D
 	);
-	// void Add([Const, Ref] gp_Dir D);
-	Standard_Boolean IsOut([Const, Ref] gp_Pnt P);
-	// Standard_Boolean IsOut([Const, Ref] gp_Lin L);
-	// Standard_Boolean IsOut([Const, Ref] gp_Pln L);
-	// Standard_Boolean IsOut([Const, Ref] Bnd_Box2d Other);
+	Standard_Boolean IsOut([Const, Ref] gp_Pnt2d P);
 	Standard_Boolean IsOut(
-		[Const, Ref] Bnd_Box2d Other,
-		[Const, Ref] gp_Trsf2d T
+		[Const, Ref] Bnd_Box2d theOther,
+		[Const, Ref] gp_Trsf2d theTrsf
 	);
 	Standard_Boolean IsOut(
 		[Const, Ref] gp_Trsf2d T1,
 		[Const, Ref] Bnd_Box2d Other,
 		[Const, Ref] gp_Trsf2d T2
 	);
-	// Standard_Boolean IsOut(
-	// 	[Const, Ref] gp_Pnt2d P1,
-	// 	[Const, Ref] gp_Pnt2d P2,
-	// 	[Const, Ref] gp_Dir2d D
-	// );
-	Standard_Real Distance([Const, Ref] Bnd_Box2d Other);
-	void Dump();
 	Standard_Real SquareExtent();
-	[Value] Bnd_Box2d FinitePart();
-	Standard_Boolean HasFinitePart();
 };
 
 // Full interface
@@ -2242,6 +2229,9 @@ interface BRep_Tool {
 		[Const, Ref] TopoDS_Shape theShape,
 		[Const] TopAbs_ShapeEnum theSubShape
 	);
+};
+
+interface BRep_Tools {
 	static void AddUVBounds(
 		[Const, Ref] TopoDS_Face F,
 		[Ref] Bnd_Box2d B
