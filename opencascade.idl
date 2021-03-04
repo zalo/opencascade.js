@@ -1094,6 +1094,26 @@ interface gp_XYZ {
 	);
 };
 
+interface gp_XY {
+	void gp_XY(
+		[Const] Standard_Real X,
+		[Const] Standard_Real Y
+	);
+	void SetCoord(
+		[Const] Standard_Real Xp,
+		[Const] Standard_Real Yp
+	);
+	void SetX([Const] Standard_Real X);
+	void SetY([Const] Standard_Real Y);
+	Standard_Real Coord([Const] Standard_Integer Index);
+	Standard_Real X();
+	Standard_Real Y();
+	Standard_Boolean IsEqual(
+		[Const, Ref] gp_XY Other,
+		[Const] Standard_Real Tolerance
+	);
+};
+
 // Full interface
 // fd47711d682be943f0e0a13d1fb54911b0499c31
 interface GC_MakeArcOfCircle {
