@@ -1778,7 +1778,7 @@ interface Adaptor3d_Curve {
 	// [Value] Handle_Geom_OffsetCurve OffsetCurve();
 };
 
-/*interface GeomAdaptor_Curve {
+interface GeomAdaptor_Curve {
 	void GeomAdaptor_Curve();
 	void GeomAdaptor_Curve([Const, Ref] Handle_Geom_Curve theCurve);
 	Standard_Real FirstParameter();
@@ -1828,7 +1828,7 @@ interface Adaptor3d_Curve {
 	[Value] Handle_Geom_BSplineCurve BSpline();
 	// [Value] Handle_Geom_OffsetCurve OffsetCurve();
 };
-GeomAdaptor_Curve implements Adaptor3d_Curve;*/
+GeomAdaptor_Curve implements Adaptor3d_Curve;
 
 // Full interface
 // fd47711d682be943f0e0a13d1fb54911b0499c31
@@ -1848,7 +1848,7 @@ interface BRepAdaptor_Curve{
 	[Const, Ref] gp_Trsf Trsf();
 	Standard_Boolean Is3DCurve();
 	Standard_Boolean IsCurveOnSurface();
-	//[Const, Ref] GeomAdaptor_Curve Curve();
+	[Const, Ref] GeomAdaptor_Curve Curve();
 	// [Const, Ref] Adaptor3d_CurveOnSurface CurveOnSurface();
 	[Const, Ref] TopoDS_Edge Edge();
 	Standard_Real Tolerance();
@@ -2004,14 +2004,14 @@ interface GCPnts_TangentialDeflection{
 	);
 };
 
-/*interface GCPnts_AbscissaPoint {
+interface GCPnts_AbscissaPoint {
 	static Standard_Real Length([Const, Ref] Adaptor3d_Curve C);
 	static Standard_Real Length(
 		[Const, Ref] Adaptor3d_Curve C,
 		[Const] Standard_Real U1,
 		[Const] Standard_Real U2
 	);
-};*/
+};
 
 // Full interface
 // fd47711d682be943f0e0a13d1fb54911b0499c31
