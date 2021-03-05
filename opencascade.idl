@@ -1766,17 +1766,13 @@ interface Adaptor3d_Curve {
 		[Const] Standard_Real U,
 		[Const] Standard_Integer N
 	);
-	Standard_Real Resolution([Const] Standard_Real R3d);
+	//Standard_Real Resolution([Const] Standard_Real R3d);
 	// [Value] GeomAbs_CurveType GetType();
 	[Value] gp_Lin Line();
 	[Value] gp_Circ Circle();
 	[Value] gp_Elips Ellipse();
 	[Value] gp_Hypr Hyperbola();
 	[Value] gp_Parab Parabola();
-	Standard_Integer Degree();
-	Standard_Boolean IsRational();
-	Standard_Integer NbPoles();
-	Standard_Integer NbKnots();
 	[Value] Handle_Geom_BezierCurve Bezier();
 	[Value] Handle_Geom_BSplineCurve BSpline();
 	// [Value] Handle_Geom_OffsetCurve OffsetCurve();
@@ -2557,21 +2553,25 @@ interface Geom_Surface {
 	Standard_Real VPeriod();
 	void D0(
 		[Const] Standard_Real U,
+		[Const] Standard_Real V,
 		[Ref] gp_Pnt P
 	);
 	void D1(
 		[Const] Standard_Real U,
+		[Const] Standard_Real V,
 		[Ref] gp_Pnt P,
 		[Ref] gp_Vec V1
 	);
 	void D2(
 		[Const] Standard_Real U,
+		[Const] Standard_Real V,
 		[Ref] gp_Pnt P,
 		[Ref] gp_Vec V1,
 		[Ref] gp_Vec V2
 	);
 	void D3(
 		[Const] Standard_Real U,
+		[Const] Standard_Real V,
 		[Ref] gp_Pnt P,
 		[Ref] gp_Vec V1,
 		[Ref] gp_Vec V2,
@@ -2579,6 +2579,7 @@ interface Geom_Surface {
 	);
 	[Value] gp_Vec DN(
 		[Const] Standard_Real U,
+		[Const] Standard_Real V,
 		[Const] Standard_Integer N
 	);
 };

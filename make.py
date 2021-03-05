@@ -73,6 +73,7 @@ INCLUDES = [
   os.path.join('.', 'occt', 'src', 'Geom', 'Geom_BSplineCurve.hxx'),
   os.path.join('.', 'occt', 'src', 'BRepAdaptor', 'BRepAdaptor_Curve.hxx'),
   os.path.join('.', 'occt', 'src', 'GCPnts', 'GCPnts_TangentialDeflection.hxx'),
+  os.path.join('.', 'occt', 'src', 'GCPnts', 'GCPnts_AbscissaPoint.hxx'),
   os.path.join('.', 'occt', 'src', 'Geom', 'Geom_Plane.hxx'),
   os.path.join('.', 'occt', 'src', 'Geom', 'Geom_Conic.hxx'),
   os.path.join('.', 'occt', 'src', 'Geom', 'Geom_Circle.hxx'),
