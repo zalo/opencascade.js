@@ -2566,18 +2566,25 @@ interface Geom_Surface {
 		[Const] Standard_Real U,
 		[Const] Standard_Real V,
 		[Ref] gp_Pnt P,
-		[Ref] gp_Vec V1,
-		[Ref] gp_Vec V2,
-		[Ref] gp_Vec V3
+		[Ref] gp_Vec D1U,
+		[Ref] gp_Vec D1V,
+		[Ref] gp_Vec D1U,
+		[Ref] gp_Vec D1V,
+		[Ref] gp_Vec D2UV
 	);
 	void D3(
 		[Const] Standard_Real U,
 		[Const] Standard_Real V,
 		[Ref] gp_Pnt P,
-		[Ref] gp_Vec V1,
-		[Ref] gp_Vec V2,
-		[Ref] gp_Vec V3,
-		[Ref] gp_Vec V4
+		[Ref] gp_Vec D1U, 
+		[Ref] gp_Vec D1V, 
+		[Ref] gp_Vec D2U, 
+		[Ref] gp_Vec D2V, 
+		[Ref] gp_Vec D2UV, 
+		[Ref] gp_Vec D3U, 
+		[Ref] gp_Vec D3V, 
+		[Ref] gp_Vec D3UUV, 
+		[Ref] gp_Vec D3UVV
 	);
 	[Value] gp_Vec DN(
 		[Const] Standard_Real U,
