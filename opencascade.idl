@@ -2542,7 +2542,7 @@ Geom_Geometry implements Standard_Transient;
 interface Geom_Surface {
 	[Value] Handle_Geom_Curve UIso([Const] Standard_Real U);
 	[Value] Handle_Geom_Curve VIso([Const] Standard_Real V);
-	Standard_Boolean IsCNu([Const] Standard_Integer N);
+	/*Standard_Boolean IsCNu([Const] Standard_Integer N);
 	Standard_Boolean IsCNv([Const] Standard_Integer N);
 	Standard_Boolean IsUClosed();
 	Standard_Boolean IsVClosed();
@@ -2591,7 +2591,7 @@ interface Geom_Surface {
 		[Const] Standard_Real V,
 		[Const] Standard_Integer Nu,
 		[Const] Standard_Integer Nv
-	);
+	);*/
 };
 Geom_Surface implements Geom_Geometry;
 
