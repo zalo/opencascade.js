@@ -2004,7 +2004,7 @@ interface GCPnts_TangentialDeflection{
 	);
 };
 
-interface GCPnts_AbscissaPoint{
+interface GCPnts_AbscissaPoint {
 	static Standard_Real Length([Const, Ref] Adaptor3d_Curve C);
 	static Standard_Real Length(
 		[Const, Ref] Adaptor3d_Curve C,
@@ -2671,7 +2671,7 @@ Geom2d_Conic implements Geom2d_Curve;
 
 // Full interface
 // fd47711d682be943f0e0a13d1fb54911b0499c31
-interface Handle_Geom2d_TrimmedCurve{
+interface Handle_Geom2d_TrimmedCurve {
 	void Handle_Geom2d_TrimmedCurve();
 	void Handle_Geom2d_TrimmedCurve(Geom2d_TrimmedCurve thePtr);
 	boolean IsNull();
