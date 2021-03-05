@@ -1777,7 +1777,6 @@ interface Adaptor3d_Curve {
 	[Value] Handle_Geom_BSplineCurve BSpline();
 	// [Value] Handle_Geom_OffsetCurve OffsetCurve();
 };
-Adaptor3d_Curve implements Standard_Transient;
 
 interface GeomAdaptor_Curve {
 	void GeomAdaptor_Curve();
@@ -2006,9 +2005,9 @@ interface GCPnts_TangentialDeflection{
 };
 
 interface GCPnts_AbscissaPoint{
-	static Standard_Real Length([Const] Adaptor3d_Curve C);
+	static Standard_Real Length([Const, Ref] Adaptor3d_Curve C);
 	static Standard_Real Length(
-		[Const] Adaptor3d_Curve C,
+		[Const, Ref] Adaptor3d_Curve C,
 		[Const] Standard_Real U1,
 		[Const] Standard_Real U2
 	);
@@ -2560,16 +2559,10 @@ interface Geom_Surface {
 		[Const] Standard_Real U,
 		[Const] Standard_Real V,
 		[Ref] gp_Pnt P,
-		[Ref] gp_Vec V1
-	);
-	void D2(
-		[Const] Standard_Real U,
-		[Const] Standard_Real V,
-		[Ref] gp_Pnt P,
 		[Ref] gp_Vec V1,
 		[Ref] gp_Vec V2
 	);
-	void D3(
+	void D2(
 		[Const] Standard_Real U,
 		[Const] Standard_Real V,
 		[Ref] gp_Pnt P,
@@ -2577,10 +2570,20 @@ interface Geom_Surface {
 		[Ref] gp_Vec V2,
 		[Ref] gp_Vec V3
 	);
+	void D3(
+		[Const] Standard_Real U,
+		[Const] Standard_Real V,
+		[Ref] gp_Pnt P,
+		[Ref] gp_Vec V1,
+		[Ref] gp_Vec V2,
+		[Ref] gp_Vec V3,
+		[Ref] gp_Vec V4
+	);
 	[Value] gp_Vec DN(
 		[Const] Standard_Real U,
 		[Const] Standard_Real V,
-		[Const] Standard_Integer N
+		[Const] Standard_Integer Nu,
+		[Const] Standard_Integer Nv
 	);
 };
 Geom_Surface implements Geom_Geometry;
