@@ -1770,9 +1770,9 @@ interface Adaptor3d_Curve {
 	// [Value] GeomAbs_CurveType GetType();
 	[Value] gp_Lin Line();
 	[Value] gp_Circ Circle();
-	// [Value] gp_Elips Ellipse();
-	// [Value] gp_Hypr Hyperbola();
-	// [Value] gp_Parab Parabola();
+	[Value] gp_Elips Ellipse();
+	[Value] gp_Hypr Hyperbola();
+	[Value] gp_Parab Parabola();
 	Standard_Integer Degree();
 	Standard_Boolean IsRational();
 	Standard_Integer NbPoles();
@@ -1781,6 +1781,59 @@ interface Adaptor3d_Curve {
 	[Value] Handle_Geom_BSplineCurve BSpline();
 	// [Value] Handle_Geom_OffsetCurve OffsetCurve();
 };
+Adaptor3d_Curve implements Standard_Transient;
+
+interface GeomAdaptor_Curve {
+	void GeomAdaptor_Curve();
+	void GeomAdaptor_Curve([Const, Ref] Handle_Geom_Curve theCurve);
+	Standard_Real FirstParameter();
+	Standard_Real LastParameter();
+	Standard_Boolean IsClosed();
+	Standard_Boolean IsPeriodic();
+	Standard_Real Period();
+	[Value] gp_Pnt Value([Const] Standard_Real U);
+	void D0(
+		[Const] Standard_Real U,
+		[Ref] gp_Pnt P
+	);
+	void D1(
+		[Const] Standard_Real U,
+		[Ref] gp_Pnt P,
+		[Ref] gp_Vec V1
+	);
+	void D2(
+		[Const] Standard_Real U,
+		[Ref] gp_Pnt P,
+		[Ref] gp_Vec V1,
+		[Ref] gp_Vec V2
+	);
+	void D3(
+		[Const] Standard_Real U,
+		[Ref] gp_Pnt P,
+		[Ref] gp_Vec V1,
+		[Ref] gp_Vec V2,
+		[Ref] gp_Vec V3
+	);
+	void DN(
+		[Const] Standard_Real U,
+		[Const] Standard_Integer N
+	);
+	Standard_Real Resolution([Const] Standard_Real R3d);
+	// [Value] GeomAbs_CurveType GetType();
+	[Value] gp_Lin Line();
+	[Value] gp_Circ Circle();
+	[Value] gp_Elips Ellipse();
+	[Value] gp_Hypr Hyperbola();
+	[Value] gp_Parab Parabola();
+	Standard_Integer Degree();
+	Standard_Boolean IsRational();
+	Standard_Integer NbPoles();
+	Standard_Integer NbKnots();
+	[Value] Handle_Geom_BezierCurve Bezier();
+	[Value] Handle_Geom_BSplineCurve BSpline();
+	// [Value] Handle_Geom_OffsetCurve OffsetCurve();
+};
+GeomAdaptor_Curve implements Adaptor3d_Curve;
 
 // Full interface
 // fd47711d682be943f0e0a13d1fb54911b0499c31
@@ -1800,7 +1853,7 @@ interface BRepAdaptor_Curve{
 	[Const, Ref] gp_Trsf Trsf();
 	Standard_Boolean Is3DCurve();
 	Standard_Boolean IsCurveOnSurface();
-	// [Const, Ref] GeomAdaptor_Curve Curve();
+	[Const, Ref] GeomAdaptor_Curve Curve();
 	// [Const, Ref] Adaptor3d_CurveOnSurface CurveOnSurface();
 	[Const, Ref] TopoDS_Edge Edge();
 	Standard_Real Tolerance();
@@ -1851,9 +1904,9 @@ interface BRepAdaptor_Curve{
 	// [Value] GeomAbs_CurveType GetType();
 	[Value] gp_Lin Line();
 	[Value] gp_Circ Circle();
-	// [Value] gp_Elips Ellipse();
-	// [Value] gp_Hypr Hyperbola();
-	// [Value] gp_Parab Parabola();
+	[Value] gp_Elips Ellipse();
+	[Value] gp_Hypr Hyperbola();
+	[Value] gp_Parab Parabola();
 	Standard_Integer Degree();
 	Standard_Boolean IsRational();
 	Standard_Integer NbPoles();
@@ -1953,6 +2006,15 @@ interface GCPnts_TangentialDeflection{
 		[Const] Standard_Real theLinearDeflection,
 		[Const] Standard_Real theAngularDeflection,
 		[Const] Standard_Real theMinLength
+	);
+};
+
+interface GCPnts_AbscissaPoint{
+	static Standard_Real Length([Const] Adaptor3d_Curve C);
+	static Standard_Real Length(
+		[Const] Adaptor3d_Curve C,
+		[Const] Standard_Real U1,
+		[Const] Standard_Real U2
 	);
 };
 
@@ -2483,6 +2545,42 @@ interface Geom_Geometry {
 Geom_Geometry implements Standard_Transient;
 
 interface Geom_Surface {
+	[Value] Handle_Geom_Curve UIso([Const] Standard_Real U);
+	[Value] Handle_Geom_Curve VIso([Const] Standard_Real V);
+	Standard_Boolean IsCNu([Const] Standard_Integer N);
+	Standard_Boolean IsCNv([Const] Standard_Integer N);
+	Standard_Boolean IsUClosed();
+	Standard_Boolean IsVClosed();
+	Standard_Boolean IsUPeriodic();
+	Standard_Boolean IsVPeriodic();
+	Standard_Real UPeriod();
+	Standard_Real VPeriod();
+	void D0(
+		[Const] Standard_Real U,
+		[Ref] gp_Pnt P
+	);
+	void D1(
+		[Const] Standard_Real U,
+		[Ref] gp_Pnt P,
+		[Ref] gp_Vec V1
+	);
+	void D2(
+		[Const] Standard_Real U,
+		[Ref] gp_Pnt P,
+		[Ref] gp_Vec V1,
+		[Ref] gp_Vec V2
+	);
+	void D3(
+		[Const] Standard_Real U,
+		[Ref] gp_Pnt P,
+		[Ref] gp_Vec V1,
+		[Ref] gp_Vec V2,
+		[Ref] gp_Vec V3
+	);
+	[Value] gp_Vec DN(
+		[Const] Standard_Real U,
+		[Const] Standard_Integer N
+	);
 };
 Geom_Surface implements Geom_Geometry;
 
