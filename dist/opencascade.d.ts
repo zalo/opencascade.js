@@ -740,9 +740,34 @@ declare module opencascade {
         D2(U: Standard_Real, P: gp_Pnt, V1: gp_Vec, V2: gp_Vec): void;
         D3(U: Standard_Real, P: gp_Pnt, V1: gp_Vec, V2: gp_Vec, V3: gp_Vec): void;
         DN(U: Standard_Real, N: Standard_Integer): void;
+        Line(): gp_Lin;
+        Circle(): gp_Circ;
+        Ellipse(): gp_Elips;
+        Hyperbola(): gp_Hypr;
+        Parabola(): gp_Parab;
+        Bezier(): Handle_Geom_BezierCurve;
+        BSpline(): Handle_Geom_BSplineCurve;
+    }
+    class GeomAdaptor_Curve extends Adaptor3d_Curve {
+        constructor();
+        constructor(theCurve: Handle_Geom_Curve);
+        FirstParameter(): Standard_Real;
+        LastParameter(): Standard_Real;
+        IsClosed(): Standard_Boolean;
+        IsPeriodic(): Standard_Boolean;
+        Period(): Standard_Real;
+        Value(U: Standard_Real): gp_Pnt;
+        D0(U: Standard_Real, P: gp_Pnt): void;
+        D1(U: Standard_Real, P: gp_Pnt, V1: gp_Vec): void;
+        D2(U: Standard_Real, P: gp_Pnt, V1: gp_Vec, V2: gp_Vec): void;
+        D3(U: Standard_Real, P: gp_Pnt, V1: gp_Vec, V2: gp_Vec, V3: gp_Vec): void;
+        DN(U: Standard_Real, N: Standard_Integer): void;
         Resolution(R3d: Standard_Real): Standard_Real;
         Line(): gp_Lin;
         Circle(): gp_Circ;
+        Ellipse(): gp_Elips;
+        Hyperbola(): gp_Hypr;
+        Parabola(): gp_Parab;
         Degree(): Standard_Integer;
         IsRational(): Standard_Boolean;
         NbPoles(): Standard_Integer;
@@ -760,6 +785,7 @@ declare module opencascade {
         Trsf(): gp_Trsf;
         Is3DCurve(): Standard_Boolean;
         IsCurveOnSurface(): Standard_Boolean;
+        Curve(): GeomAdaptor_Curve;
         Edge(): TopoDS_Edge;
         Tolerance(): Standard_Real;
         FirstParameter(): Standard_Real;
@@ -776,6 +802,9 @@ declare module opencascade {
         Resolution(R3d: Standard_Real): Standard_Real;
         Line(): gp_Lin;
         Circle(): gp_Circ;
+        Ellipse(): gp_Elips;
+        Hyperbola(): gp_Hypr;
+        Parabola(): gp_Parab;
         Degree(): Standard_Integer;
         IsRational(): Standard_Boolean;
         NbPoles(): Standard_Integer;
@@ -794,6 +823,10 @@ declare module opencascade {
         Parameter(I: Standard_Integer): Standard_Real;
         Value(I: Standard_Integer): gp_Pnt;
         ArcAngularStep(theRadius: Standard_Real, theLinearDeflection: Standard_Real, theAngularDeflection: Standard_Real, theMinLength: Standard_Real): Standard_Real;
+    }
+    class GCPnts_AbscissaPoint {
+        Length(C: Adaptor3d_Curve): Standard_Real;
+        Length(C: Adaptor3d_Curve, U1: Standard_Real, U2: Standard_Real): Standard_Real;
     }
     class Geom_Curve {
         Reverse(): void;
@@ -938,6 +971,8 @@ declare module opencascade {
     class Geom_Geometry extends Standard_Transient {
     }
     class Geom_Surface extends Geom_Geometry {
+        UIso(U: Standard_Real): Handle_Geom_Curve;
+        VIso(V: Standard_Real): Handle_Geom_Curve;
     }
     class Geom_ElementarySurface extends Geom_Surface {
         Location(): gp_Pnt;
