@@ -2004,14 +2004,14 @@ interface GCPnts_TangentialDeflection{
 	);
 };
 
-interface GCPnts_AbscissaPoint {
+/*interface GCPnts_AbscissaPoint {
 	static Standard_Real Length([Const, Ref] Adaptor3d_Curve C);
 	static Standard_Real Length(
 		[Const, Ref] Adaptor3d_Curve C,
 		[Const] Standard_Real U1,
 		[Const] Standard_Real U2
 	);
-};
+};*/
 
 // Full interface
 // fd47711d682be943f0e0a13d1fb54911b0499c31
