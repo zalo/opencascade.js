@@ -603,6 +603,7 @@ declare module opencascade {
     class gp_Ax2 {
         constructor();
         constructor(P: gp_Pnt, V: gp_Dir);
+        constructor(P: gp_Pnt, N: gp_Dir, Vx: gp_Dir);
     }
     class gp {
         OX(): gp_Ax1;
