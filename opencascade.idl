@@ -1483,6 +1483,11 @@ interface gp_Ax2{
 		[Const,Ref]gp_Pnt P,
 		[Const,Ref]gp_Dir V
 	);
+	void gp_Ax2(
+		[Const,Ref]gp_Pnt P,
+		[Const,Ref]gp_Dir N,
+		[Const,Ref]gp_Dir Vx
+	);
 };
 
 interface gp {
