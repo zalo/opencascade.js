@@ -3957,7 +3957,7 @@ interface BRepOffsetAPI_FindContigousEdges {
 	);
 	void Add([Const, Ref] TopoDS_Shape shape);
 	void Perform();
-	Standard_Integer NbEdges();
+	//Standard_Integer NbEdges(); // Errors?
 	Standard_Integer NbContigousEdges();
 	[Const, Ref] TopoDS_Edge ContigousEdge([Const] Standard_Integer index);
 	[Const, Ref] TopTools_ListOfShape ContigousEdgeCouple([Const] Standard_Integer index);
