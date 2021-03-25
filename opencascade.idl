@@ -442,7 +442,7 @@ interface GeomAPI_PointsToBSpline {
 interface GeomAPI_ProjectPointOnSurf {
 	void GeomAPI_ProjectPointOnSurf(
 		[Const, Ref] gp_Pnt P, 
-		[Const] Handle_Geom_Surface Surface,
+		[Const, Ref] Handle_Geom_Surface Surface,
 		[Const] optional Extrema_ExtAlgo Algo = "Extrema_ExtAlgo_Grad"
 	);
 	[Value] gp_Pnt NearestPoint();
