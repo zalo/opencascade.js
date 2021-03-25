@@ -439,17 +439,17 @@ interface GeomAPI_PointsToBSpline {
 	[Const] Standard_Boolean IsDone();
 };
 
-interface GeomAPI_ProjectPointOnSurf {
-	void GeomAPI_ProjectPointOnSurf(
-		[Const, Ref] gp_Pnt P, 
-		[Const, Ref] Handle_Geom_Surface Surface,
-		[Const] optional Extrema_ExtAlgo Algo = "Extrema_ExtAlgo_Grad"
-	);
-	[Value] gp_Pnt NearestPoint();
-	[Value] gp_Pnt Point([Const] Standard_Integer Index);
-	[Const] Standard_Boolean IsDone();
-	Standard_Integer NbPoints();
-};
+//interface GeomAPI_ProjectPointOnSurf {
+//	void GeomAPI_ProjectPointOnSurf(
+//		[Const, Ref] gp_Pnt P, 
+//		[Const, Ref] Handle_Geom_Surface Surface,
+//		[Const] optional Extrema_ExtAlgo Algo = "Extrema_ExtAlgo_Grad"
+//	);
+//	[Value] gp_Pnt NearestPoint();
+//	[Value] gp_Pnt Point([Const] Standard_Integer Index);
+//	[Const] Standard_Boolean IsDone();
+//	Standard_Integer NbPoints();
+//};
 
 // Full interface
 // fd47711d682be943f0e0a13d1fb54911b0499c31
