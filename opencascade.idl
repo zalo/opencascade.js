@@ -404,6 +404,29 @@ BRepPrimAPI_MakeWedge implements BRepBuilderAPI_MakeShape;
 interface BRepPrim_Sphere {
 };
 
+interface BRepExtrema_DistShapeShape {
+	void BRepExtrema_DistShapeShape(
+		[Const, Ref] TopoDS_Shape Shape1,
+		[Const, Ref] TopoDS_Shape Shape2,
+		[Const] optional Extrema_ExtFlag A = "Extrema_ExtFlag_MINMAX",
+		[Const] optional Extrema_ExtAlgo A = "Extrema_ExtAlgo_Grad"
+	);
+	void LoadS1([Const, Ref] TopoDS_Shape Shape1);
+	void LoadS2([Const, Ref] TopoDS_Shape Shape2);
+	void SetDeflection([Const] Standard_Real theDeflection);
+	[Const] Standard_Boolean IsDone();
+	Standard_Boolean Perform();
+	[Const] Standard_Boolean InnerSolution();
+	[Const] Standard_Real Value();
+	[Const] Standard_Integer NbSolution();
+	[Const, Ref] gp_Pnt PointOnShape1([Const] Standard_Integer N);
+	[Const, Ref] gp_Pnt PointOnShape2([Const] Standard_Integer N);
+	[Const] BRepExtrema_SupportType SupportTypeShape1([Const] Standard_Integer N);
+	[Const] BRepExtrema_SupportType SupportTypeShape2([Const] Standard_Integer N);
+	[Const] TopoDS_Shape SupportOnShape1([Const] Standard_Integer N);
+	[Const] TopoDS_Shape SupportOnShape2([Const] Standard_Integer N);
+};
+
 interface GeomAPI_PointsToBSpline {
 	void GeomAPI_PointsToBSpline(
 		[Const, Ref] TColgp_Array1OfPnt Points, 
@@ -414,6 +437,18 @@ interface GeomAPI_PointsToBSpline {
 	);
 	[Const, Ref] Handle_Geom_BSplineCurve Curve();
 	[Const] Standard_Boolean IsDone();
+};
+
+interface GeomAPI_ProjectPointOnSurf {
+	void GeomAPI_ProjectPointOnSurf(
+		[Const, Ref] gp_Pnt P, 
+		[Const] Handle_Geom_Surface,
+		[Const] optional Extrema_ExtAlgo Algo = "Extrema_ExtAlgo_Grad"
+	);
+	[Value] gp_Pnt NearestPoint();
+	[Value] gp_Pnt Point([Const] Standard_Integer Index);
+	[Const] Standard_Boolean IsDone();
+	Standard_Integer NbPoints();
 };
 
 // Full interface
@@ -4591,4 +4626,21 @@ enum ChFi2d_ConstructionError {
 	"ChFi2d_LastEdgeDegenerated",
 	"ChFi2d_BothEdgesDegenerated",
 	"ChFi2d_NotAuthorized"
+};
+
+enum Extrema_ExtAlgo {
+	"Extrema_ExtAlgo_Grad",
+	"Extrema_ExtAlgo_Tree"
+};
+
+enum Extrema_ExtFlag {
+	"Extrema_ExtFlag_MIN",
+	"Extrema_ExtFlag_MAX",
+	"Extrema_ExtFlag_MINMAX"
+};
+
+enum BRepExtrema_SupportType {
+	"BRepExtrema_IsVertex",
+	"BRepExtrema_IsOnEdge",
+	"BRepExtrema_IsInFace"
 };
