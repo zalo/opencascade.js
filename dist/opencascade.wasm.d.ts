@@ -139,6 +139,11 @@ declare module opencascade {
         IsDone(): Standard_Boolean;
         NbPoints(): Standard_Integer;
     }
+    class GeomLib_IsPlanarSurface {
+        constructor(S: Handle_Geom_Surface, Tol?: Standard_Real);
+        Plan(): gp_Pln;
+        IsPlanar(): Standard_Boolean;
+    }
     class TopoDS_Shape {
         constructor();
         constructor(T2: TopoDS_Shape);
@@ -1312,6 +1317,7 @@ declare module opencascade {
         MultipleEdge(index: Standard_Integer): TopoDS_Edge;
         NbContigousEdges(): Standard_Integer;
         ContigousEdge(index: Standard_Integer): TopoDS_Edge;
+        ContigousEdgeCouple(index: Standard_Integer): TopTools_ListOfShape;
         IsSectionBound(section: TopoDS_Edge): Standard_Boolean;
         SectionToBoundary(section: TopoDS_Edge): TopoDS_Edge;
         NbDegeneratedShapes(): Standard_Integer;
@@ -1430,6 +1436,15 @@ declare module opencascade {
     }
     class BRepAlgoAPI_BooleanOperation {
     }
+    class BOPAlgo_Splitter {
+        constructor();
+        Perform(): void;
+        Clear(): void;
+        AddTool(theShape: TopoDS_Shape): void;
+        Generated(theS: TopoDS_Shape): TopTools_ListOfShape;
+        Modified(theS: TopoDS_Shape): TopTools_ListOfShape;
+        IsDeleted(theS: TopoDS_Shape): Standard_Boolean;
+    }
     class ShapeUpgrade_RemoveInternalWires extends ShapeUpgrade_Tool {
         constructor(theShape: TopoDS_Shape);
         MinArea(): Standard_Real;
@@ -1498,6 +1513,25 @@ declare module opencascade {
         constructor(theShape: TopoDS_Shape, PerformNow?: Standard_Boolean);
         Shape(): TopoDS_Shape;
         Perform(): void;
+    }
+    class BRepOffsetAPI_NormalProjection {
+        constructor(S: TopoDS_Shape);
+        Add(ToProj: TopoDS_Shape): void;
+        Build(): void;
+        IsDone(): Standard_Boolean;
+        Projection(): TopoDS_Shape;
+        Couple(E: TopoDS_Edge): TopoDS_Shape;
+        Ancestor(E: TopoDS_Edge): TopoDS_Shape;
+        Generated(S: TopoDS_Shape): TopTools_ListOfShape;
+        BuildWire(Liste: TopTools_ListOfShape): Standard_Boolean;
+    }
+    class BRepOffsetAPI_FindContigousEdges {
+        constructor(tolerance?: Standard_Real, option?: Standard_Boolean);
+        Add(shape: TopoDS_Shape): void;
+        Perform(): void;
+        NbContigousEdges(): Standard_Integer;
+        ContigousEdge(index: Standard_Integer): TopoDS_Edge;
+        ContigousEdgeCouple(index: Standard_Integer): TopTools_ListOfShape;
     }
     class BRepOffsetAPI_ThruSections extends BRepBuilderAPI_MakeShape {
         constructor(isSolid?: Standard_Boolean, ruled?: Standard_Boolean, pres3d?: Standard_Real);
