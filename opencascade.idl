@@ -3938,7 +3938,7 @@ interface BRepLib_FuseEdges {
 
 interface BRepOffsetAPI_FindContigousEdges {
 	void BRepOffsetAPI_FindContigousEdges (
-		[Const] optional Standard_Real tolerance = 1.0e-6
+		[Const] optional Standard_Real tolerance = 1.0e-6,
 		[Const] optional Standard_Boolean option = true
 	);
 	void Add([Const, Ref] TopoDS_Shape shape);

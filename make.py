@@ -98,6 +98,7 @@ INCLUDES = [
   os.path.join('.', 'occt', 'src', 'BRepOffsetAPI', 'BRepOffsetAPI_MakePipe.hxx'),
   os.path.join('.', 'occt', 'src', 'BRepOffsetAPI', 'BRepOffsetAPI_MakePipeShell.hxx'),
   os.path.join('.', 'occt', 'src', 'BRepOffsetAPI', 'BRepOffsetAPI_FindContigousEdges.hxx'),
+  os.path.join('.', 'occt', 'src', 'BRepOffsetAPI', 'BRepOffsetAPI_NormalProjection.hxx'),
   os.path.join('.', 'occt', 'src', 'ShapeFix', 'ShapeFix_Face.hxx'),
   os.path.join('.', 'occt', 'src', 'ShapeFix', 'ShapeFix_Shape.hxx'),
   os.path.join('.', 'occt', 'src', 'ShapeUpgrade', 'ShapeUpgrade_RemoveInternalWires.hxx'),
