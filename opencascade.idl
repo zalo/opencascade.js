@@ -3814,6 +3814,20 @@ interface BRepAlgoAPI_BooleanOperation{
 };
 BRepAlgoAPI_BooleanOperation implements BRepBuilderAPI_MakeShape;
 
+interface BOPAlgo_Splitter {
+	void BOPAlgo_Splitter();
+	void SetFuzzyValue(
+		[Const] Standard_Real theFuzz
+	);
+	void Perform();
+	void Clear();
+	void CheckData();
+	void AddTool([Const, Ref] TopoDS_Shape theShape);
+	[Const, Ref] TopTools_ListOfShape Generated([Const, Ref] TopoDS_Shape theS);
+	[Const, Ref] TopTools_ListOfShape Modified([Const, Ref] TopoDS_Shape theS);
+	Standard_Boolean IsDeleted([Const, Ref] TopoDS_Shape theS);
+};
+
 interface ShapeUpgrade_RemoveInternalWires {
 	void ShapeUpgrade_RemoveInternalWires(
 		[Const, Ref] TopoDS_Shape theShape
