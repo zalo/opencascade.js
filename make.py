@@ -85,6 +85,7 @@ INCLUDES = [
   os.path.join('.', 'occt', 'src', 'Geom', 'Geom_Hyperbola.hxx'),
   os.path.join('.', 'occt', 'src', 'Geom', 'Geom_Parabola.hxx'),
   os.path.join('.', 'occt', 'src', 'Geom', 'Geom_CylindricalSurface.hxx'),
+  os.path.join('.', 'occt', 'src', 'GeomLib', 'GeomLib_IsPlanarSurface.hxx'),
   os.path.join('.', 'occt', 'src', 'Geom2d', 'Geom2d_Ellipse.hxx'),
   os.path.join('.', 'occt', 'src', 'Geom2d', 'Geom2d_TrimmedCurve.hxx'),
   os.path.join('.', 'occt', 'src', 'GCE2d', 'GCE2d_MakeSegment.hxx'),

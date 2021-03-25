@@ -451,6 +451,15 @@ interface GeomAPI_ProjectPointOnSurf {
 	Standard_Integer NbPoints();
 };
 
+interface GeomLib_IsPlanarSurface {
+	void GeomLib_IsPlanarSurface(
+		[Const, Ref] Handle_Geom_Surface S,
+		[Const] optional Standard_Real Tol = 1.0e-3
+	);
+	[Value] gp_Pln Plan();
+	[Const] Standard_Boolean IsPlanar();
+};
+
 // Full interface
 // fd47711d682be943f0e0a13d1fb54911b0499c31
 interface TopoDS_Shape{
