@@ -423,8 +423,8 @@ interface BRepExtrema_DistShapeShape {
 	[Const, Ref] gp_Pnt PointOnShape2([Const] Standard_Integer N);
 	[Const] BRepExtrema_SupportType SupportTypeShape1([Const] Standard_Integer N);
 	[Const] BRepExtrema_SupportType SupportTypeShape2([Const] Standard_Integer N);
-	[Const] TopoDS_Shape SupportOnShape1([Const] Standard_Integer N);
-	[Const] TopoDS_Shape SupportOnShape2([Const] Standard_Integer N);
+	TopoDS_Shape SupportOnShape1([Const] Standard_Integer N);
+	TopoDS_Shape SupportOnShape2([Const] Standard_Integer N);
 };
 
 interface GeomAPI_PointsToBSpline {
