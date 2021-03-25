@@ -3260,7 +3260,7 @@ interface BRepBuilderAPI_Sewing {
 	[Const, Ref] TopoDS_Edge MultipleEdge([Const] Standard_Integer index);
 	Standard_Integer NbContigousEdges();
 	[Const, Ref] TopoDS_Edge ContigousEdge([Const] Standard_Integer index);
-	// [Const, Ref] TopTools_ListOfShape ContigousEdgeCouple([Const] Standard_Integer index);
+	[Const, Ref] TopTools_ListOfShape ContigousEdgeCouple([Const] Standard_Integer index);
 	Standard_Boolean IsSectionBound([Const, Ref] TopoDS_Edge section);
 	[Const, Ref] TopoDS_Edge SectionToBoundary([Const, Ref] TopoDS_Edge section);
 	Standard_Integer NbDegeneratedShapes();
@@ -3934,6 +3934,19 @@ interface BRepLib_FuseEdges {
 	);
 	[Value] TopoDS_Shape Shape();
 	void Perform();
+};
+
+interface BRepOffsetAPI_FindContigousEdges {
+	void BRepOffsetAPI_FindContigousEdges (
+		[Const] optional Standard_Real tolerance = 1.0e-6
+		[Const] optional Standard_Boolean option = true
+	);
+	void Add([Const, Ref] TopoDS_Shape shape);
+	void Perform();
+	Standard_Integer NbEdges();
+	Standard_Integer NbContiguousEdges();
+	[Const, Ref] TopoDS_Edge ContigousEdge([Const] Standard_Integer index);
+	[Const, Ref] TopTools_ListOfShape ContigousEdgeCouple([Const] Standard_Integer index);
 };
 
 interface BRepOffsetAPI_ThruSections {
