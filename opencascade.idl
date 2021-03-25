@@ -3821,7 +3821,6 @@ interface BOPAlgo_Splitter {
 	);
 	void Perform();
 	void Clear();
-	void CheckData();
 	void AddTool([Const, Ref] TopoDS_Shape theShape);
 	[Const, Ref] TopTools_ListOfShape Generated([Const, Ref] TopoDS_Shape theS);
 	[Const, Ref] TopTools_ListOfShape Modified([Const, Ref] TopoDS_Shape theS);
