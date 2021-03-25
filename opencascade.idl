@@ -408,23 +408,23 @@ interface BRepExtrema_DistShapeShape {
 	void BRepExtrema_DistShapeShape(
 		[Const, Ref] TopoDS_Shape Shape1,
 		[Const, Ref] TopoDS_Shape Shape2,
-		[Const] optional Extrema_ExtFlag A = "Extrema_ExtFlag_MINMAX",
+		[Const] optional Extrema_ExtFlag F = "Extrema_ExtFlag_MINMAX",
 		[Const] optional Extrema_ExtAlgo A = "Extrema_ExtAlgo_Grad"
 	);
-	//void LoadS1([Const, Ref] TopoDS_Shape Shape1);
-	//void LoadS2([Const, Ref] TopoDS_Shape Shape2);
-	//void SetDeflection([Const] Standard_Real theDeflection);
+	void LoadS1([Const, Ref] TopoDS_Shape Shape1);
+	void LoadS2([Const, Ref] TopoDS_Shape Shape2);
+	void SetDeflection([Const] Standard_Real theDeflection);
 	[Const] Standard_Boolean IsDone();
 	Standard_Boolean Perform();
 	[Const] Standard_Boolean InnerSolution();
 	[Const] Standard_Real Value();
 	[Const] Standard_Integer NbSolution();
-	//[Const, Ref] gp_Pnt PointOnShape1([Const] Standard_Integer N);
-	//[Const, Ref] gp_Pnt PointOnShape2([Const] Standard_Integer N);
-	//[Const] BRepExtrema_SupportType SupportTypeShape1([Const] Standard_Integer N);
-	//[Const] BRepExtrema_SupportType SupportTypeShape2([Const] Standard_Integer N);
-	//[Const] TopoDS_Shape SupportOnShape1([Const] Standard_Integer N);
-	//[Const] TopoDS_Shape SupportOnShape2([Const] Standard_Integer N);
+	[Const, Ref] gp_Pnt PointOnShape1([Const] Standard_Integer N);
+	[Const, Ref] gp_Pnt PointOnShape2([Const] Standard_Integer N);
+	[Const] BRepExtrema_SupportType SupportTypeShape1([Const] Standard_Integer N);
+	[Const] BRepExtrema_SupportType SupportTypeShape2([Const] Standard_Integer N);
+	[Const] TopoDS_Shape SupportOnShape1([Const] Standard_Integer N);
+	[Const] TopoDS_Shape SupportOnShape2([Const] Standard_Integer N);
 };
 
 interface GeomAPI_PointsToBSpline {
@@ -439,17 +439,17 @@ interface GeomAPI_PointsToBSpline {
 	[Const] Standard_Boolean IsDone();
 };
 
-//interface GeomAPI_ProjectPointOnSurf {
-//	void GeomAPI_ProjectPointOnSurf(
-//		[Const, Ref] gp_Pnt P, 
-//		[Const, Ref] Handle_Geom_Surface Surface,
-//		[Const] optional Extrema_ExtAlgo Algo = "Extrema_ExtAlgo_Grad"
-//	);
-//	[Value] gp_Pnt NearestPoint();
-//	[Value] gp_Pnt Point([Const] Standard_Integer Index);
-//	[Const] Standard_Boolean IsDone();
-//	Standard_Integer NbPoints();
-//};
+interface GeomAPI_ProjectPointOnSurf {
+	void GeomAPI_ProjectPointOnSurf(
+		[Const, Ref] gp_Pnt P, 
+		[Const, Ref] Handle_Geom_Surface Surface,
+		[Const] optional Extrema_ExtAlgo Algo = "Extrema_ExtAlgo_Grad"
+	);
+	[Value] gp_Pnt NearestPoint();
+	[Value] gp_Pnt Point([Const] Standard_Integer Index);
+	[Const] Standard_Boolean IsDone();
+	Standard_Integer NbPoints();
+};
 
 // Full interface
 // fd47711d682be943f0e0a13d1fb54911b0499c31
