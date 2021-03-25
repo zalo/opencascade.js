@@ -3936,6 +3936,20 @@ interface BRepLib_FuseEdges {
 	void Perform();
 };
 
+interface BRepOffsetAPI_NormalProjection {
+	void BRepOffsetAPI_NormalProjection (
+		[Const, Ref] TopoDS_Shape S
+	);
+	void Add([Const, Ref] TopoDS_Shape ToProj);
+	void Build();
+	Standard_Boolean IsDone();
+	[Const, Ref] TopoDS_Shape Projection();
+	[Const, Ref] TopoDS_Shape Couple([Const, Ref] TopoDS_Edge E);
+	[Const, Ref] TopoDS_Shape Ancestor([Const, Ref] TopoDS_Edge E);
+	[Const, Ref] TopTools_ListOfShape Generated([Const, Ref] TopoDS_Shape S);
+	Standard_Boolean BuildWire([Ref] TopTools_ListOfShape Liste);
+};
+
 interface BRepOffsetAPI_FindContigousEdges {
 	void BRepOffsetAPI_FindContigousEdges (
 		[Const] optional Standard_Real tolerance = 1.0e-6,
