@@ -110,10 +110,34 @@ declare module opencascade {
     }
     class BRepPrim_Sphere {
     }
+    class BRepExtrema_DistShapeShape {
+        constructor(Shape1: TopoDS_Shape, Shape2: TopoDS_Shape, F?: Extrema_ExtFlag, A?: Extrema_ExtAlgo);
+        LoadS1(Shape1: TopoDS_Shape): void;
+        LoadS2(Shape2: TopoDS_Shape): void;
+        SetDeflection(theDeflection: Standard_Real): void;
+        IsDone(): Standard_Boolean;
+        Perform(): Standard_Boolean;
+        InnerSolution(): Standard_Boolean;
+        Value(): Standard_Real;
+        NbSolution(): Standard_Integer;
+        PointOnShape1(N: Standard_Integer): gp_Pnt;
+        PointOnShape2(N: Standard_Integer): gp_Pnt;
+        SupportTypeShape1(N: Standard_Integer): BRepExtrema_SupportType;
+        SupportTypeShape2(N: Standard_Integer): BRepExtrema_SupportType;
+        SupportOnShape1(N: Standard_Integer): TopoDS_Shape;
+        SupportOnShape2(N: Standard_Integer): TopoDS_Shape;
+    }
     class GeomAPI_PointsToBSpline {
         constructor(Points: TColgp_Array1OfPnt, DegMin?: Standard_Integer, DegMax?: Standard_Integer, Continuity?: GeomAbs_Shape, Tol3D?: Standard_Real);
         Curve(): Handle_Geom_BSplineCurve;
         IsDone(): Standard_Boolean;
+    }
+    class GeomAPI_ProjectPointOnSurf {
+        constructor(P: gp_Pnt, Surface: Handle_Geom_Surface, Algo?: Extrema_ExtAlgo);
+        NearestPoint(): gp_Pnt;
+        Point(Index: Standard_Integer): gp_Pnt;
+        IsDone(): Standard_Boolean;
+        NbPoints(): Standard_Integer;
     }
     class TopoDS_Shape {
         constructor();
@@ -1781,4 +1805,7 @@ declare module opencascade {
     type BRepFill_TypeOfContact = "BRepFill_NoContact" | "BRepFill_Contact" | "BRepFill_ContactOnBorder";
     type BRepBuilderAPI_FaceError = "BRepBuilderAPI_FaceDone" | "BRepBuilderAPI_NoFace" | "BRepBuilderAPI_NotPlanar" | "BRepBuilderAPI_CurveProjectionFailed" | "BRepBuilderAPI_ParametersOutOfRange";
     type ChFi2d_ConstructionError = "ChFi2d_NotPlanar" | "ChFi2d_NoFace" | "ChFi2d_InitialisationError" | "ChFi2d_ParametersError" | "ChFi2d_Ready" | "ChFi2d_IsDone" | "ChFi2d_ComputationError" | "ChFi2d_ConnexionError" | "ChFi2d_TangencyError" | "ChFi2d_FirstEdgeDegenerated" | "ChFi2d_LastEdgeDegenerated" | "ChFi2d_BothEdgesDegenerated" | "ChFi2d_NotAuthorized";
+    type Extrema_ExtAlgo = "Extrema_ExtAlgo_Grad" | "Extrema_ExtAlgo_Tree";
+    type Extrema_ExtFlag = "Extrema_ExtFlag_MIN" | "Extrema_ExtFlag_MAX" | "Extrema_ExtFlag_MINMAX";
+    type BRepExtrema_SupportType = "BRepExtrema_IsVertex" | "BRepExtrema_IsOnEdge" | "BRepExtrema_IsInFace";
 }
