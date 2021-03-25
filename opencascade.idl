@@ -414,11 +414,11 @@ interface BRepExtrema_DistShapeShape {
 	//void LoadS1([Const, Ref] TopoDS_Shape Shape1);
 	//void LoadS2([Const, Ref] TopoDS_Shape Shape2);
 	//void SetDeflection([Const] Standard_Real theDeflection);
-	//[Const] Standard_Boolean IsDone();
-	//Standard_Boolean Perform();
-	//[Const] Standard_Boolean InnerSolution();
-	//[Const] Standard_Real Value();
-	//[Const] Standard_Integer NbSolution();
+	[Const] Standard_Boolean IsDone();
+	Standard_Boolean Perform();
+	[Const] Standard_Boolean InnerSolution();
+	[Const] Standard_Real Value();
+	[Const] Standard_Integer NbSolution();
 	//[Const, Ref] gp_Pnt PointOnShape1([Const] Standard_Integer N);
 	//[Const, Ref] gp_Pnt PointOnShape2([Const] Standard_Integer N);
 	//[Const] BRepExtrema_SupportType SupportTypeShape1([Const] Standard_Integer N);
