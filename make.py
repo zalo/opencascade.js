@@ -328,7 +328,17 @@ def build():
     shutil.copyfile(os.path.join('build', 'js', 'opencascade.js'), os.path.join('dist', 'opencascade.js'))
   else:
     shutil.copyfile(os.path.join('build', 'js', 'opencascade.wasm.js'), os.path.join('dist', 'opencascade.wasm.js'))
+    shutil.copyfile(os.path.join('build', 'js', 'opencascade.wasm.js'), os.path.join('dist', 'opencascade.wasm.module.js'))
     shutil.copyfile(os.path.join('build', 'js', 'opencascade.wasm.wasm'), os.path.join('dist', 'opencascade.wasm.wasm'))
+
+    # Comment out the ES6 Export in the non-.module.js
+    wasmJSFile = open(os.path.join('dist', 'opencascade.wasm.js'), mode="r+")
+    wasmJSLines = wasmJSFile.readlines()
+    wasmJSFile.seek(0)
+    wasmJSLines[len(wasmJSLines)-1] = "//" + wasmJSLines[len(wasmJSLines)-1]
+    wasmJSFile.writelines(wasmJSLines)
+    wasmJSFile.close()
+
 
 if __name__ == '__main__':
   build()
