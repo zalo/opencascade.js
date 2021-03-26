@@ -110,10 +110,39 @@ declare module opencascade {
     }
     class BRepPrim_Sphere {
     }
+    class BRepExtrema_DistShapeShape {
+        constructor(Shape1: TopoDS_Shape, Shape2: TopoDS_Shape, F?: Extrema_ExtFlag, A?: Extrema_ExtAlgo);
+        LoadS1(Shape1: TopoDS_Shape): void;
+        LoadS2(Shape2: TopoDS_Shape): void;
+        SetDeflection(theDeflection: Standard_Real): void;
+        IsDone(): Standard_Boolean;
+        Perform(): Standard_Boolean;
+        InnerSolution(): Standard_Boolean;
+        Value(): Standard_Real;
+        NbSolution(): Standard_Integer;
+        PointOnShape1(N: Standard_Integer): gp_Pnt;
+        PointOnShape2(N: Standard_Integer): gp_Pnt;
+        SupportTypeShape1(N: Standard_Integer): BRepExtrema_SupportType;
+        SupportTypeShape2(N: Standard_Integer): BRepExtrema_SupportType;
+        SupportOnShape1(N: Standard_Integer): TopoDS_Shape;
+        SupportOnShape2(N: Standard_Integer): TopoDS_Shape;
+    }
     class GeomAPI_PointsToBSpline {
         constructor(Points: TColgp_Array1OfPnt, DegMin?: Standard_Integer, DegMax?: Standard_Integer, Continuity?: GeomAbs_Shape, Tol3D?: Standard_Real);
         Curve(): Handle_Geom_BSplineCurve;
         IsDone(): Standard_Boolean;
+    }
+    class GeomAPI_ProjectPointOnSurf {
+        constructor(P: gp_Pnt, Surface: Handle_Geom_Surface, Algo?: Extrema_ExtAlgo);
+        NearestPoint(): gp_Pnt;
+        Point(Index: Standard_Integer): gp_Pnt;
+        IsDone(): Standard_Boolean;
+        NbPoints(): Standard_Integer;
+    }
+    class GeomLib_IsPlanarSurface {
+        constructor(S: Handle_Geom_Surface, Tol?: Standard_Real);
+        Plan(): gp_Pln;
+        IsPlanar(): Standard_Boolean;
     }
     class TopoDS_Shape {
         constructor();
@@ -603,6 +632,7 @@ declare module opencascade {
     class gp_Ax2 {
         constructor();
         constructor(P: gp_Pnt, V: gp_Dir);
+        constructor(P: gp_Pnt, N: gp_Dir, Vx: gp_Dir);
     }
     class gp {
         OX(): gp_Ax1;
@@ -1287,6 +1317,7 @@ declare module opencascade {
         MultipleEdge(index: Standard_Integer): TopoDS_Edge;
         NbContigousEdges(): Standard_Integer;
         ContigousEdge(index: Standard_Integer): TopoDS_Edge;
+        ContigousEdgeCouple(index: Standard_Integer): TopTools_ListOfShape;
         IsSectionBound(section: TopoDS_Edge): Standard_Boolean;
         SectionToBoundary(section: TopoDS_Edge): TopoDS_Edge;
         NbDegeneratedShapes(): Standard_Integer;
@@ -1405,6 +1436,15 @@ declare module opencascade {
     }
     class BRepAlgoAPI_BooleanOperation {
     }
+    class BOPAlgo_Splitter {
+        constructor();
+        Perform(): void;
+        Clear(): void;
+        AddTool(theShape: TopoDS_Shape): void;
+        Generated(theS: TopoDS_Shape): TopTools_ListOfShape;
+        Modified(theS: TopoDS_Shape): TopTools_ListOfShape;
+        IsDeleted(theS: TopoDS_Shape): Standard_Boolean;
+    }
     class ShapeUpgrade_RemoveInternalWires extends ShapeUpgrade_Tool {
         constructor(theShape: TopoDS_Shape);
         MinArea(): Standard_Real;
@@ -1473,6 +1513,25 @@ declare module opencascade {
         constructor(theShape: TopoDS_Shape, PerformNow?: Standard_Boolean);
         Shape(): TopoDS_Shape;
         Perform(): void;
+    }
+    class BRepOffsetAPI_NormalProjection {
+        constructor(S: TopoDS_Shape);
+        Add(ToProj: TopoDS_Shape): void;
+        Build(): void;
+        IsDone(): Standard_Boolean;
+        Projection(): TopoDS_Shape;
+        Couple(E: TopoDS_Edge): TopoDS_Shape;
+        Ancestor(E: TopoDS_Edge): TopoDS_Shape;
+        Generated(S: TopoDS_Shape): TopTools_ListOfShape;
+        BuildWire(Liste: TopTools_ListOfShape): Standard_Boolean;
+    }
+    class BRepOffsetAPI_FindContigousEdges {
+        constructor(tolerance?: Standard_Real, option?: Standard_Boolean);
+        Add(shape: TopoDS_Shape): void;
+        Perform(): void;
+        NbContigousEdges(): Standard_Integer;
+        ContigousEdge(index: Standard_Integer): TopoDS_Edge;
+        ContigousEdgeCouple(index: Standard_Integer): TopTools_ListOfShape;
     }
     class BRepOffsetAPI_ThruSections extends BRepBuilderAPI_MakeShape {
         constructor(isSolid?: Standard_Boolean, ruled?: Standard_Boolean, pres3d?: Standard_Real);
@@ -1780,4 +1839,7 @@ declare module opencascade {
     type BRepFill_TypeOfContact = "BRepFill_NoContact" | "BRepFill_Contact" | "BRepFill_ContactOnBorder";
     type BRepBuilderAPI_FaceError = "BRepBuilderAPI_FaceDone" | "BRepBuilderAPI_NoFace" | "BRepBuilderAPI_NotPlanar" | "BRepBuilderAPI_CurveProjectionFailed" | "BRepBuilderAPI_ParametersOutOfRange";
     type ChFi2d_ConstructionError = "ChFi2d_NotPlanar" | "ChFi2d_NoFace" | "ChFi2d_InitialisationError" | "ChFi2d_ParametersError" | "ChFi2d_Ready" | "ChFi2d_IsDone" | "ChFi2d_ComputationError" | "ChFi2d_ConnexionError" | "ChFi2d_TangencyError" | "ChFi2d_FirstEdgeDegenerated" | "ChFi2d_LastEdgeDegenerated" | "ChFi2d_BothEdgesDegenerated" | "ChFi2d_NotAuthorized";
+    type Extrema_ExtAlgo = "Extrema_ExtAlgo_Grad" | "Extrema_ExtAlgo_Tree";
+    type Extrema_ExtFlag = "Extrema_ExtFlag_MIN" | "Extrema_ExtFlag_MAX" | "Extrema_ExtFlag_MINMAX";
+    type BRepExtrema_SupportType = "BRepExtrema_IsVertex" | "BRepExtrema_IsOnEdge" | "BRepExtrema_IsInFace";
 }

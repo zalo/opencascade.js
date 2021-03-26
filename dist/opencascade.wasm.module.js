@@ -15,4 +15,4 @@ var Module=typeof opencascade!=="undefined"?opencascade:{};var readyPromiseResol
 }
 );
 })();
-//export default opencascade;
+export default opencascade;
