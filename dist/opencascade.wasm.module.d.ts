@@ -208,6 +208,7 @@ declare module opencascade {
         Direct(): Standard_Boolean;
         Axis(): gp_Ax1;
         Location(): gp_Pnt;
+        Position(): gp_Ax3;
         Distance(P: gp_Pnt): Standard_Real;
         SquareDistance(P: gp_Pnt): Standard_Real;
         XAxis(): gp_Ax1;
@@ -628,11 +629,17 @@ declare module opencascade {
     class gp_Ax1 {
         constructor();
         constructor(P: gp_Pnt, V: gp_Dir);
+        Direction(): gp_Dir;
+        Location(): gp_Pnt;
     }
     class gp_Ax2 {
         constructor();
         constructor(P: gp_Pnt, V: gp_Dir);
         constructor(P: gp_Pnt, N: gp_Dir, Vx: gp_Dir);
+        Direction(): gp_Dir;
+        Location(): gp_Pnt;
+        XDirection(): gp_Dir;
+        YDirection(): gp_Dir;
     }
     class gp {
         OX(): gp_Ax1;
@@ -680,6 +687,7 @@ declare module opencascade {
         SetScaleFactor(S: Standard_Real): void;
         Multiply(T: gp_Trsf): void;
         PreMultiply(T: gp_Trsf): void;
+        SetValues(a11: Standard_Real, a12: Standard_Real, a13: Standard_Real, a14: Standard_Real, a21: Standard_Real, a22: Standard_Real, a23: Standard_Real, a24: Standard_Real, a31: Standard_Real, a32: Standard_Real, a33: Standard_Real, a34: Standard_Real): void;
         Value(Row: Standard_Integer, Col: Standard_Integer): Standard_Real;
         Inverted(): gp_Trsf;
         TranslationPart(): gp_XYZ;
@@ -1011,6 +1019,12 @@ declare module opencascade {
     }
     class gp_Ax3 {
         constructor();
+        Direction(): gp_Dir;
+        Location(): gp_Pnt;
+        XDirection(): gp_Dir;
+        YDirection(): gp_Dir;
+        Axis(): gp_Ax1;
+        Ax2(): gp_Ax2;
     }
     class gp_Pnt2d {
         constructor();
