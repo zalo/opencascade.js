@@ -622,7 +622,7 @@ interface gp_Pln{
 	Standard_Boolean Direct();
 	[Const, Ref] gp_Ax1 Axis();
 	[Const, Ref] gp_Pnt Location();
-	// [Const, Ref] gp_Ax3 Position();
+	[Const, Ref] gp_Ax3 Position();
 	Standard_Real Distance([Const, Ref] gp_Pnt P);
 	// Standard_Real Distance([Const, Ref] gp_Lin L);
 	// Standard_Real Distance([Const, Ref] gp_Pln Other);
@@ -1519,6 +1519,8 @@ interface gp_Ax1{
 		[Const,Ref]gp_Pnt P,
 		[Const,Ref]gp_Dir V
 	);
+	[Const, Ref] gp_Dir Direction();
+	[Const, Ref] gp_Pnt Location();
 };
 
 interface gp_Ax2{
@@ -1532,6 +1534,10 @@ interface gp_Ax2{
 		[Const,Ref]gp_Dir N,
 		[Const,Ref]gp_Dir Vx
 	);
+	[Const, Ref] gp_Dir Direction();
+	[Const, Ref] gp_Pnt Location();
+	[Const, Ref] gp_Dir XDirection();
+	[Const, Ref] gp_Dir YDirection();
 };
 
 interface gp {
@@ -1641,6 +1647,9 @@ interface gp_Trsf{
 	void SetScaleFactor([Const]Standard_Real S);
 	void Multiply([Const, Ref]gp_Trsf T);
 	void PreMultiply([Const, Ref]gp_Trsf T);
+	void SetValues( [Const] Standard_Real a11, [Const] Standard_Real a12, [Const] Standard_Real a13, [Const] Standard_Real a14,
+					[Const] Standard_Real a21, [Const] Standard_Real a22, [Const] Standard_Real a23, [Const] Standard_Real a24,
+					[Const] Standard_Real a31, [Const] Standard_Real a32, [Const] Standard_Real a33, [Const] Standard_Real a34);
 	[Const] Standard_Real Value ([Const] Standard_Integer Row, [Const] Standard_Integer Col);
 	[Value] gp_Trsf Inverted();
 	[Const, Ref] gp_XYZ TranslationPart();
@@ -2655,6 +2664,12 @@ Geom_Plane implements Geom_ElementarySurface;
 
 interface gp_Ax3 {
 	void gp_Ax3();
+	[Const, Ref] gp_Dir Direction();
+	[Const, Ref] gp_Pnt Location();
+	[Const, Ref] gp_Dir XDirection();
+	[Const, Ref] gp_Dir YDirection();
+	[Const, Ref] gp_Ax1 Axis();
+	[Value] gp_Ax2 Ax2();
 };
 
 interface gp_Pnt2d {
