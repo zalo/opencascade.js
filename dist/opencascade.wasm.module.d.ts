@@ -144,6 +144,29 @@ declare module opencascade {
         Plan(): gp_Pln;
         IsPlanar(): Standard_Boolean;
     }
+    class GeomLProp_SLProps {
+        constructor(S: Handle_Geom_Surface, U: Standard_Real, V: Standard_Real, N: Standard_Integer, Resolution: Standard_Real);
+        IsCurvatureDefined(): Standard_Boolean;
+        IsUmbilic(): Standard_Boolean;
+        IsTangentUDefined(): Standard_Boolean;
+        IsTangentVDefined(): Standard_Boolean;
+        TangentU(D: gp_Dir): void;
+        TangentV(D: gp_Dir): void;
+        MaxCurvature(): Standard_Real;
+        MinCurvature(): Standard_Real;
+        MeanCurvature(): Standard_Real;
+        GaussianCurvature(): Standard_Real;
+        IsNormalDefined(): Standard_Boolean;
+        Normal(): gp_Dir;
+        SetParameters(U: Standard_Real, V: Standard_Real): void;
+        SetSurface(S: Handle_Geom_Surface): void;
+        Value(): gp_Pnt;
+        D1U(): gp_Vec;
+        D1V(): gp_Vec;
+        D2U(): gp_Vec;
+        D2V(): gp_Vec;
+        DUV(): gp_Vec;
+    }
     class TopoDS_Shape {
         constructor();
         constructor(T2: TopoDS_Shape);
@@ -1011,6 +1034,15 @@ declare module opencascade {
     class Geom_Surface extends Geom_Geometry {
         UIso(U: Standard_Real): Handle_Geom_Curve;
         VIso(V: Standard_Real): Handle_Geom_Curve;
+        IsCNu(N: Standard_Integer): Standard_Boolean;
+        IsCNv(N: Standard_Integer): Standard_Boolean;
+        IsUClosed(): Standard_Boolean;
+        IsVClosed(): Standard_Boolean;
+        IsUPeriodic(): Standard_Boolean;
+        IsVPeriodic(): Standard_Boolean;
+        UPeriod(): Standard_Real;
+        VPeriod(): Standard_Real;
+        Value(U: Standard_Real, V: Standard_Real): gp_Pnt;
     }
     class Geom_ElementarySurface extends Geom_Surface {
         Location(): gp_Pnt;
