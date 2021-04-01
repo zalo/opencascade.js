@@ -460,6 +460,36 @@ interface GeomLib_IsPlanarSurface {
 	[Const] Standard_Boolean IsPlanar();
 };
 
+interface GeomLProp_SLProps {
+	void GeomLProp_SLProps(
+		[Const, Ref] Handle_Geom_Surface S,
+		[Const] Standard_Real U,
+		[Const] Standard_Real V, 
+		[Const] Standard_Integer N, 
+		[Const] Standard_Real Resolution
+	);
+	Standard_Boolean IsCurvatureDefined();
+	Standard_Boolean IsUmbilic();
+	Standard_Boolean IsTangentUDefined();
+	Standard_Boolean IsTangentVDefined();
+	void TangentU ([Ref] gp_Dir D);
+	void TangentV ([Ref] gp_Dir D);
+	Standard_Real MaxCurvature();
+	Standard_Real MinCurvature();
+	Standard_Real MeanCurvature();
+	Standard_Real GaussianCurvature();
+	Standard_Boolean IsNormalDefined();
+	[Const, Ref] gp_Dir Normal();
+	void SetParameters([Const] Standard_Real U, [Const] Standard_Real V);
+	void SetSurface ([Const, Ref] Handle_Geom_Surface S);
+	[Const, Ref] gp_Pnt Value();
+	[Const, Ref] gp_Vec D1U();
+	[Const, Ref] gp_Vec D1V();
+	[Const, Ref] gp_Vec D2U();
+	[Const, Ref] gp_Vec D2V();
+	[Const, Ref] gp_Vec DUV();
+};
+
 // Full interface
 // fd47711d682be943f0e0a13d1fb54911b0499c31
 interface TopoDS_Shape{
