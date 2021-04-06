@@ -1869,6 +1869,7 @@ interface Adaptor3d_Curve {
 interface GeomAdaptor_Curve {
 	void GeomAdaptor_Curve();
 	void GeomAdaptor_Curve([Const, Ref] Handle_Geom_Curve theCurve);
+	void Load([Const, Ref] Handle_Geom_Curve theCurve);
 	Standard_Real FirstParameter();
 	Standard_Real LastParameter();
 	Standard_Boolean IsClosed();
