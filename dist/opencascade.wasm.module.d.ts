@@ -812,6 +812,7 @@ declare module opencascade {
     class GeomAdaptor_Curve extends Adaptor3d_Curve {
         constructor();
         constructor(theCurve: Handle_Geom_Curve);
+        Load(theCurve: Handle_Geom_Curve): void;
         FirstParameter(): Standard_Real;
         LastParameter(): Standard_Real;
         IsClosed(): Standard_Boolean;
