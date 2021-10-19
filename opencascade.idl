@@ -1670,7 +1670,7 @@ interface gp_Dir{
 
 interface gp_Trsf{
 	void gp_Trsf();
-	void SetMirror([Const, Ref]gp_Ax1 A1);
+	void SetMirror([Const, Ref]gp_Ax2 A2);
 	void SetTranslation([Const, Ref]gp_Vec V);
 	void SetTranslationPart([Const, Ref]gp_Vec V);
 	void SetRotation([Const, Ref]gp_Ax1 A1, [Const]Standard_Real Ang);
