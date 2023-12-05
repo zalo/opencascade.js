@@ -2805,15 +2805,15 @@ interface BRepTools {
 //	Geom_Plane get();
 //};
 //
-//// Full interface
-//// fd47711d682be943f0e0a13d1fb54911b0499c31
-//interface Handle_Geom_Surface{
-//	void Handle_Geom_Surface();
-//	void Handle_Geom_Surface(Geom_Surface thePtr);
-//	boolean IsNull();
-//	void Nullify();
-//	Geom_Surface get();
-//};
+// Full interface
+// fd47711d682be943f0e0a13d1fb54911b0499c31
+interface Handle_Geom_Surface{
+	void Handle_Geom_Surface();
+	void Handle_Geom_Surface(Geom_Surface thePtr);
+	boolean IsNull();
+	void Nullify();
+	Geom_Surface get();
+};
 //
 //// Full interface
 //// fd47711d682be943f0e0a13d1fb54911b0499c31
