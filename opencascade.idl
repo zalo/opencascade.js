@@ -629,82 +629,82 @@ interface TopoDS_Shape{
 //	);
 //};
 //
-//// Full interface
-//// fd47711d682be943f0e0a13d1fb54911b0499c31
-//interface gp_Pln{
-//	void gp_Pln();
-//	// void gp_Pln([Const, Ref] gp_Ax3 A3);
-//	void gp_Pln(
-//		[Const, Ref] gp_Pnt P,
-//		[Const, Ref] gp_Dir V
-//	);
-//	void Coefficients(
-//		Standard_Real A,
-//		Standard_Real B,
-//		Standard_Real C,
-//		Standard_Real D
-//	);
-//	void SetAxis([Const, Ref] gp_Ax1 A1);
-//	void SetLocation([Const, Ref] gp_Pnt Loc);
-//	// void SetPosition([Const, Ref] gp_Ax3 A3);
-//	void UReverse();
-//	void VReverse();
-//	Standard_Boolean Direct();
-//	[Const, Ref] gp_Ax1 Axis();
-//	[Const, Ref] gp_Pnt Location();
-//	[Const, Ref] gp_Ax3 Position();
-//	Standard_Real Distance([Const, Ref] gp_Pnt P);
-//	// Standard_Real Distance([Const, Ref] gp_Lin L);
-//	// Standard_Real Distance([Const, Ref] gp_Pln Other);
-//	Standard_Real SquareDistance([Const, Ref] gp_Pnt P);
-//	// Standard_Real SquareDistance([Const, Ref] gp_Lin L);
-//	// Standard_Real SquareDistance([Const, Ref] gp_Pln Other);
-//	[Value] gp_Ax1 XAxis();
-//	[Value] gp_Ax1 YAxis();
-//	Standard_Boolean Contains(
-//		[Const, Ref] gp_Pnt P,
-//		[Const] Standard_Real LinearTolerance
-//	);
-//	Standard_Boolean Contains(
-//		[Const, Ref] gp_Lin L,
-//		[Const] Standard_Real LinearTolerance,
-//		[Const] Standard_Real AngularTolerance
-//	);
-//	void Mirror([Const, Ref] gp_Pnt P);
-//	[Value] gp_Pln Mirrored([Const, Ref] gp_Pnt P);
-//	// void Mirror([Const, Ref] gp_Ax1 A1);
-//	// [Value] gp_Pln Mirrored([Const, Ref] gp_Ax1 A1);
-//	// void Mirror([Const, Ref] gp_Ax2 A2);
-//	// [Value] gp_Pln Mirrored([Const, Ref] gp_Ax2 A2);
-//	void Rotate(
-//		[Const, Ref] gp_Ax1 A1,
-//		[Const] Standard_Real Ang
-//	);
-//	[Value] gp_Pln Rotated(
-//		[Const, Ref] gp_Ax1 A1,
-//		[Const] Standard_Real Ang
-//	);
-//	void Scale(
-//		[Const, Ref] gp_Pnt P,
-//		[Const] Standard_Real S
-//	);
-//	[Value] gp_Pln Scaled(
-//		[Const, Ref] gp_Pnt P,
-//		[Const] Standard_Real S
-//	);
-//	void Transform([Const, Ref] gp_Trsf T);
-//	[Value] gp_Pln Transformed([Const, Ref] gp_Trsf T);
-//	void Translate([Const, Ref] gp_Vec V);
-//	[Value] gp_Pln Translated([Const, Ref] gp_Vec V);
-//	void Translate(
-//		[Const, Ref] gp_Pnt P1,
-//		[Const, Ref] gp_Pnt P2
-//	);
-//	[Value] gp_Pln Translated(
-//		[Const, Ref] gp_Pnt P1,
-//		[Const, Ref] gp_Pnt P2
-//	);
-//};
+// Full interface
+// fd47711d682be943f0e0a13d1fb54911b0499c31
+interface gp_Pln{
+	void gp_Pln();
+	// void gp_Pln([Const, Ref] gp_Ax3 A3);
+	void gp_Pln(
+		[Const, Ref] gp_Pnt P,
+		[Const, Ref] gp_Dir V
+	);
+	void Coefficients(
+		Standard_Real A,
+		Standard_Real B,
+		Standard_Real C,
+		Standard_Real D
+	);
+	void SetAxis([Const, Ref] gp_Ax1 A1);
+	void SetLocation([Const, Ref] gp_Pnt Loc);
+	// void SetPosition([Const, Ref] gp_Ax3 A3);
+	void UReverse();
+	void VReverse();
+	Standard_Boolean Direct();
+	[Const, Ref] gp_Ax1 Axis();
+	[Const, Ref] gp_Pnt Location();
+	[Const, Ref] gp_Ax3 Position();
+	Standard_Real Distance([Const, Ref] gp_Pnt P);
+	// Standard_Real Distance([Const, Ref] gp_Lin L);
+	// Standard_Real Distance([Const, Ref] gp_Pln Other);
+	Standard_Real SquareDistance([Const, Ref] gp_Pnt P);
+	// Standard_Real SquareDistance([Const, Ref] gp_Lin L);
+	// Standard_Real SquareDistance([Const, Ref] gp_Pln Other);
+	[Value] gp_Ax1 XAxis();
+	[Value] gp_Ax1 YAxis();
+	Standard_Boolean Contains(
+		[Const, Ref] gp_Pnt P,
+		[Const] Standard_Real LinearTolerance
+	);
+	Standard_Boolean Contains(
+		[Const, Ref] gp_Lin L,
+		[Const] Standard_Real LinearTolerance,
+		[Const] Standard_Real AngularTolerance
+	);
+	void Mirror([Const, Ref] gp_Pnt P);
+	[Value] gp_Pln Mirrored([Const, Ref] gp_Pnt P);
+	// void Mirror([Const, Ref] gp_Ax1 A1);
+	// [Value] gp_Pln Mirrored([Const, Ref] gp_Ax1 A1);
+	// void Mirror([Const, Ref] gp_Ax2 A2);
+	// [Value] gp_Pln Mirrored([Const, Ref] gp_Ax2 A2);
+	void Rotate(
+		[Const, Ref] gp_Ax1 A1,
+		[Const] Standard_Real Ang
+	);
+	[Value] gp_Pln Rotated(
+		[Const, Ref] gp_Ax1 A1,
+		[Const] Standard_Real Ang
+	);
+	void Scale(
+		[Const, Ref] gp_Pnt P,
+		[Const] Standard_Real S
+	);
+	[Value] gp_Pln Scaled(
+		[Const, Ref] gp_Pnt P,
+		[Const] Standard_Real S
+	);
+	void Transform([Const, Ref] gp_Trsf T);
+	[Value] gp_Pln Transformed([Const, Ref] gp_Trsf T);
+	void Translate([Const, Ref] gp_Vec V);
+	[Value] gp_Pln Translated([Const, Ref] gp_Vec V);
+	void Translate(
+		[Const, Ref] gp_Pnt P1,
+		[Const, Ref] gp_Pnt P2
+	);
+	[Value] gp_Pln Translated(
+		[Const, Ref] gp_Pnt P1,
+		[Const, Ref] gp_Pnt P2
+	);
+};
 //
 // BRepMesh_IncrementalMesh.hxx
 interface BRepMesh_IncrementalMesh{
@@ -3651,125 +3651,125 @@ interface StdPrs_ToolTriangulatedShape {
 //};
 //BRep_Builder implements TopoDS_Builder;
 //
-//// Full interface
-//// fd47711d682be943f0e0a13d1fb54911b0499c31
-//interface BRepAdaptor_Surface {
-//	void BRepAdaptor_Surface();
-//	void BRepAdaptor_Surface(
-//		[Const, Ref] TopoDS_Face F,
-//		[Const] optional Standard_Boolean R = true
-//	);
-//	void Initialize(
-//		[Const, Ref] TopoDS_Face F,
-//		[Const] optional Standard_Boolean R = true
-//	);
-//	// [Ref] GeomAdaptor_Surface Surface();
-//	// [Ref] GeomAdaptor_Surface ChangeSurface();
-//	[Const, Ref] gp_Trsf Trsf();
-//	[Const, Ref] TopoDS_Face Face();
-//	Standard_Real Tolerance();
-//	Standard_Real FirstUParameter();
-//	Standard_Real LastUParameter();
-//	Standard_Real FirstVParameter();
-//	Standard_Real LastVParameter();
-//	// [Value] GeomAbs_Shape UContinuity();
-//	// [Value] GeomAbs_Shape VContinuity();
-//	// Standard_Integer NbUIntervals([Const] GeomAbs_Shape S);
-//	// Standard_Integer NbVIntervals([Const] GeomAbs_Shape S);
-//	// void UIntervals(
-//	// 	[Ref] TColStd_Array1OfReal T,
-//	// 	[Const] GeomAbs_Shape S
-//	// );
-//	// void VIntervals(
-//	// 	[Ref] TColStd_Array1OfReal T,
-//	// 	[Const] GeomAbs_Shape S
-//	// );
-//	// [Value] Handle_Adaptor3d_HSurface UTrim(
-//	// 	[Const] Standard_Real First,
-//	// 	[Const] Standard_Real Last,
-//	// 	[Const] Standard_Real Tol
-//	// );
-//	// [Value] Handle_Adaptor3d_HSurface VTrim(
-//	// 	[Const] Standard_Real First,
-//	// 	[Const] Standard_Real Last,
-//	// 	[Const] Standard_Real Tol
-//	// );
-//	Standard_Boolean IsUClosed();
-//	Standard_Boolean IsVClosed();
-//	Standard_Boolean IsUPeriodic();
-//	Standard_Real UPeriod();
-//	Standard_Boolean IsVPeriodic();
-//	Standard_Real VPeriod();
-//	[Value] gp_Pnt Value(
-//		[Const] Standard_Real U,
-//		[Const] Standard_Real V
-//	);
-//	void D0(
-//		[Const] Standard_Real U,
-//		[Const] Standard_Real V,
-//		[Ref] gp_Pnt P
-//	);
-//	void D1(
-//		[Const] Standard_Real U,
-//		[Const] Standard_Real V,
-//		[Ref] gp_Pnt P,
-//		[Ref] gp_Vec D1U,
-//		[Ref] gp_Vec D1V
-//	);
-//	void D2(
-//		[Const] Standard_Real U,
-//		[Const] Standard_Real V,
-//		[Ref] gp_Pnt P,
-//		[Ref] gp_Vec D1U,
-//		[Ref] gp_Vec D1V,
-//		[Ref] gp_Vec D2U,
-//		[Ref] gp_Vec D2V,
-//		[Ref] gp_Vec D2UV
-//	);
-//	void D3(
-//		[Const] Standard_Real U,
-//		[Const] Standard_Real V,
-//		[Ref] gp_Pnt P,
-//		[Ref] gp_Vec D1U,
-//		[Ref] gp_Vec D1V,
-//		[Ref] gp_Vec D2U,
-//		[Ref] gp_Vec D2V,
-//		[Ref] gp_Vec D2UV,
-//		[Ref] gp_Vec D3U,
-//		[Ref] gp_Vec D3V,
-//		[Ref] gp_Vec D3UUV,
-//		[Ref] gp_Vec D3UVV
-//	);
-//	[Value] gp_Vec DN(
-//		[Const] Standard_Real U,
-//		[Const] Standard_Real V,
-//		[Const] Standard_Integer Nu,
-//		[Const] Standard_Integer Nv
-//	);
-//	Standard_Real UResolution([Const] Standard_Real R3d);
-//	Standard_Real VResolution([Const] Standard_Real R3d);
-//	GeomAbs_SurfaceType GetType();
-//	[Value] gp_Pln Plane();
-//	// [Value] gp_Cylinder Cylinder();
-//	// [Value] gp_Cone Cone();
-//	// [Value] gp_Sphere Sphere();
-//	// [Value] gp_Torus Torus();
-//	Standard_Integer UDegree();
-//	Standard_Integer NbUPoles();
-//	Standard_Integer VDegree();
-//	Standard_Integer NbVPoles();
-//	Standard_Integer NbUKnots();
-//	Standard_Integer NbVKnots();
-//	Standard_Boolean IsURational();
-//	Standard_Boolean IsVRational();
-//	// [Value] Handle_Geom_BezierSurface Bezier();
-//	// [Value] Handle_Geom_BSplineSurface BSpline();
-//	[Value] gp_Ax1 AxeOfRevolution();
-//	[Value] gp_Dir Direction();
-//	// [Value] Handle_Adaptor3d_HCurve BasisCurve();
-//	// [Value] Handle_Adaptor3d_HSurface BasisSurface();
-//	Standard_Real OffsetValue();
-//};
+// Full interface
+// fd47711d682be943f0e0a13d1fb54911b0499c31
+interface BRepAdaptor_Surface {
+	void BRepAdaptor_Surface();
+	void BRepAdaptor_Surface(
+		[Const, Ref] TopoDS_Face F,
+		[Const] optional Standard_Boolean R = true
+	);
+	void Initialize(
+		[Const, Ref] TopoDS_Face F,
+		[Const] optional Standard_Boolean R = true
+	);
+	// [Ref] GeomAdaptor_Surface Surface();
+	// [Ref] GeomAdaptor_Surface ChangeSurface();
+	[Const, Ref] gp_Trsf Trsf();
+	[Const, Ref] TopoDS_Face Face();
+	Standard_Real Tolerance();
+	Standard_Real FirstUParameter();
+	Standard_Real LastUParameter();
+	Standard_Real FirstVParameter();
+	Standard_Real LastVParameter();
+	// [Value] GeomAbs_Shape UContinuity();
+	// [Value] GeomAbs_Shape VContinuity();
+	// Standard_Integer NbUIntervals([Const] GeomAbs_Shape S);
+	// Standard_Integer NbVIntervals([Const] GeomAbs_Shape S);
+	// void UIntervals(
+	// 	[Ref] TColStd_Array1OfReal T,
+	// 	[Const] GeomAbs_Shape S
+	// );
+	// void VIntervals(
+	// 	[Ref] TColStd_Array1OfReal T,
+	// 	[Const] GeomAbs_Shape S
+	// );
+	// [Value] Handle_Adaptor3d_HSurface UTrim(
+	// 	[Const] Standard_Real First,
+	// 	[Const] Standard_Real Last,
+	// 	[Const] Standard_Real Tol
+	// );
+	// [Value] Handle_Adaptor3d_HSurface VTrim(
+	// 	[Const] Standard_Real First,
+	// 	[Const] Standard_Real Last,
+	// 	[Const] Standard_Real Tol
+	// );
+	Standard_Boolean IsUClosed();
+	Standard_Boolean IsVClosed();
+	Standard_Boolean IsUPeriodic();
+	Standard_Real UPeriod();
+	Standard_Boolean IsVPeriodic();
+	Standard_Real VPeriod();
+	[Value] gp_Pnt Value(
+		[Const] Standard_Real U,
+		[Const] Standard_Real V
+	);
+	void D0(
+		[Const] Standard_Real U,
+		[Const] Standard_Real V,
+		[Ref] gp_Pnt P
+	);
+	void D1(
+		[Const] Standard_Real U,
+		[Const] Standard_Real V,
+		[Ref] gp_Pnt P,
+		[Ref] gp_Vec D1U,
+		[Ref] gp_Vec D1V
+	);
+	void D2(
+		[Const] Standard_Real U,
+		[Const] Standard_Real V,
+		[Ref] gp_Pnt P,
+		[Ref] gp_Vec D1U,
+		[Ref] gp_Vec D1V,
+		[Ref] gp_Vec D2U,
+		[Ref] gp_Vec D2V,
+		[Ref] gp_Vec D2UV
+	);
+	void D3(
+		[Const] Standard_Real U,
+		[Const] Standard_Real V,
+		[Ref] gp_Pnt P,
+		[Ref] gp_Vec D1U,
+		[Ref] gp_Vec D1V,
+		[Ref] gp_Vec D2U,
+		[Ref] gp_Vec D2V,
+		[Ref] gp_Vec D2UV,
+		[Ref] gp_Vec D3U,
+		[Ref] gp_Vec D3V,
+		[Ref] gp_Vec D3UUV,
+		[Ref] gp_Vec D3UVV
+	);
+	[Value] gp_Vec DN(
+		[Const] Standard_Real U,
+		[Const] Standard_Real V,
+		[Const] Standard_Integer Nu,
+		[Const] Standard_Integer Nv
+	);
+	Standard_Real UResolution([Const] Standard_Real R3d);
+	Standard_Real VResolution([Const] Standard_Real R3d);
+	GeomAbs_SurfaceType GetType();
+	[Value] gp_Pln Plane();
+	// [Value] gp_Cylinder Cylinder();
+	// [Value] gp_Cone Cone();
+	// [Value] gp_Sphere Sphere();
+	// [Value] gp_Torus Torus();
+	Standard_Integer UDegree();
+	Standard_Integer NbUPoles();
+	Standard_Integer VDegree();
+	Standard_Integer NbVPoles();
+	Standard_Integer NbUKnots();
+	Standard_Integer NbVKnots();
+	Standard_Boolean IsURational();
+	Standard_Boolean IsVRational();
+	// [Value] Handle_Geom_BezierSurface Bezier();
+	// [Value] Handle_Geom_BSplineSurface BSpline();
+	[Value] gp_Ax1 AxeOfRevolution();
+	[Value] gp_Dir Direction();
+	// [Value] Handle_Adaptor3d_HCurve BasisCurve();
+	// [Value] Handle_Adaptor3d_HSurface BasisSurface();
+	Standard_Real OffsetValue();
+};
 //
 // Full interface
 // fd47711d682be943f0e0a13d1fb54911b0499c31
@@ -3895,55 +3895,55 @@ interface ShapeUpgrade_UnifySameDomain {
 ShapeUpgrade_UnifySameDomain implements ShapeUpgrade_Tool;
 interface ShapeUpgrade_Tool{};
 //
-//interface gp_Lin{
-//	void gp_Lin();
-//	void gp_Lin([Const, Ref] gp_Ax1 A1);
-//};
-//
-//interface gp_Circ {
-//	void gp_Circ();
-//	void gp_Circ(
-//		[Const, Ref] gp_Ax2 A2,
-//		[Const] Standard_Real Radius
-//	);
-//	Standard_Real Radius();
-//	Standard_Real Length();
-//	Standard_Real Area();
-//};
-//
-//interface gp_Elips{
-//	void gp_Elips();
-//	void gp_Elips(
-//		[Const, Ref] gp_Ax2 A2,
-//		[Const] Standard_Real MajorRadius,
-//		[Const] Standard_Real MinorRadius
-//	);
-//	Standard_Real Eccentricity();
-//	Standard_Real Focal();
-//	Standard_Real Area();
-//	Standard_Real MajorRadius();
-//	Standard_Real MinorRadius();
-//};
-//interface gp_Hypr{
-//	void gp_Hypr();
-//	void gp_Hypr(
-//		[Const, Ref] gp_Ax2 A2,
-//		[Const] Standard_Real MajorRadius,
-//		[Const] Standard_Real MinorRadius
-//	);
-//	Standard_Real Eccentricity();
-//	Standard_Real Focal();
-//	Standard_Real MajorRadius();
-//	Standard_Real MinorRadius();
-//};
-//interface gp_Parab{
-//	void gp_Parab();
-//	void gp_Parab(
-//		[Const, Ref] gp_Ax2 A2,
-//		[Const] Standard_Real Focal
-//	);
-//	Standard_Real Focal();
-//};
+interface gp_Lin{
+	void gp_Lin();
+	void gp_Lin([Const, Ref] gp_Ax1 A1);
+};
+
+interface gp_Circ {
+	void gp_Circ();
+	void gp_Circ(
+		[Const, Ref] gp_Ax2 A2,
+		[Const] Standard_Real Radius
+	);
+	Standard_Real Radius();
+	Standard_Real Length();
+	Standard_Real Area();
+};
+
+interface gp_Elips{
+	void gp_Elips();
+	void gp_Elips(
+		[Const, Ref] gp_Ax2 A2,
+		[Const] Standard_Real MajorRadius,
+		[Const] Standard_Real MinorRadius
+	);
+	Standard_Real Eccentricity();
+	Standard_Real Focal();
+	Standard_Real Area();
+	Standard_Real MajorRadius();
+	Standard_Real MinorRadius();
+};
+interface gp_Hypr{
+	void gp_Hypr();
+	void gp_Hypr(
+		[Const, Ref] gp_Ax2 A2,
+		[Const] Standard_Real MajorRadius,
+		[Const] Standard_Real MinorRadius
+	);
+	Standard_Real Eccentricity();
+	Standard_Real Focal();
+	Standard_Real MajorRadius();
+	Standard_Real MinorRadius();
+};
+interface gp_Parab{
+	void gp_Parab();
+	void gp_Parab(
+		[Const, Ref] gp_Ax2 A2,
+		[Const] Standard_Real Focal
+	);
+	Standard_Real Focal();
+};
 //
 //interface BRepBuilderAPI_MakeEdge{
 //	void BRepBuilderAPI_MakeEdge([Const, Ref] Handle_Geom_Curve C);
