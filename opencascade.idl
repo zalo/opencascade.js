@@ -973,71 +973,71 @@ interface BRepMesh_IncrementalMesh{
 //	);
 //};
 //
-//interface gp_Vec{
-//	void gp_Vec(
-//		[Const]Standard_Real Xv,
-//		[Const]Standard_Real Yv,
-//		[Const]Standard_Real Zv
-//	);
-//	Standard_Real X();
-//	Standard_Real Y();
-//	Standard_Real Z();
-//};
-//
-//interface Geom_Circle{
-//	void Geom_Circle(
-//		[Const, Ref] gp_Circ C
-//	);
-//	void Geom_Circle(
-//		[Const, Ref] gp_Ax2 A2,
-//		[Const] Standard_Real Radius
-//	);
-//	Standard_Real Radius();
-//};
-//Geom_Circle implements Geom_Conic;
-//
-//interface Geom_Ellipse {
-//	void Geom_Ellipse(
-//		[Const, Ref] gp_Elips C
-//	);
-//	void Geom_Ellipse(
-//		[Const, Ref] gp_Ax2 A2,
-//		[Const] Standard_Real MajorRadius,
-//		[Const] Standard_Real MinorRadius
-//	);
-//	Standard_Real MajorRadius();
-//	Standard_Real MinorRadius();
-//};
-//Geom_Ellipse implements Geom_Conic;
-//
-//interface Geom_Hyperbola {
-//	void Geom_Hyperbola(
-//		[Const, Ref] gp_Hypr C
-//	);
-//	void Geom_Hyperbola(
-//		[Const, Ref] gp_Ax2 A2,
-//		[Const] Standard_Real MajorRadius,
-//		[Const] Standard_Real MinorRadius
-//	);
-//	Standard_Real MajorRadius();
-//	Standard_Real MinorRadius();
-//};
-//Geom_Hyperbola implements Geom_Conic;
-//
-//interface Geom_Parabola {
-//	void Geom_Parabola(
-//		[Const, Ref] gp_Parab C
-//	);
-//	void Geom_Parabola(
-//		[Const, Ref] gp_Ax2 A2,
-//		[Const] Standard_Real Focal
-//	);
-//	Standard_Real Focal();
-//};
-//Geom_Parabola implements Geom_Conic;
-//
-//interface Geom_Conic {};
-//Geom_Conic implements Geom_Curve;
+interface gp_Vec{
+	void gp_Vec(
+		[Const]Standard_Real Xv,
+		[Const]Standard_Real Yv,
+		[Const]Standard_Real Zv
+	);
+	Standard_Real X();
+	Standard_Real Y();
+	Standard_Real Z();
+};
+
+interface Geom_Circle{
+	void Geom_Circle(
+		[Const, Ref] gp_Circ C
+	);
+	void Geom_Circle(
+		[Const, Ref] gp_Ax2 A2,
+		[Const] Standard_Real Radius
+	);
+	Standard_Real Radius();
+};
+Geom_Circle implements Geom_Conic;
+
+interface Geom_Ellipse {
+	void Geom_Ellipse(
+		[Const, Ref] gp_Elips C
+	);
+	void Geom_Ellipse(
+		[Const, Ref] gp_Ax2 A2,
+		[Const] Standard_Real MajorRadius,
+		[Const] Standard_Real MinorRadius
+	);
+	Standard_Real MajorRadius();
+	Standard_Real MinorRadius();
+};
+Geom_Ellipse implements Geom_Conic;
+
+interface Geom_Hyperbola {
+	void Geom_Hyperbola(
+		[Const, Ref] gp_Hypr C
+	);
+	void Geom_Hyperbola(
+		[Const, Ref] gp_Ax2 A2,
+		[Const] Standard_Real MajorRadius,
+		[Const] Standard_Real MinorRadius
+	);
+	Standard_Real MajorRadius();
+	Standard_Real MinorRadius();
+};
+Geom_Hyperbola implements Geom_Conic;
+
+interface Geom_Parabola {
+	void Geom_Parabola(
+		[Const, Ref] gp_Parab C
+	);
+	void Geom_Parabola(
+		[Const, Ref] gp_Ax2 A2,
+		[Const] Standard_Real Focal
+	);
+	Standard_Real Focal();
+};
+Geom_Parabola implements Geom_Conic;
+
+interface Geom_Conic {};
+Geom_Conic implements Geom_Curve;
 //
 // Full interface
 // fd47711d682be943f0e0a13d1fb54911b0499c31
