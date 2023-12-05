@@ -4576,22 +4576,22 @@ interface BRepBuilderAPI_MakeSolid {
 //	);
 //};
 //
-//// Full interface
-//// fd47711d682be943f0e0a13d1fb54911b0499c31
-//interface Poly_PolygonOnTriangulation {
-//	void Poly_PolygonOnTriangulation([Const, Ref] TColStd_Array1OfInteger Nodes);
-//	void Poly_PolygonOnTriangulation(
-//		[Const, Ref] TColStd_Array1OfInteger Nodes,
-//		[Const, Ref] TColStd_Array1OfReal Parameters
-//	);
-//	// [Value] Handle_Poly_PolygonOnTriangulation Copy();
-//	// Standard_Real Deflection();
-//	void Deflection([Const] Standard_Real D);
-//	Standard_Integer NbNodes();
-//	[Const, Ref] TColStd_Array1OfInteger Nodes();
-//	Standard_Boolean HasParameters();
-//	// Handle_TColStd_HArray1OfReal Parameters();
-//};
+// Full interface
+// fd47711d682be943f0e0a13d1fb54911b0499c31
+interface Poly_PolygonOnTriangulation {
+	void Poly_PolygonOnTriangulation([Const, Ref] TColStd_Array1OfInteger Nodes);
+	void Poly_PolygonOnTriangulation(
+		[Const, Ref] TColStd_Array1OfInteger Nodes,
+		[Const, Ref] TColStd_Array1OfReal Parameters
+	);
+	// [Value] Handle_Poly_PolygonOnTriangulation Copy();
+	// Standard_Real Deflection();
+	void Deflection([Const] Standard_Real D);
+	Standard_Integer NbNodes();
+	[Const, Ref] TColStd_Array1OfInteger Nodes();
+	Standard_Boolean HasParameters();
+	// Handle_TColStd_HArray1OfReal Parameters();
+};
 //
 //interface BRepBuilderAPI_Copy{
 //  void BRepBuilderAPI_Copy();
