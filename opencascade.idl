@@ -2102,280 +2102,280 @@ interface GCPnts_TangentialDeflection{
 //	);
 //};
 //
-//// Full interface
-//// fd47711d682be943f0e0a13d1fb54911b0499c31
-//interface Geom_Curve{
-//	void Reverse();
-//	Standard_Real ReversedParameter([Const] Standard_Real U);
-//	Standard_Real TransformedParameter(
-//		[Const] Standard_Real U,
-//		[Const, Ref] gp_Trsf T
-//	);
-//	Standard_Real ParametricTransformation([Const, Ref] gp_Trsf T);
-//	[Value] Handle_Geom_Curve Reversed();
-//	Standard_Real FirstParameter();
-//	Standard_Real LastParameter();
-//	Standard_Boolean IsClosed();
-//	Standard_Boolean IsPeriodic();
-//	Standard_Real Period();
-//	// [Value] GeomAbs_Shape Continuity();
-//	Standard_Boolean IsCN([Const] Standard_Integer N);
-//	void D0(
-//		[Const] Standard_Real U,
-//		[Ref] gp_Pnt P
-//	);
-//	void D1(
-//		[Const] Standard_Real U,
-//		[Ref] gp_Pnt P,
-//		[Ref] gp_Vec V1
-//	);
-//	void D2(
-//		[Const] Standard_Real U,
-//		[Ref] gp_Pnt P,
-//		[Ref] gp_Vec V1,
-//		[Ref] gp_Vec V2
-//	);
-//	void D3(
-//		[Const] Standard_Real U,
-//		[Ref] gp_Pnt P,
-//		[Ref] gp_Vec V1,
-//		[Ref] gp_Vec V2,
-//		[Ref] gp_Vec V3
-//	);
-//	void DN(
-//		[Const] Standard_Real U,
-//		[Const] Standard_Integer N
-//	);
-//	[Value] gp_Pnt Value([Const] Standard_Real U);
-//};
-//
-//// Full interface
-//// fd47711d682be943f0e0a13d1fb54911b0499c31
-//interface BRep_Tool {
-//	static Standard_Boolean IsClosed([Const, Ref] TopoDS_Shape S);
-//	// [Const, Ref] static Handle_Geom_Surface Surface(
-//	// 	[Const, Ref] TopoDS_Face F,
-//	// 	[Ref] TopLoc_Location L
-//	// );
-//	[Value] Handle_Geom_Surface Surface([Const, Ref] TopoDS_Face F);
-//	[Const, Ref] static Handle_Poly_Triangulation Triangulation(
-//		[Const, Ref] TopoDS_Face F,
-//		[Ref] TopLoc_Location L
-//	);
-//	static Standard_Real Tolerance([Const, Ref] TopoDS_Face F);
-//	static Standard_Boolean NaturalRestriction([Const, Ref] TopoDS_Face F);
-//	static Standard_Boolean IsGeometric([Const, Ref] TopoDS_Edge E);
-//	[Const, Ref] static Handle_Geom_Curve Curve(
-//		[Const, Ref] TopoDS_Edge E,
-//		[Ref] TopLoc_Location L,
-//		Standard_Real First,
-//		Standard_Real Last
-//	);
-//	// [Value] static Handle_Geom_Curve Curve(
-//	// 	[Const, Ref] TopoDS_Edge E,
-//	// 	[Ref] Standard_Real First,
-//	// 	[Ref] Standard_Real Last
-//	// );
-//	[Const, Ref] static Handle_Poly_Polygon3D Polygon3D(
-//		[Const, Ref] TopoDS_Edge E,
-//		[Ref] TopLoc_Location L
-//	);
-//	// [Value] static Handle_Geom2d_Curve CurveOnSurface(
-//	// 	[Const, Ref] TopoDS_Edge E,
-//	// 	[Const, Ref] TopoDS_Face F,
-//	// 	[Ref] Standard_Real First,
-//	// 	[Ref] Standard_Real Last,
-//	// 	[Ref] Standard_Boolean theIsStored
-//	// );
-//	// [Value] static Handle_Geom2d_Curve CurveOnSurface(
-//	// 	[Const, Ref] TopoDS_Edge E,
-//	// 	[Const, Ref] Handle_Geom_Surface S,
-//	// 	[Const, Ref] TopLoc_Location L,
-//	// 	[Ref] Standard_Real First,
-//	// 	[Ref] Standard_Real Last,
-//	// 	[Ref] Standard_Boolean theIsStored
-//	// );
-//	// [Value] static Handle_Geom2d_Curve CurveOnPlane(
-//	// 	[Const, Ref] TopoDS_Edge E,
-//	// 	[Const, Ref] Handle_Geom_Surface S,
-//	// 	[Const, Ref] TopLoc_Location L,
-//	// 	[Ref] Standard_Real First,
-//	// 	[Ref] Standard_Real Last,
-//	// );
-//	// static void CurveOnSurface(
-//	// 	[Const, Ref] TopoDS_Edge E,
-//	// 	[Const, Ref] Handle_Geom2d_Curve C,
-//	// 	[Ref] Handle_Geom_Surface S,
-//	// 	[Ref] TopLoc_Location L,
-//	// 	[Ref] Standard_Real First,
-//	// 	[Ref] Standard_Real Last
-//	// );
-//	// static void CurveOnSurface(
-//	// 	[Const, Ref] TopoDS_Edge E,
-//	// 	[Const, Ref] Handle_Geom2d_Curve C,
-//	// 	[Ref] Handle_Geom_Surface S,
-//	// 	[Ref] TopLoc_Location L,
-//	// 	[Ref] Standard_Real First,
-//	// 	[Ref] Standard_Real Last,
-//	//	[Const] Standard_Integer Index
-//	// );
-//	// [Value] static Handle_Poly_Polygon2D PolygonOnSurface(
-//	// 	[Const, Ref] TopoDS_Edge E,
-//	// 	[Const, Ref] TopoDS_Face F
-//	// );
-//	// [Value] static Handle_Poly_Polygon2D PolygonOnSurface(
-//	// 	[Const, Ref] TopoDS_Edge E,
-//	// 	[Const, Ref] Handle_Geom_Surface S,
-//	//	[Const, Ref] TopLoc_Location L
-//	// );
-//	// static void PolygonOnSurface(
-//	// 	[Const, Ref] TopoDS_Edge E,
-//	// 	[Ref] Handle_Poly_Polygon2D C,
-//	// 	[Ref] Handle_Geom_Surface S,
-//	// 	[Ref] TopLoc_Location L
-//	// );
-//	// static void PolygonOnSurface(
-//	// 	[Const, Ref] TopoDS_Edge E,
-//	// 	[Ref] Handle_Poly_Polygon2D C,
-//	// 	[Ref] Handle_Geom_Surface S,
-//	// 	[Ref] TopLoc_Location L,
-//	// 	[Const] Standard_Integer Index
-//	// );
-//	[Const, Ref] static Handle_Poly_PolygonOnTriangulation PolygonOnTriangulation(
-//		[Const, Ref] TopoDS_Edge E,
-//		[Ref] Handle_Poly_Triangulation T,
-//		[Const, Ref] TopLoc_Location L
-//	);
-//	// [Const, Ref] Handle_Poly_PolygonOnTriangulation PolygonOnTriangulation(
-//	// 	[Const, Ref] TopoDS_Edge E,
-//	// 	[Ref] Handle_Poly_PolygonOnTriangulation P,
-//	// 	[Ref] Handle_Poly_Triangulation T,
-//	// 	[Const, Ref] TopLoc_Location L
-//	// );
-//	// [Const, Ref] Handle_Poly_PolygonOnTriangulation PolygonOnTriangulation(
-//	// 	[Const, Ref] TopoDS_Edge E,
-//	// 	[Ref] Handle_Poly_PolygonOnTriangulation P,
-//	// 	[Ref] Handle_Poly_Triangulation T,
-//	// 	[Const, Ref] TopLoc_Location L,
-//	// 	[Const] Standard_Integer Index
-//	// );
-//	static Standard_Boolean IsClosed(
-//		[Const, Ref] TopoDS_Edge E,
-//		[Const, Ref] TopoDS_Face F
-//	);
-//	// static Standard_Boolean IsClosed(
-//	// 	[Const, Ref] TopoDS_Edge E,
-//	// 	[Const, Ref] Handle_Geom_Surface S,
-//	// 	[Const, Ref] TopLoc_Location L
-//	// );
-//	static Standard_Boolean IsClosed(
-//		[Const, Ref] TopoDS_Edge E,
-//		[Const, Ref] Handle_Poly_Triangulation T,
-//		[Const, Ref] TopLoc_Location L
-//	);
-//	//static Standard_Real Tolerance([Const, Ref] TopoDS_Edge E);
-//	static Standard_Boolean SameParameter([Const, Ref] TopoDS_Edge E);
-//	static Standard_Boolean SameRange([Const, Ref] TopoDS_Edge E);
-//	static Standard_Boolean Degenerated([Const, Ref] TopoDS_Edge E);
-//	static void Range(
-//		[Const, Ref] TopoDS_Edge E,
-//		Standard_Real First,
-//		Standard_Real Last
-//	);
-//	// static void Range(
-//	// 	[Const, Ref] TopoDS_Edge E,
-//	// 	[Const, Ref] Handle_Geom_Surface S,
-//	// 	[Const, Ref] TopLoc_Location L,
-//	// 	Standard_Real First,
-//	// 	Standard_Real Last
-//	// );
-//	static void Range(
-//		[Const, Ref] TopoDS_Edge E,
-//		[Const, Ref] TopoDS_Face F,
-//		Standard_Real First,
-//		Standard_Real Last
-//	);
-//	// static void UVPoints(
-//	// 	[Const, Ref] TopoDS_Edge E,
-//	// 	[Const, Ref] Handle_Geom_Surface S,
-//	// 	[Const, Ref] TopLoc_Location L,
-//	// 	[Ref] gp_Pnt2d PFirst,
-//	// 	[Ref] gp_Pnt2d PLast
-//	// );
-//	static void UVPoints(
-//		[Const, Ref] TopoDS_Edge E,
-//		[Const, Ref] TopoDS_Face F,
-//		[Ref] gp_Pnt2d First,
-//		[Ref] gp_Pnt2d Last
-//	);
-//	// static void SetUVPoints(
-//	// 	[Const, Ref] TopoDS_Edge E,
-//	// 	[Const, Ref] Handle_Geom_Surface S,
-//	// 	[Const, Ref] TopLoc_Location L,
-//	// 	[Const, Ref] gp_Pnt2d PFirst,
-//	// 	[Const, Ref] gp_Pnt2d PLast
-//	// );
-//	static void SetUVPoints(
-//		[Const, Ref] TopoDS_Edge E,
-//		[Const, Ref] TopoDS_Face F,
-//		[Const, Ref] gp_Pnt2d PFirst,
-//		[Const, Ref] gp_Pnt2d PLast
-//	);
-//	static Standard_Boolean HasContinuity(
-//		[Const, Ref] TopoDS_Edge E,
-//		[Const, Ref] TopoDS_Face F1,
-//		[Const, Ref] TopoDS_Face F2
-//	);
-//	// [Value] static GeomAbs_Shape Continuity(
-//	// 	[Const, Ref] TopoDS_Edge E,
-//	// 	[Const, Ref] TopoDS_Face F1,
-//	// 	[Const, Ref] TopoDS_Face F2
-//	// );
-//	// static Standard_Boolean HasContinuity(
-//	// 	[Const, Ref] TopoDS_Edge E,
-//	// 	[Const, Ref] Handle_Geom_Surface S1,
-//	// 	[Const, Ref] Handle_Geom_Surface S2,
-//	// 	[Const, Ref] TopLoc_Location L1,
-//	// 	[Const, Ref] TopLoc_Location L2
-//	// );
-//	// [Value] static GeomAbs_Shape Continuity(
-//	// 	[Const, Ref] TopoDS_Edge E,
-//	// 	[Const, Ref] Handle_Geom_Surface S1,
-//	// 	[Const, Ref] Handle_Geom_Surface S2,
-//	// 	[Const, Ref] TopLoc_Location L1,
-//	// 	[Const, Ref] TopLoc_Location L2
-//	// );
-//	static Standard_Boolean HasContinuity([Const, Ref] TopoDS_Edge E);
-//	// [Value] static GeomAbs_Shape MaxContinuity([Const, Ref] TopoDS_Edge theEdge);
-//	// [Value] static gp_Pnt Pnt([Const, Ref] TopoDS_Vertex V);
-//	// static Standard_Real Tolerance([Const, Ref] TopoDS_Vertex V);
-//	static Standard_Real Parameter(
-//		[Const, Ref] TopoDS_Vertex V,
-//		[Const, Ref] TopoDS_Edge E
-//	);
-//	static Standard_Real Parameter(
-//		[Const, Ref] TopoDS_Vertex V,
-//		[Const, Ref] TopoDS_Edge E,
-//		[Const, Ref] TopoDS_Face F
-//	);
-//	// static Standard_Real Parameter(
-//	// 	[Const, Ref] TopoDS_Vertex V,
-//	// 	[Const, Ref] TopoDS_Edge E,
-//	// 	[Const, Ref] Handle_Geom_Surface S,
-//	// 	[Const, Ref] TopLoc_Location L
-//	// );
-//	[Value] static gp_Pnt Pnt(
-//		[Const, Ref] TopoDS_Vertex V
-//	);
-//	[Value] static gp_Pnt2d Parameters(
-//		[Const, Ref] TopoDS_Vertex V,
-//		[Const, Ref] TopoDS_Face F
-//	);
-//	static Standard_Real MaxTolerance(
-//		[Const, Ref] TopoDS_Shape theShape,
-//		[Const] TopAbs_ShapeEnum theSubShape
-//	);
-//};
+// Full interface
+// fd47711d682be943f0e0a13d1fb54911b0499c31
+interface Geom_Curve{
+	void Reverse();
+	Standard_Real ReversedParameter([Const] Standard_Real U);
+	Standard_Real TransformedParameter(
+		[Const] Standard_Real U,
+		[Const, Ref] gp_Trsf T
+	);
+	Standard_Real ParametricTransformation([Const, Ref] gp_Trsf T);
+	[Value] Handle_Geom_Curve Reversed();
+	Standard_Real FirstParameter();
+	Standard_Real LastParameter();
+	Standard_Boolean IsClosed();
+	Standard_Boolean IsPeriodic();
+	Standard_Real Period();
+	// [Value] GeomAbs_Shape Continuity();
+	Standard_Boolean IsCN([Const] Standard_Integer N);
+	void D0(
+		[Const] Standard_Real U,
+		[Ref] gp_Pnt P
+	);
+	void D1(
+		[Const] Standard_Real U,
+		[Ref] gp_Pnt P,
+		[Ref] gp_Vec V1
+	);
+	void D2(
+		[Const] Standard_Real U,
+		[Ref] gp_Pnt P,
+		[Ref] gp_Vec V1,
+		[Ref] gp_Vec V2
+	);
+	void D3(
+		[Const] Standard_Real U,
+		[Ref] gp_Pnt P,
+		[Ref] gp_Vec V1,
+		[Ref] gp_Vec V2,
+		[Ref] gp_Vec V3
+	);
+	void DN(
+		[Const] Standard_Real U,
+		[Const] Standard_Integer N
+	);
+	[Value] gp_Pnt Value([Const] Standard_Real U);
+};
+
+// Full interface
+// fd47711d682be943f0e0a13d1fb54911b0499c31
+interface BRep_Tool {
+	static Standard_Boolean IsClosed([Const, Ref] TopoDS_Shape S);
+	// [Const, Ref] static Handle_Geom_Surface Surface(
+	// 	[Const, Ref] TopoDS_Face F,
+	// 	[Ref] TopLoc_Location L
+	// );
+	[Value] Handle_Geom_Surface Surface([Const, Ref] TopoDS_Face F);
+	[Const, Ref] static Handle_Poly_Triangulation Triangulation(
+		[Const, Ref] TopoDS_Face F,
+		[Ref] TopLoc_Location L
+	);
+	static Standard_Real Tolerance([Const, Ref] TopoDS_Face F);
+	static Standard_Boolean NaturalRestriction([Const, Ref] TopoDS_Face F);
+	static Standard_Boolean IsGeometric([Const, Ref] TopoDS_Edge E);
+	[Const, Ref] static Handle_Geom_Curve Curve(
+		[Const, Ref] TopoDS_Edge E,
+		[Ref] TopLoc_Location L,
+		Standard_Real First,
+		Standard_Real Last
+	);
+	// [Value] static Handle_Geom_Curve Curve(
+	// 	[Const, Ref] TopoDS_Edge E,
+	// 	[Ref] Standard_Real First,
+	// 	[Ref] Standard_Real Last
+	// );
+	[Const, Ref] static Handle_Poly_Polygon3D Polygon3D(
+		[Const, Ref] TopoDS_Edge E,
+		[Ref] TopLoc_Location L
+	);
+	// [Value] static Handle_Geom2d_Curve CurveOnSurface(
+	// 	[Const, Ref] TopoDS_Edge E,
+	// 	[Const, Ref] TopoDS_Face F,
+	// 	[Ref] Standard_Real First,
+	// 	[Ref] Standard_Real Last,
+	// 	[Ref] Standard_Boolean theIsStored
+	// );
+	// [Value] static Handle_Geom2d_Curve CurveOnSurface(
+	// 	[Const, Ref] TopoDS_Edge E,
+	// 	[Const, Ref] Handle_Geom_Surface S,
+	// 	[Const, Ref] TopLoc_Location L,
+	// 	[Ref] Standard_Real First,
+	// 	[Ref] Standard_Real Last,
+	// 	[Ref] Standard_Boolean theIsStored
+	// );
+	// [Value] static Handle_Geom2d_Curve CurveOnPlane(
+	// 	[Const, Ref] TopoDS_Edge E,
+	// 	[Const, Ref] Handle_Geom_Surface S,
+	// 	[Const, Ref] TopLoc_Location L,
+	// 	[Ref] Standard_Real First,
+	// 	[Ref] Standard_Real Last,
+	// );
+	// static void CurveOnSurface(
+	// 	[Const, Ref] TopoDS_Edge E,
+	// 	[Const, Ref] Handle_Geom2d_Curve C,
+	// 	[Ref] Handle_Geom_Surface S,
+	// 	[Ref] TopLoc_Location L,
+	// 	[Ref] Standard_Real First,
+	// 	[Ref] Standard_Real Last
+	// );
+	// static void CurveOnSurface(
+	// 	[Const, Ref] TopoDS_Edge E,
+	// 	[Const, Ref] Handle_Geom2d_Curve C,
+	// 	[Ref] Handle_Geom_Surface S,
+	// 	[Ref] TopLoc_Location L,
+	// 	[Ref] Standard_Real First,
+	// 	[Ref] Standard_Real Last,
+	//	[Const] Standard_Integer Index
+	// );
+	// [Value] static Handle_Poly_Polygon2D PolygonOnSurface(
+	// 	[Const, Ref] TopoDS_Edge E,
+	// 	[Const, Ref] TopoDS_Face F
+	// );
+	// [Value] static Handle_Poly_Polygon2D PolygonOnSurface(
+	// 	[Const, Ref] TopoDS_Edge E,
+	// 	[Const, Ref] Handle_Geom_Surface S,
+	//	[Const, Ref] TopLoc_Location L
+	// );
+	// static void PolygonOnSurface(
+	// 	[Const, Ref] TopoDS_Edge E,
+	// 	[Ref] Handle_Poly_Polygon2D C,
+	// 	[Ref] Handle_Geom_Surface S,
+	// 	[Ref] TopLoc_Location L
+	// );
+	// static void PolygonOnSurface(
+	// 	[Const, Ref] TopoDS_Edge E,
+	// 	[Ref] Handle_Poly_Polygon2D C,
+	// 	[Ref] Handle_Geom_Surface S,
+	// 	[Ref] TopLoc_Location L,
+	// 	[Const] Standard_Integer Index
+	// );
+	[Const, Ref] static Handle_Poly_PolygonOnTriangulation PolygonOnTriangulation(
+		[Const, Ref] TopoDS_Edge E,
+		[Ref] Handle_Poly_Triangulation T,
+		[Const, Ref] TopLoc_Location L
+	);
+	// [Const, Ref] Handle_Poly_PolygonOnTriangulation PolygonOnTriangulation(
+	// 	[Const, Ref] TopoDS_Edge E,
+	// 	[Ref] Handle_Poly_PolygonOnTriangulation P,
+	// 	[Ref] Handle_Poly_Triangulation T,
+	// 	[Const, Ref] TopLoc_Location L
+	// );
+	// [Const, Ref] Handle_Poly_PolygonOnTriangulation PolygonOnTriangulation(
+	// 	[Const, Ref] TopoDS_Edge E,
+	// 	[Ref] Handle_Poly_PolygonOnTriangulation P,
+	// 	[Ref] Handle_Poly_Triangulation T,
+	// 	[Const, Ref] TopLoc_Location L,
+	// 	[Const] Standard_Integer Index
+	// );
+	static Standard_Boolean IsClosed(
+		[Const, Ref] TopoDS_Edge E,
+		[Const, Ref] TopoDS_Face F
+	);
+	// static Standard_Boolean IsClosed(
+	// 	[Const, Ref] TopoDS_Edge E,
+	// 	[Const, Ref] Handle_Geom_Surface S,
+	// 	[Const, Ref] TopLoc_Location L
+	// );
+	static Standard_Boolean IsClosed(
+		[Const, Ref] TopoDS_Edge E,
+		[Const, Ref] Handle_Poly_Triangulation T,
+		[Const, Ref] TopLoc_Location L
+	);
+	//static Standard_Real Tolerance([Const, Ref] TopoDS_Edge E);
+	static Standard_Boolean SameParameter([Const, Ref] TopoDS_Edge E);
+	static Standard_Boolean SameRange([Const, Ref] TopoDS_Edge E);
+	static Standard_Boolean Degenerated([Const, Ref] TopoDS_Edge E);
+	static void Range(
+		[Const, Ref] TopoDS_Edge E,
+		Standard_Real First,
+		Standard_Real Last
+	);
+	// static void Range(
+	// 	[Const, Ref] TopoDS_Edge E,
+	// 	[Const, Ref] Handle_Geom_Surface S,
+	// 	[Const, Ref] TopLoc_Location L,
+	// 	Standard_Real First,
+	// 	Standard_Real Last
+	// );
+	static void Range(
+		[Const, Ref] TopoDS_Edge E,
+		[Const, Ref] TopoDS_Face F,
+		Standard_Real First,
+		Standard_Real Last
+	);
+	// static void UVPoints(
+	// 	[Const, Ref] TopoDS_Edge E,
+	// 	[Const, Ref] Handle_Geom_Surface S,
+	// 	[Const, Ref] TopLoc_Location L,
+	// 	[Ref] gp_Pnt2d PFirst,
+	// 	[Ref] gp_Pnt2d PLast
+	// );
+	static void UVPoints(
+		[Const, Ref] TopoDS_Edge E,
+		[Const, Ref] TopoDS_Face F,
+		[Ref] gp_Pnt2d First,
+		[Ref] gp_Pnt2d Last
+	);
+	// static void SetUVPoints(
+	// 	[Const, Ref] TopoDS_Edge E,
+	// 	[Const, Ref] Handle_Geom_Surface S,
+	// 	[Const, Ref] TopLoc_Location L,
+	// 	[Const, Ref] gp_Pnt2d PFirst,
+	// 	[Const, Ref] gp_Pnt2d PLast
+	// );
+	static void SetUVPoints(
+		[Const, Ref] TopoDS_Edge E,
+		[Const, Ref] TopoDS_Face F,
+		[Const, Ref] gp_Pnt2d PFirst,
+		[Const, Ref] gp_Pnt2d PLast
+	);
+	static Standard_Boolean HasContinuity(
+		[Const, Ref] TopoDS_Edge E,
+		[Const, Ref] TopoDS_Face F1,
+		[Const, Ref] TopoDS_Face F2
+	);
+	// [Value] static GeomAbs_Shape Continuity(
+	// 	[Const, Ref] TopoDS_Edge E,
+	// 	[Const, Ref] TopoDS_Face F1,
+	// 	[Const, Ref] TopoDS_Face F2
+	// );
+	// static Standard_Boolean HasContinuity(
+	// 	[Const, Ref] TopoDS_Edge E,
+	// 	[Const, Ref] Handle_Geom_Surface S1,
+	// 	[Const, Ref] Handle_Geom_Surface S2,
+	// 	[Const, Ref] TopLoc_Location L1,
+	// 	[Const, Ref] TopLoc_Location L2
+	// );
+	// [Value] static GeomAbs_Shape Continuity(
+	// 	[Const, Ref] TopoDS_Edge E,
+	// 	[Const, Ref] Handle_Geom_Surface S1,
+	// 	[Const, Ref] Handle_Geom_Surface S2,
+	// 	[Const, Ref] TopLoc_Location L1,
+	// 	[Const, Ref] TopLoc_Location L2
+	// );
+	static Standard_Boolean HasContinuity([Const, Ref] TopoDS_Edge E);
+	// [Value] static GeomAbs_Shape MaxContinuity([Const, Ref] TopoDS_Edge theEdge);
+	// [Value] static gp_Pnt Pnt([Const, Ref] TopoDS_Vertex V);
+	// static Standard_Real Tolerance([Const, Ref] TopoDS_Vertex V);
+	static Standard_Real Parameter(
+		[Const, Ref] TopoDS_Vertex V,
+		[Const, Ref] TopoDS_Edge E
+	);
+	static Standard_Real Parameter(
+		[Const, Ref] TopoDS_Vertex V,
+		[Const, Ref] TopoDS_Edge E,
+		[Const, Ref] TopoDS_Face F
+	);
+	// static Standard_Real Parameter(
+	// 	[Const, Ref] TopoDS_Vertex V,
+	// 	[Const, Ref] TopoDS_Edge E,
+	// 	[Const, Ref] Handle_Geom_Surface S,
+	// 	[Const, Ref] TopLoc_Location L
+	// );
+	[Value] static gp_Pnt Pnt(
+		[Const, Ref] TopoDS_Vertex V
+	);
+	[Value] static gp_Pnt2d Parameters(
+		[Const, Ref] TopoDS_Vertex V,
+		[Const, Ref] TopoDS_Face F
+	);
+	static Standard_Real MaxTolerance(
+		[Const, Ref] TopoDS_Shape theShape,
+		[Const] TopAbs_ShapeEnum theSubShape
+	);
+};
 //
 interface BRepTools {
 	static void AddUVBounds(
@@ -2614,156 +2614,156 @@ interface BRepTools {
 //};
 //Geom_BSplineCurve implements Geom_Curve;
 //
-//interface Standard_Transient {
-//	[Const] DOMString get_type_name();
-//	[Const, Ref] Handle_Standard_Type DynamicType();
-//};
+interface Standard_Transient {
+	[Const] DOMString get_type_name();
+	[Const, Ref] Handle_Standard_Type DynamicType();
+};
+
+interface Standard_Type {
+	[Const] DOMString Name();
+};
+Standard_Type implements Standard_Transient;
+
+interface Geom_Geometry {
+};
+Geom_Geometry implements Standard_Transient;
 //
-//interface Standard_Type {
-//	[Const] DOMString Name();
-//};
-//Standard_Type implements Standard_Transient;
+interface Geom_Surface {
+	[Value] Handle_Geom_Curve UIso([Const] Standard_Real U);
+	[Value] Handle_Geom_Curve VIso([Const] Standard_Real V);
+	Standard_Boolean IsCNu([Const] Standard_Integer N);
+	Standard_Boolean IsCNv([Const] Standard_Integer N);
+	Standard_Boolean IsUClosed();
+	Standard_Boolean IsVClosed();
+	Standard_Boolean IsUPeriodic();
+	Standard_Boolean IsVPeriodic();
+	Standard_Real UPeriod();
+	Standard_Real VPeriod();
+	[Value] gp_Pnt Value([Const] Standard_Real U, [Const] Standard_Real V);
+	/*void D0(
+		[Const] Standard_Real U,
+		[Const] Standard_Real V,
+		[Ref] gp_Pnt P
+	);
+	void D1(
+		[Const] Standard_Real U,
+		[Const] Standard_Real V,
+		[Ref] gp_Pnt P,
+		[Ref] gp_Vec V1,
+		[Ref] gp_Vec V2
+	);
+	void D2(
+		[Const] Standard_Real U,
+		[Const] Standard_Real V,
+		[Ref] gp_Pnt P,
+		[Ref] gp_Vec D1U,
+		[Ref] gp_Vec D1V,
+		[Ref] gp_Vec D1U,
+		[Ref] gp_Vec D1V,
+		[Ref] gp_Vec D2UV
+	);
+	void D3(
+		[Const] Standard_Real U,
+		[Const] Standard_Real V,
+		[Ref] gp_Pnt P,
+		[Ref] gp_Vec D1U, 
+		[Ref] gp_Vec D1V, 
+		[Ref] gp_Vec D2U, 
+		[Ref] gp_Vec D2V, 
+		[Ref] gp_Vec D2UV, 
+		[Ref] gp_Vec D3U, 
+		[Ref] gp_Vec D3V, 
+		[Ref] gp_Vec D3UUV, 
+		[Ref] gp_Vec D3UVV
+	);
+	[Value] gp_Vec DN(
+		[Const] Standard_Real U,
+		[Const] Standard_Real V,
+		[Const] Standard_Integer Nu,
+		[Const] Standard_Integer Nv
+	);*/
+};
+Geom_Surface implements Geom_Geometry;
+
+interface Geom_ElementarySurface {
+	[Value] gp_Pnt Location();
+};
+Geom_ElementarySurface implements Geom_Surface;
 //
-//interface Geom_Geometry {
-//};
-//Geom_Geometry implements Standard_Transient;
-//
-//interface Geom_Surface {
-//	[Value] Handle_Geom_Curve UIso([Const] Standard_Real U);
-//	[Value] Handle_Geom_Curve VIso([Const] Standard_Real V);
-//	Standard_Boolean IsCNu([Const] Standard_Integer N);
-//	Standard_Boolean IsCNv([Const] Standard_Integer N);
-//	Standard_Boolean IsUClosed();
-//	Standard_Boolean IsVClosed();
-//	Standard_Boolean IsUPeriodic();
-//	Standard_Boolean IsVPeriodic();
-//	Standard_Real UPeriod();
-//	Standard_Real VPeriod();
-//	[Value] gp_Pnt Value([Const] Standard_Real U, [Const] Standard_Real V);
-//	/*void D0(
-//		[Const] Standard_Real U,
-//		[Const] Standard_Real V,
-//		[Ref] gp_Pnt P
-//	);
-//	void D1(
-//		[Const] Standard_Real U,
-//		[Const] Standard_Real V,
-//		[Ref] gp_Pnt P,
-//		[Ref] gp_Vec V1,
-//		[Ref] gp_Vec V2
-//	);
-//	void D2(
-//		[Const] Standard_Real U,
-//		[Const] Standard_Real V,
-//		[Ref] gp_Pnt P,
-//		[Ref] gp_Vec D1U,
-//		[Ref] gp_Vec D1V,
-//		[Ref] gp_Vec D1U,
-//		[Ref] gp_Vec D1V,
-//		[Ref] gp_Vec D2UV
-//	);
-//	void D3(
-//		[Const] Standard_Real U,
-//		[Const] Standard_Real V,
-//		[Ref] gp_Pnt P,
-//		[Ref] gp_Vec D1U, 
-//		[Ref] gp_Vec D1V, 
-//		[Ref] gp_Vec D2U, 
-//		[Ref] gp_Vec D2V, 
-//		[Ref] gp_Vec D2UV, 
-//		[Ref] gp_Vec D3U, 
-//		[Ref] gp_Vec D3V, 
-//		[Ref] gp_Vec D3UUV, 
-//		[Ref] gp_Vec D3UVV
-//	);
-//	[Value] gp_Vec DN(
-//		[Const] Standard_Real U,
-//		[Const] Standard_Real V,
-//		[Const] Standard_Integer Nu,
-//		[Const] Standard_Integer Nv
-//	);*/
-//};
-//Geom_Surface implements Geom_Geometry;
-//
-//interface Geom_ElementarySurface {
-//	[Value] gp_Pnt Location();
-//};
-//Geom_ElementarySurface implements Geom_Surface;
-//
-//interface Geom_Plane {
-//};
-//Geom_Plane implements Geom_ElementarySurface;
-//
-//interface gp_Ax3 {
-//	void gp_Ax3();
-//	[Const, Ref] gp_Dir Direction();
-//	[Const, Ref] gp_Pnt Location();
-//	[Const, Ref] gp_Dir XDirection();
-//	[Const, Ref] gp_Dir YDirection();
-//	[Const, Ref] gp_Ax1 Axis();
-//	[Value] gp_Ax2 Ax2();
-//};
-//
-//interface gp_Pnt2d {
-//	void gp_Pnt2d();
-//	// void gp_Pnt2d([Const, Ref] gp_XY Coord);
-//	void gp_Pnt2d(
-//		[Const] Standard_Real Xp,
-//		[Const] Standard_Real Yp
-//	);
-//	Standard_Real X();
-//	Standard_Real Y();
-//};
-//
-//interface gp_Dir2d {
-//	void gp_Dir2d();
-//	// void gp_Dir2d([Const, Ref] gp_Vec2d V);
-//	// void gp_Dir2d([Const, Ref] gp_XY Coord);
-//	void gp_Dir2d(
-//		[Const] Standard_Real Xv,
-//		[Const] Standard_Real Yv
-//	);
-//};
-//
-//interface gp_Vec2d {
-//	void gp_Vec2d();
-//	// void gp_Dir2d([Const, Ref] gp_Vec2d V);
-//	// void gp_Dir2d([Const, Ref] gp_XY Coord);
-//	void gp_Vec2d(
-//		[Const] Standard_Real Xv,
-//		[Const] Standard_Real Yv
-//	);
-//	Standard_Real X();
-//	Standard_Real Y();
-//};
-//
-//interface gp_Ax2d {
-//	void gp_Ax2d();
-//	void gp_Ax2d(
-//		[Const, Ref] gp_Pnt2d P,
-//		[Const, Ref] gp_Dir2d V
-//	);
-//};
-//
-//interface Geom_CylindricalSurface {
-//	void Geom_CylindricalSurface(
-//		[Const, Ref] gp_Ax3 A3,
-//		[Const] Standard_Real Radius
-//	);
-//};
-//
-//interface Geom2d_Curve {
-//	Standard_Real Period();
-//	[Value] gp_Pnt2d Value([Const] Standard_Real U);
-//};
-//
-//interface Geom2d_BoundedCurve {
-//};
-//Geom2d_BoundedCurve implements Geom2d_Curve;
-//
-//interface Geom2d_Conic {
-//};
-//Geom2d_Conic implements Geom2d_Curve;
+interface Geom_Plane {
+};
+Geom_Plane implements Geom_ElementarySurface;
+
+interface gp_Ax3 {
+	void gp_Ax3();
+	[Const, Ref] gp_Dir Direction();
+	[Const, Ref] gp_Pnt Location();
+	[Const, Ref] gp_Dir XDirection();
+	[Const, Ref] gp_Dir YDirection();
+	[Const, Ref] gp_Ax1 Axis();
+	[Value] gp_Ax2 Ax2();
+};
+
+interface gp_Pnt2d {
+	void gp_Pnt2d();
+	// void gp_Pnt2d([Const, Ref] gp_XY Coord);
+	void gp_Pnt2d(
+		[Const] Standard_Real Xp,
+		[Const] Standard_Real Yp
+	);
+	Standard_Real X();
+	Standard_Real Y();
+};
+
+interface gp_Dir2d {
+	void gp_Dir2d();
+	// void gp_Dir2d([Const, Ref] gp_Vec2d V);
+	// void gp_Dir2d([Const, Ref] gp_XY Coord);
+	void gp_Dir2d(
+		[Const] Standard_Real Xv,
+		[Const] Standard_Real Yv
+	);
+};
+
+interface gp_Vec2d {
+	void gp_Vec2d();
+	// void gp_Dir2d([Const, Ref] gp_Vec2d V);
+	// void gp_Dir2d([Const, Ref] gp_XY Coord);
+	void gp_Vec2d(
+		[Const] Standard_Real Xv,
+		[Const] Standard_Real Yv
+	);
+	Standard_Real X();
+	Standard_Real Y();
+};
+
+interface gp_Ax2d {
+	void gp_Ax2d();
+	void gp_Ax2d(
+		[Const, Ref] gp_Pnt2d P,
+		[Const, Ref] gp_Dir2d V
+	);
+};
+
+interface Geom_CylindricalSurface {
+	void Geom_CylindricalSurface(
+		[Const, Ref] gp_Ax3 A3,
+		[Const] Standard_Real Radius
+	);
+};
+
+interface Geom2d_Curve {
+	Standard_Real Period();
+	[Value] gp_Pnt2d Value([Const] Standard_Real U);
+};
+
+interface Geom2d_BoundedCurve {
+};
+Geom2d_BoundedCurve implements Geom2d_Curve;
+
+interface Geom2d_Conic {
+};
+Geom2d_Conic implements Geom2d_Curve;
 //
 //// Full interface
 //// fd47711d682be943f0e0a13d1fb54911b0499c31
