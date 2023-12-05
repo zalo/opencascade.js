@@ -2936,13 +2936,13 @@ interface Handle_Transfer_TransientProcess {
 	Transfer_TransientProcess get();
 };
 //
-//interface Handle_Message_ProgressIndicator {
-//	void Handle_Message_ProgressIndicator();
-//	void Handle_Message_ProgressIndicator(Message_ProgressIndicator thePtr);
-//	boolean IsNull();
-//	void Nullify();
-//	Message_ProgressIndicator get();
-//};
+interface Handle_Message_ProgressIndicator {
+	void Handle_Message_ProgressIndicator();
+	void Handle_Message_ProgressIndicator(Message_ProgressIndicator thePtr);
+	boolean IsNull();
+	void Nullify();
+	Message_ProgressIndicator get();
+};
 //
 interface TColgp_Array1OfPnt {
 	void TColgp_Array1OfPnt();
@@ -3044,104 +3044,104 @@ interface TColStd_Array1OfInteger {
 	);
 };
 
-//// Full interface
-//// fd47711d682be943f0e0a13d1fb54911b0499c31
-//interface XSControl_WorkSession {
-//	void XSControl_WorkSession();
-//	void ClearData([Const] Standard_Integer theMode);
-//	Standard_Boolean SelectNorm([Const] Standard_CString theNormName);
-//	// void SetController([Const, Ref] Handle_XSControl_Controller theCtl);
-//	// Standard_CString SelectedNorm([Const] optional Standard_Boolean theRsc = false);
-//	// Handle_XSControl_Controller NormAdaptor();
-//	// [Const, Ref] NCollection_DataMap<TCollection_AsciiString, Handle(Standard_Transient)> Context() const
-//	// void SetAllContext (const NCollection_DataMap<TCollection_AsciiString, [Const, Ref] Handle(Standard_Transient)> theContext);
-//	void ClearContext();
-//	// Standard_Boolean PrintTransferStatus(
-//	// 	[Const] Standard_Integer theNum,
-//	// 	[Const] Standard_Boolean theWri,
-//	// 	[Const, Ref] Handle_Message_Messenger theS
-//	// );
-//	void InitTransferReader([Const] Standard_Integer theMode);
-//	// void SetTransferReader([Const, Ref] Handle_XSControl_TransferReader theTR);
-//	// [Const, Ref] Handle_XSControl_TransferReader TransferReader();
-//	[Value] Handle_Transfer_TransientProcess MapReader();
-//	Standard_Boolean SetMapReader([Const, Ref] Handle_Transfer_TransientProcess theTP);
-//	// [Value] Handle_Standard_Transient Result(
-//	// 	[Const, Ref] Handle_Standard_Transient,
-//	// 	[Const] Standard_Integer theMode
-//	// );
-//	// Standard_Integer TransferReadOne([Const, Ref] Handle_Standard_Transient theEnts);
-//	Standard_Integer TransferReadRoots();
-//	// [Value] Handle_Interface_InterfaceModel NewModel();
-//	// [Const, Ref] Handle_XSControl_TransferWriter TransferWriter();
-//	// Standard_Boolean SetMapWriter([Const, Ref] Handle_Transfer_FinderProcess theFP);
-//	IFSelect_ReturnStatus TransferWriteShape(
-//		[Const, Ref] TopoDS_Shape theShape,
-//		[Const] optional Standard_Boolean theCompGraph = true
-//	);
-//	// [Value] Interface_CheckIterator TransferWriteCheckList();
-//	// [Ref] Handle_XSControl_Vars Vars();
-//	// void SetVars([Const, Ref] Handle_XSControl_Vars theVars);
-//};
-//
-//// Full interface
-//// fd47711d682be943f0e0a13d1fb54911b0499c31
-//interface Transfer_ProcessForTransient {
-//	void Transfer_ProcessForTransient();
-//	[Value] Handle_Message_ProgressIndicator GetProgress();
-//	void SetProgress([Const, Ref] Handle_Message_ProgressIndicator theProgess);
-//};
-//
-//// Full interface
-//// fd47711d682be943f0e0a13d1fb54911b0499c31
-//interface Transfer_TransientProcess {
-//	void Transfer_TransientProcess([Const] optional Standard_Integer nb = 10000);
-//	// void SetModel([Const, Ref] Handle_Interface_InterfaceModel model);
-//	// [Value] Handle_Interface_InterfaceModel Model();
-//	// void SetGraph([Const, Ref] Handle_Interface_HGraph HG);
-//	Standard_Boolean HasGraph();
-//	// [Value] Handle_Interface_HGraph HGraph();
-//	// [Const, Ref] Interface_Graph Graph();
-//	// void SetContext(
-//	// 	[Const] Standard_CString name,
-//	// 	[Const, Ref] Handle_Standard_Transient ctx
-//	// );
-//	// Standard_Boolean GetContext(
-//	// 	[Const] Standard_CString name,
-//	// 	[Const, Ref] Handle_Standard_Type type,
-//	// 	[Ref] Handle_Standard_Transient ctx
-//	// );
-//	// NCollection_DataMap<TCollection_AsciiString, [Const, Ref] Handle(Standard_Transient)> Context();
-//	// void PrintTrace(
-//	// 	[Const, Ref] Handle_Standard_Transient start,
-//	// 	[Const, Ref] Handle_Message_Messenger S
-//	// );
-//	// Standard_Integer CheckNum([Const, Ref] Handle_Standard_Transient);
-//	// [Value] Interface_EntityIterator TypedSharings(
-//	// 	[Const, Ref] Handle_Standard_Transient start,
-//	// 	[Const, Ref] Handle_Standard_Type type
-//	// );
-//	// Standard_Boolean IsDataLoaded([Const, Ref] Handle_Standard_Transient ent);
-//	// Standard_Boolean IsDataFail([Const, Ref] Handle_Standard_Transient ent);
-//	// void PrintStats(
-//	// 	[Const] Standard_Integer mode,
-//	// 	[Const, Ref] Handle_Message_Messenger S
-//	// );
-//	// [Value] Handle_TColStd_HSequenceOTransient RootsForTransfer();
-//};
-//Transfer_TransientProcess implements Transfer_ProcessForTransient;
-//
-//interface Message_ProgressIndicator {
-//	Standard_Real GetPosition();
-//	Standard_Real GetValue();
-//	Standard_Boolean NewScope([Const] Standard_CString name);
-//	Standard_Boolean NewScope(
-//		[Const] Standard_Real span,
-//		[Const] Standard_CString name
-//	);
-//	Standard_Boolean EndScope();
-//	void Reset();
-//};
+// Full interface
+// fd47711d682be943f0e0a13d1fb54911b0499c31
+interface XSControl_WorkSession {
+	void XSControl_WorkSession();
+	void ClearData([Const] Standard_Integer theMode);
+	Standard_Boolean SelectNorm([Const] Standard_CString theNormName);
+	// void SetController([Const, Ref] Handle_XSControl_Controller theCtl);
+	// Standard_CString SelectedNorm([Const] optional Standard_Boolean theRsc = false);
+	// Handle_XSControl_Controller NormAdaptor();
+	// [Const, Ref] NCollection_DataMap<TCollection_AsciiString, Handle(Standard_Transient)> Context() const
+	// void SetAllContext (const NCollection_DataMap<TCollection_AsciiString, [Const, Ref] Handle(Standard_Transient)> theContext);
+	void ClearContext();
+	// Standard_Boolean PrintTransferStatus(
+	// 	[Const] Standard_Integer theNum,
+	// 	[Const] Standard_Boolean theWri,
+	// 	[Const, Ref] Handle_Message_Messenger theS
+	// );
+	void InitTransferReader([Const] Standard_Integer theMode);
+	// void SetTransferReader([Const, Ref] Handle_XSControl_TransferReader theTR);
+	// [Const, Ref] Handle_XSControl_TransferReader TransferReader();
+	[Value] Handle_Transfer_TransientProcess MapReader();
+	Standard_Boolean SetMapReader([Const, Ref] Handle_Transfer_TransientProcess theTP);
+	// [Value] Handle_Standard_Transient Result(
+	// 	[Const, Ref] Handle_Standard_Transient,
+	// 	[Const] Standard_Integer theMode
+	// );
+	// Standard_Integer TransferReadOne([Const, Ref] Handle_Standard_Transient theEnts);
+	Standard_Integer TransferReadRoots();
+	// [Value] Handle_Interface_InterfaceModel NewModel();
+	// [Const, Ref] Handle_XSControl_TransferWriter TransferWriter();
+	// Standard_Boolean SetMapWriter([Const, Ref] Handle_Transfer_FinderProcess theFP);
+	IFSelect_ReturnStatus TransferWriteShape(
+		[Const, Ref] TopoDS_Shape theShape,
+		[Const] optional Standard_Boolean theCompGraph = true
+	);
+	// [Value] Interface_CheckIterator TransferWriteCheckList();
+	// [Ref] Handle_XSControl_Vars Vars();
+	// void SetVars([Const, Ref] Handle_XSControl_Vars theVars);
+};
+
+// Full interface
+// fd47711d682be943f0e0a13d1fb54911b0499c31
+interface Transfer_ProcessForTransient {
+	void Transfer_ProcessForTransient();
+	[Value] Handle_Message_ProgressIndicator GetProgress();
+	void SetProgress([Const, Ref] Handle_Message_ProgressIndicator theProgess);
+};
+
+// Full interface
+// fd47711d682be943f0e0a13d1fb54911b0499c31
+interface Transfer_TransientProcess {
+	void Transfer_TransientProcess([Const] optional Standard_Integer nb = 10000);
+	// void SetModel([Const, Ref] Handle_Interface_InterfaceModel model);
+	// [Value] Handle_Interface_InterfaceModel Model();
+	// void SetGraph([Const, Ref] Handle_Interface_HGraph HG);
+	Standard_Boolean HasGraph();
+	// [Value] Handle_Interface_HGraph HGraph();
+	// [Const, Ref] Interface_Graph Graph();
+	// void SetContext(
+	// 	[Const] Standard_CString name,
+	// 	[Const, Ref] Handle_Standard_Transient ctx
+	// );
+	// Standard_Boolean GetContext(
+	// 	[Const] Standard_CString name,
+	// 	[Const, Ref] Handle_Standard_Type type,
+	// 	[Ref] Handle_Standard_Transient ctx
+	// );
+	// NCollection_DataMap<TCollection_AsciiString, [Const, Ref] Handle(Standard_Transient)> Context();
+	// void PrintTrace(
+	// 	[Const, Ref] Handle_Standard_Transient start,
+	// 	[Const, Ref] Handle_Message_Messenger S
+	// );
+	// Standard_Integer CheckNum([Const, Ref] Handle_Standard_Transient);
+	// [Value] Interface_EntityIterator TypedSharings(
+	// 	[Const, Ref] Handle_Standard_Transient start,
+	// 	[Const, Ref] Handle_Standard_Type type
+	// );
+	// Standard_Boolean IsDataLoaded([Const, Ref] Handle_Standard_Transient ent);
+	// Standard_Boolean IsDataFail([Const, Ref] Handle_Standard_Transient ent);
+	// void PrintStats(
+	// 	[Const] Standard_Integer mode,
+	// 	[Const, Ref] Handle_Message_Messenger S
+	// );
+	// [Value] Handle_TColStd_HSequenceOTransient RootsForTransfer();
+};
+Transfer_TransientProcess implements Transfer_ProcessForTransient;
+
+interface Message_ProgressIndicator {
+	Standard_Real GetPosition();
+	Standard_Real GetValue();
+	Standard_Boolean NewScope([Const] Standard_CString name);
+	Standard_Boolean NewScope(
+		[Const] Standard_Real span,
+		[Const] Standard_CString name
+	);
+	Standard_Boolean EndScope();
+	void Reset();
+};
 //
 // Full interface
 // fd47711d682be943f0e0a13d1fb54911b0499c31
