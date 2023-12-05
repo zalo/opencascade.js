@@ -2445,174 +2445,174 @@ interface BRepTools {
 //};
 //Geom2d_TrimmedCurve implements Geom2d_BoundedCurve;
 //
-//// Full interface
-//// fd47711d682be943f0e0a13d1fb54911b0499c31
-//interface Geom_TrimmedCurve {
-//	void Geom_TrimmedCurve(
-//		[Const, Ref] Handle_Geom_Curve C,
-//		[Const] Standard_Real U1,
-//		[Const] Standard_Real U2,
-//		[Const] optional Standard_Boolean Sense = true,
-//		[Const] optional Standard_Boolean theAdjustPeriodic = true
-//	);
-//	void Reverse();
-//	Standard_Real ReversedParameter([Const] Standard_Real U);
-//	void SetTrim(
-//		[Const] Standard_Real U1,
-//		[Const] Standard_Real U2,
-//		[Const] optional Standard_Boolean Sense = true,
-//		[Const] optional Standard_Boolean theAdjust = true
-//	);
-//	[Value] Handle_Geom_Curve BasisCurve();
-//	// [Value] GeomAbs_Shape Continuity();
-//	Standard_Boolean IsCN([Const] Standard_Integer N);
-//	Standard_Real FirstParameter();
-//	Standard_Boolean IsClosed();
-//	Standard_Boolean IsPeriodic();
-//	Standard_Real Period();
-//	Standard_Real LastParameter();
-//	[Value] gp_Pnt StartPoint();
-//	void D0(
-//		[Const] Standard_Real U,
-//		[Ref] gp_Pnt P
-//	);
-//	void D1(
-//		[Const] Standard_Real U,
-//		[Ref] gp_Pnt P,
-//		[Ref] gp_Vec V1
-//	);
-//	void D2(
-//		[Const] Standard_Real U,
-//		[Ref] gp_Pnt P,
-//		[Ref] gp_Vec V1,
-//		[Ref] gp_Vec V2
-//	);
-//	void D3(
-//		[Const] Standard_Real U,
-//		[Ref] gp_Pnt P,
-//		[Ref] gp_Vec V1,
-//		[Ref] gp_Vec V2,
-//		[Ref] gp_Vec V3
-//	);
-//	void DN(
-//		[Const] Standard_Real U,
-//		[Const] Standard_Integer N
-//	);
-//	void Transform([Const, Ref] gp_Trsf T);
-//	Standard_Real TransformedParameter(
-//		[Const] Standard_Real U,
-//		[Const, Ref] gp_Trsf T
-//	);
-//	Standard_Real ParametricTransformation([Const, Ref] gp_Trsf T);
-//	// [Value] Handle_Geom_Geometry Copy();
-//};
-//Geom_TrimmedCurve implements Geom_BoundedCurve;
+// Full interface
+// fd47711d682be943f0e0a13d1fb54911b0499c31
+interface Geom_TrimmedCurve {
+	void Geom_TrimmedCurve(
+		[Const, Ref] Handle_Geom_Curve C,
+		[Const] Standard_Real U1,
+		[Const] Standard_Real U2,
+		[Const] optional Standard_Boolean Sense = true,
+		[Const] optional Standard_Boolean theAdjustPeriodic = true
+	);
+	void Reverse();
+	Standard_Real ReversedParameter([Const] Standard_Real U);
+	void SetTrim(
+		[Const] Standard_Real U1,
+		[Const] Standard_Real U2,
+		[Const] optional Standard_Boolean Sense = true,
+		[Const] optional Standard_Boolean theAdjust = true
+	);
+	[Value] Handle_Geom_Curve BasisCurve();
+	// [Value] GeomAbs_Shape Continuity();
+	Standard_Boolean IsCN([Const] Standard_Integer N);
+	Standard_Real FirstParameter();
+	Standard_Boolean IsClosed();
+	Standard_Boolean IsPeriodic();
+	Standard_Real Period();
+	Standard_Real LastParameter();
+	[Value] gp_Pnt StartPoint();
+	void D0(
+		[Const] Standard_Real U,
+		[Ref] gp_Pnt P
+	);
+	void D1(
+		[Const] Standard_Real U,
+		[Ref] gp_Pnt P,
+		[Ref] gp_Vec V1
+	);
+	void D2(
+		[Const] Standard_Real U,
+		[Ref] gp_Pnt P,
+		[Ref] gp_Vec V1,
+		[Ref] gp_Vec V2
+	);
+	void D3(
+		[Const] Standard_Real U,
+		[Ref] gp_Pnt P,
+		[Ref] gp_Vec V1,
+		[Ref] gp_Vec V2,
+		[Ref] gp_Vec V3
+	);
+	void DN(
+		[Const] Standard_Real U,
+		[Const] Standard_Integer N
+	);
+	void Transform([Const, Ref] gp_Trsf T);
+	Standard_Real TransformedParameter(
+		[Const] Standard_Real U,
+		[Const, Ref] gp_Trsf T
+	);
+	Standard_Real ParametricTransformation([Const, Ref] gp_Trsf T);
+	// [Value] Handle_Geom_Geometry Copy();
+};
+Geom_TrimmedCurve implements Geom_BoundedCurve;
 //
-//// Full interface
-//// fd47711d682be943f0e0a13d1fb54911b0499c31
-//interface Geom_BezierCurve {
-//	void Geom_BezierCurve(
-//		[Const, Ref] TColgp_Array1OfPnt CurvePoles
-//	);
-//	void Geom_BezierCurve(
-//		[Const, Ref] TColgp_Array1OfPnt CurvePoles,
-//		[Const, Ref] TColStd_Array1OfReal PoleWeights
-//	);
-//	void Reverse();
-//	Standard_Real ReversedParameter([Const] Standard_Real U);
+// Full interface
+// fd47711d682be943f0e0a13d1fb54911b0499c31
+interface Geom_BezierCurve {
+	void Geom_BezierCurve(
+		[Const, Ref] TColgp_Array1OfPnt CurvePoles
+	);
+	void Geom_BezierCurve(
+		[Const, Ref] TColgp_Array1OfPnt CurvePoles,
+		[Const, Ref] TColStd_Array1OfReal PoleWeights
+	);
+	void Reverse();
+	Standard_Real ReversedParameter([Const] Standard_Real U);
+
+	// [Value] GeomAbs_Shape Continuity();
+	Standard_Boolean IsCN([Const] Standard_Integer N);
+	Standard_Real FirstParameter();
+	Standard_Boolean IsClosed();
+	Standard_Boolean IsPeriodic();
+	Standard_Real Period();
+	Standard_Real LastParameter();
+	[Value] gp_Pnt StartPoint();
+	void D0(
+		[Const] Standard_Real U,
+		[Ref] gp_Pnt P
+	);
+	void D1(
+		[Const] Standard_Real U,
+		[Ref] gp_Pnt P,
+		[Ref] gp_Vec V1
+	);
+	void D2(
+		[Const] Standard_Real U,
+		[Ref] gp_Pnt P,
+		[Ref] gp_Vec V1,
+		[Ref] gp_Vec V2
+	);
+	void D3(
+		[Const] Standard_Real U,
+		[Ref] gp_Pnt P,
+		[Ref] gp_Vec V1,
+		[Ref] gp_Vec V2,
+		[Ref] gp_Vec V3
+	);
+	[Value] gp_Vec DN(
+		[Const] Standard_Real U,
+		[Const] Standard_Integer N
+	);
+	void Transform([Const, Ref] gp_Trsf T);
+	// [Value] Handle_Geom_Geometry Copy();
+};
+Geom_BezierCurve implements Geom_Curve;
 //
-//	// [Value] GeomAbs_Shape Continuity();
-//	Standard_Boolean IsCN([Const] Standard_Integer N);
-//	Standard_Real FirstParameter();
-//	Standard_Boolean IsClosed();
-//	Standard_Boolean IsPeriodic();
-//	Standard_Real Period();
-//	Standard_Real LastParameter();
-//	[Value] gp_Pnt StartPoint();
-//	void D0(
-//		[Const] Standard_Real U,
-//		[Ref] gp_Pnt P
-//	);
-//	void D1(
-//		[Const] Standard_Real U,
-//		[Ref] gp_Pnt P,
-//		[Ref] gp_Vec V1
-//	);
-//	void D2(
-//		[Const] Standard_Real U,
-//		[Ref] gp_Pnt P,
-//		[Ref] gp_Vec V1,
-//		[Ref] gp_Vec V2
-//	);
-//	void D3(
-//		[Const] Standard_Real U,
-//		[Ref] gp_Pnt P,
-//		[Ref] gp_Vec V1,
-//		[Ref] gp_Vec V2,
-//		[Ref] gp_Vec V3
-//	);
-//	[Value] gp_Vec DN(
-//		[Const] Standard_Real U,
-//		[Const] Standard_Integer N
-//	);
-//	void Transform([Const, Ref] gp_Trsf T);
-//	// [Value] Handle_Geom_Geometry Copy();
-//};
-//Geom_BezierCurve implements Geom_Curve;
-//
-//// Full interface
-//// fd47711d682be943f0e0a13d1fb54911b0499c31
-//interface Geom_BSplineCurve {
-//	void Geom_BSplineCurve(
-//		[Const, Ref] TColgp_Array1OfPnt Poles,
-//		[Const, Ref] TColStd_Array1OfReal Weights,
-//		[Const, Ref] TColStd_Array1OfReal Knots, 
-//		[Const, Ref] TColStd_Array1OfInteger Multiplicities,
-//		[Const] Standard_Integer Degree,
-//		[Const] optional Standard_Boolean Periodic = false,
-//		[Const] optional Standard_Boolean CheckRational = true
-//	);
-//	void Reverse();
-//	Standard_Real ReversedParameter([Const] Standard_Real U);
-//
-//	// [Value] GeomAbs_Shape Continuity();
-//	Standard_Boolean IsCN([Const] Standard_Integer N);
-//	Standard_Real FirstParameter();
-//	Standard_Boolean IsClosed();
-//	Standard_Boolean IsPeriodic();
-//	Standard_Real Period();
-//	Standard_Real LastParameter();
-//	[Value] gp_Pnt StartPoint();
-//	void D0(
-//		[Const] Standard_Real U,
-//		[Ref] gp_Pnt P
-//	);
-//	void D1(
-//		[Const] Standard_Real U,
-//		[Ref] gp_Pnt P,
-//		[Ref] gp_Vec V1
-//	);
-//	void D2(
-//		[Const] Standard_Real U,
-//		[Ref] gp_Pnt P,
-//		[Ref] gp_Vec V1,
-//		[Ref] gp_Vec V2
-//	);
-//	void D3(
-//		[Const] Standard_Real U,
-//		[Ref] gp_Pnt P,
-//		[Ref] gp_Vec V1,
-//		[Ref] gp_Vec V2,
-//		[Ref] gp_Vec V3
-//	);
-//	[Value] gp_Vec DN(
-//		[Const] Standard_Real U,
-//		[Const] Standard_Integer N
-//	);
-//	void Transform([Const, Ref] gp_Trsf T);
-//	// [Value] Handle_Geom_Geometry Copy();
-//};
-//Geom_BSplineCurve implements Geom_Curve;
+// Full interface
+// fd47711d682be943f0e0a13d1fb54911b0499c31
+interface Geom_BSplineCurve {
+	void Geom_BSplineCurve(
+		[Const, Ref] TColgp_Array1OfPnt Poles,
+		[Const, Ref] TColStd_Array1OfReal Weights,
+		[Const, Ref] TColStd_Array1OfReal Knots, 
+		[Const, Ref] TColStd_Array1OfInteger Multiplicities,
+		[Const] Standard_Integer Degree,
+		[Const] optional Standard_Boolean Periodic = false,
+		[Const] optional Standard_Boolean CheckRational = true
+	);
+	void Reverse();
+	Standard_Real ReversedParameter([Const] Standard_Real U);
+
+	// [Value] GeomAbs_Shape Continuity();
+	Standard_Boolean IsCN([Const] Standard_Integer N);
+	Standard_Real FirstParameter();
+	Standard_Boolean IsClosed();
+	Standard_Boolean IsPeriodic();
+	Standard_Real Period();
+	Standard_Real LastParameter();
+	[Value] gp_Pnt StartPoint();
+	void D0(
+		[Const] Standard_Real U,
+		[Ref] gp_Pnt P
+	);
+	void D1(
+		[Const] Standard_Real U,
+		[Ref] gp_Pnt P,
+		[Ref] gp_Vec V1
+	);
+	void D2(
+		[Const] Standard_Real U,
+		[Ref] gp_Pnt P,
+		[Ref] gp_Vec V1,
+		[Ref] gp_Vec V2
+	);
+	void D3(
+		[Const] Standard_Real U,
+		[Ref] gp_Pnt P,
+		[Ref] gp_Vec V1,
+		[Ref] gp_Vec V2,
+		[Ref] gp_Vec V3
+	);
+	[Value] gp_Vec DN(
+		[Const] Standard_Real U,
+		[Const] Standard_Integer N
+	);
+	void Transform([Const, Ref] gp_Trsf T);
+	// [Value] Handle_Geom_Geometry Copy();
+};
+Geom_BSplineCurve implements Geom_Curve;
 //
 interface Standard_Transient {
 	[Const] DOMString get_type_name();
@@ -2785,15 +2785,15 @@ Geom2d_Conic implements Geom2d_Curve;
 //	Geom2d_Curve get();
 //};
 //
-//// Full interface
-//// fd47711d682be943f0e0a13d1fb54911b0499c31
-//interface Handle_Standard_Type{
-//	void Handle_Standard_Type();
-//	void Handle_Standard_Type(Standard_Type thePtr);
-//	boolean IsNull();
-//	void Nullify();
-//	Standard_Type get();
-//};
+// Full interface
+// fd47711d682be943f0e0a13d1fb54911b0499c31
+interface Handle_Standard_Type{
+	void Handle_Standard_Type();
+	void Handle_Standard_Type(Standard_Type thePtr);
+	boolean IsNull();
+	void Nullify();
+	Standard_Type get();
+};
 //
 //// Full interface
 //// fd47711d682be943f0e0a13d1fb54911b0499c31
@@ -2824,76 +2824,76 @@ interface Handle_Geom_Curve{
 	void Nullify();
 	Geom_Curve get();
 };
-//
-//// Full interface
-//// fd47711d682be943f0e0a13d1fb54911b0499c31
-//interface Handle_Geom_TrimmedCurve{
-//	void Handle_Geom_TrimmedCurve();
-//	void Handle_Geom_TrimmedCurve(Geom_TrimmedCurve thePtr);
-//	boolean IsNull();
-//	void Nullify();
-//	Geom_TrimmedCurve get();
-//};
-//
-//// Full interface
-//// fd47711d682be943f0e0a13d1fb54911b0499c31
-//interface Handle_Geom_Circle{
-//	void Handle_Geom_Circle();
-//	void Handle_Geom_Circle(Geom_Circle thePtr);
-//	boolean IsNull();
-//	void Nullify();
-//	Geom_Circle get();
-//};
-//
-//// Full interface
-//// fd47711d682be943f0e0a13d1fb54911b0499c31
-//interface Handle_Geom_Ellipse{
-//	void Handle_Geom_Ellipse();
-//	void Handle_Geom_Ellipse(Geom_Ellipse thePtr);
-//	boolean IsNull();
-//	void Nullify();
-//	Geom_Ellipse get();
-//};
-//
-//// Full interface
-//// fd47711d682be943f0e0a13d1fb54911b0499c31
-//interface Handle_Geom_Hyperbola{
-//	void Handle_Geom_Hyperbola();
-//	void Handle_Geom_Hyperbola(Geom_Hyperbola thePtr);
-//	boolean IsNull();
-//	void Nullify();
-//	Geom_Hyperbola get();
-//};
-//
-//// Full interface
-//// fd47711d682be943f0e0a13d1fb54911b0499c31
-//interface Handle_Geom_BezierCurve {
-//	void Handle_Geom_BezierCurve();
-//	void Handle_Geom_BezierCurve(Geom_BezierCurve thePtr);
-//	boolean IsNull();
-//	void Nullify();
-//	Geom_BezierCurve get();
-//};
-//
-//// Full interface
-//// fd47711d682be943f0e0a13d1fb54911b0499c31
-//interface Handle_Geom_BSplineCurve {
-//	void Handle_Geom_BSplineCurve();
-//	void Handle_Geom_BSplineCurve(Geom_BSplineCurve thePtr);
-//	boolean IsNull();
-//	void Nullify();
-//	Geom_BSplineCurve get();
-//};
-//
-//// Full interface
-//// fd47711d682be943f0e0a13d1fb54911b0499c31
-//interface Handle_Poly_Polygon3D{
-//	void Handle_Poly_Polygon3D();
-//	void Handle_Poly_Polygon3D(Poly_Polygon3D thePtr);
-//	boolean IsNull();
-//	void Nullify();
-//	Poly_Polygon3D get();
-//};
+
+// Full interface
+// fd47711d682be943f0e0a13d1fb54911b0499c31
+interface Handle_Geom_TrimmedCurve{
+	void Handle_Geom_TrimmedCurve();
+	void Handle_Geom_TrimmedCurve(Geom_TrimmedCurve thePtr);
+	boolean IsNull();
+	void Nullify();
+	Geom_TrimmedCurve get();
+};
+
+// Full interface
+// fd47711d682be943f0e0a13d1fb54911b0499c31
+interface Handle_Geom_Circle{
+	void Handle_Geom_Circle();
+	void Handle_Geom_Circle(Geom_Circle thePtr);
+	boolean IsNull();
+	void Nullify();
+	Geom_Circle get();
+};
+
+// Full interface
+// fd47711d682be943f0e0a13d1fb54911b0499c31
+interface Handle_Geom_Ellipse{
+	void Handle_Geom_Ellipse();
+	void Handle_Geom_Ellipse(Geom_Ellipse thePtr);
+	boolean IsNull();
+	void Nullify();
+	Geom_Ellipse get();
+};
+
+// Full interface
+// fd47711d682be943f0e0a13d1fb54911b0499c31
+interface Handle_Geom_Hyperbola{
+	void Handle_Geom_Hyperbola();
+	void Handle_Geom_Hyperbola(Geom_Hyperbola thePtr);
+	boolean IsNull();
+	void Nullify();
+	Geom_Hyperbola get();
+};
+
+// Full interface
+// fd47711d682be943f0e0a13d1fb54911b0499c31
+interface Handle_Geom_BezierCurve {
+	void Handle_Geom_BezierCurve();
+	void Handle_Geom_BezierCurve(Geom_BezierCurve thePtr);
+	boolean IsNull();
+	void Nullify();
+	Geom_BezierCurve get();
+};
+
+// Full interface
+// fd47711d682be943f0e0a13d1fb54911b0499c31
+interface Handle_Geom_BSplineCurve {
+	void Handle_Geom_BSplineCurve();
+	void Handle_Geom_BSplineCurve(Geom_BSplineCurve thePtr);
+	boolean IsNull();
+	void Nullify();
+	Geom_BSplineCurve get();
+};
+
+// Full interface
+// fd47711d682be943f0e0a13d1fb54911b0499c31
+interface Handle_Poly_Polygon3D{
+	void Handle_Poly_Polygon3D();
+	void Handle_Poly_Polygon3D(Poly_Polygon3D thePtr);
+	boolean IsNull();
+	void Nullify();
+	Poly_Polygon3D get();
+};
 //
 //interface Handle_ShapeFix_Shell {
 //	boolean IsNull();
@@ -2903,38 +2903,38 @@ interface Handle_Geom_Curve{
 ////	boolean IsNull();
 ////	ShapeFix_Solid get();
 ////};
-//
-//interface Handle_Poly_Triangulation {
-//	void Handle_Poly_Triangulation();
-//	void Handle_Poly_Triangulation(Poly_Triangulation thePtr);
-//	boolean IsNull();
-//	void Nullify();
-//	Poly_Triangulation get();
-//};
-//
-//interface Handle_Poly_PolygonOnTriangulation {
-//	void Handle_Poly_PolygonOnTriangulation();
-//	void Handle_Poly_PolygonOnTriangulation(Poly_PolygonOnTriangulation thePtr);
-//	boolean IsNull();
-//	void Nullify();
-//	Poly_PolygonOnTriangulation get();
-//};
-//
-//interface Handle_XSControl_WorkSession {
-//	void Handle_XSControl_WorkSession();
-//	void Handle_XSControl_WorkSession(XSControl_WorkSession thePtr);
-//	boolean IsNull();
-//	void Nullify();
-//	XSControl_WorkSession get();
-//};
-//
-//interface Handle_Transfer_TransientProcess {
-//	void Handle_Transfer_TransientProcess();
-//	void Handle_Transfer_TransientProcess(Transfer_TransientProcess thePtr);
-//	boolean IsNull();
-//	void Nullify();
-//	Transfer_TransientProcess get();
-//};
+
+interface Handle_Poly_Triangulation {
+	void Handle_Poly_Triangulation();
+	void Handle_Poly_Triangulation(Poly_Triangulation thePtr);
+	boolean IsNull();
+	void Nullify();
+	Poly_Triangulation get();
+};
+
+interface Handle_Poly_PolygonOnTriangulation {
+	void Handle_Poly_PolygonOnTriangulation();
+	void Handle_Poly_PolygonOnTriangulation(Poly_PolygonOnTriangulation thePtr);
+	boolean IsNull();
+	void Nullify();
+	Poly_PolygonOnTriangulation get();
+};
+
+interface Handle_XSControl_WorkSession {
+	void Handle_XSControl_WorkSession();
+	void Handle_XSControl_WorkSession(XSControl_WorkSession thePtr);
+	boolean IsNull();
+	void Nullify();
+	XSControl_WorkSession get();
+};
+
+interface Handle_Transfer_TransientProcess {
+	void Handle_Transfer_TransientProcess();
+	void Handle_Transfer_TransientProcess(Transfer_TransientProcess thePtr);
+	boolean IsNull();
+	void Nullify();
+	Transfer_TransientProcess get();
+};
 //
 //interface Handle_Message_ProgressIndicator {
 //	void Handle_Message_ProgressIndicator();
@@ -2944,41 +2944,41 @@ interface Handle_Geom_Curve{
 //	Message_ProgressIndicator get();
 //};
 //
-//interface TColgp_Array1OfPnt {
-//	void TColgp_Array1OfPnt();
-//	void TColgp_Array1OfPnt(
-//		[Const] Standard_Integer theLower,
-//		[Const] Standard_Integer theUpper
-//	);
-//	Standard_Integer Length();
-//	Standard_Integer Lower();
-//	Standard_Integer Upper();
-//	[Const, Ref] gp_Pnt Value(
-//		[Const] Standard_Integer theIndex
-//	);
-//	void SetValue(
-//		[Const] Standard_Integer Index,
-//		[Const, Ref] gp_Pnt Value
-//	);
-//};
-//
-//interface TColgp_Array1OfPnt2d {
-//	void TColgp_Array1OfPnt2d();
-//	void TColgp_Array1OfPnt2d(
-//		[Const] Standard_Integer theLower,
-//		[Const] Standard_Integer theUpper
-//	);
-//	Standard_Integer Length();
-//	Standard_Integer Lower();
-//	Standard_Integer Upper();
-//	[Const, Ref] gp_Pnt2d Value(
-//		[Const] Standard_Integer theIndex
-//	);
-//	void SetValue(
-//		[Const] Standard_Integer Index,
-//		[Const, Ref] gp_Pnt2d Value
-//	);
-//};
+interface TColgp_Array1OfPnt {
+	void TColgp_Array1OfPnt();
+	void TColgp_Array1OfPnt(
+		[Const] Standard_Integer theLower,
+		[Const] Standard_Integer theUpper
+	);
+	Standard_Integer Length();
+	Standard_Integer Lower();
+	Standard_Integer Upper();
+	[Const, Ref] gp_Pnt Value(
+		[Const] Standard_Integer theIndex
+	);
+	void SetValue(
+		[Const] Standard_Integer Index,
+		[Const, Ref] gp_Pnt Value
+	);
+};
+
+interface TColgp_Array1OfPnt2d {
+	void TColgp_Array1OfPnt2d();
+	void TColgp_Array1OfPnt2d(
+		[Const] Standard_Integer theLower,
+		[Const] Standard_Integer theUpper
+	);
+	Standard_Integer Length();
+	Standard_Integer Lower();
+	Standard_Integer Upper();
+	[Const, Ref] gp_Pnt2d Value(
+		[Const] Standard_Integer theIndex
+	);
+	void SetValue(
+		[Const] Standard_Integer Index,
+		[Const, Ref] gp_Pnt2d Value
+	);
+};
 //
 interface TColgp_Array1OfDir {
 	void TColgp_Array1OfDir();
@@ -2995,55 +2995,55 @@ interface TColgp_Array1OfDir {
 	//	[Const, Ref] gp_Dir Value
 	//);
 };
-//
-//interface Poly_Array1OfTriangle {
-//	void Poly_Array1OfTriangle();
-//	void Poly_Array1OfTriangle(
-//		[Const] Standard_Integer theLower,
-//		[Const] Standard_Integer theUpper
-//	);
-//	Standard_Integer Length();
-//	Standard_Integer Lower();
-//	Standard_Integer Upper();
-//	[Const, Ref] Poly_Triangle Value([Const] Standard_Integer theIndex);
-//	void SetValue(
-//		[Const] Standard_Integer Index,
-//		[Const, Ref] Poly_Triangle Value
-//	);
-//};
-//
-//interface TColStd_Array1OfReal {
-//	void TColStd_Array1OfReal();
-//	void TColStd_Array1OfReal(
-//		[Const] Standard_Integer theLower,
-//		[Const] Standard_Integer theUpper
-//	);
-//	Standard_Integer Length();
-//	Standard_Integer Lower();
-//	Standard_Integer Upper();
-//	Standard_Real Value([Const] Standard_Integer theIndex);
-//	void SetValue(
-//		[Const] Standard_Integer Index,
-//		[Const] Standard_Real Value
-//	);
-//};
-//
-//interface TColStd_Array1OfInteger {
-//	void TColStd_Array1OfInteger();
-//	void TColStd_Array1OfInteger(
-//		[Const] Standard_Integer theLower,
-//		[Const] Standard_Integer theUpper
-//	);
-//	Standard_Integer Length();
-//	Standard_Integer Lower();
-//	Standard_Integer Upper();
-//	Standard_Integer Value([Const] Standard_Integer theIndex);
-//	void SetValue(
-//		[Const] Standard_Integer Index,
-//		[Const] Standard_Integer Value
-//	);
-//};
-//
+
+interface Poly_Array1OfTriangle {
+	void Poly_Array1OfTriangle();
+	void Poly_Array1OfTriangle(
+		[Const] Standard_Integer theLower,
+		[Const] Standard_Integer theUpper
+	);
+	Standard_Integer Length();
+	Standard_Integer Lower();
+	Standard_Integer Upper();
+	[Const, Ref] Poly_Triangle Value([Const] Standard_Integer theIndex);
+	void SetValue(
+		[Const] Standard_Integer Index,
+		[Const, Ref] Poly_Triangle Value
+	);
+};
+
+interface TColStd_Array1OfReal {
+	void TColStd_Array1OfReal();
+	void TColStd_Array1OfReal(
+		[Const] Standard_Integer theLower,
+		[Const] Standard_Integer theUpper
+	);
+	Standard_Integer Length();
+	Standard_Integer Lower();
+	Standard_Integer Upper();
+	Standard_Real Value([Const] Standard_Integer theIndex);
+	void SetValue(
+		[Const] Standard_Integer Index,
+		[Const] Standard_Real Value
+	);
+};
+
+interface TColStd_Array1OfInteger {
+	void TColStd_Array1OfInteger();
+	void TColStd_Array1OfInteger(
+		[Const] Standard_Integer theLower,
+		[Const] Standard_Integer theUpper
+	);
+	Standard_Integer Length();
+	Standard_Integer Lower();
+	Standard_Integer Upper();
+	Standard_Integer Value([Const] Standard_Integer theIndex);
+	void SetValue(
+		[Const] Standard_Integer Index,
+		[Const] Standard_Integer Value
+	);
+};
+
 //// Full interface
 //// fd47711d682be943f0e0a13d1fb54911b0499c31
 //interface XSControl_WorkSession {
@@ -3143,79 +3143,79 @@ interface TColgp_Array1OfDir {
 //	void Reset();
 //};
 //
-//// Full interface
-//// fd47711d682be943f0e0a13d1fb54911b0499c31
-//interface Poly_Triangulation {
-//	void Poly_Triangulation(
-//		[Const] Standard_Integer nbNodes,
-//		[Const] Standard_Integer nbTriangles,
-//		[Const] Standard_Boolean UVNodes
-//	);
-//	// void Poly_Triangulation(
-//	// 	[Const, Ref] TColgp_Array1OfPnt Nodes,
-//	// 	[Const, Ref] Poly_Array1OfTriangle Triangles
-//	// );
-//	// void Poly_Triangulation(
-//	// 	[Const, Ref] TColgp_Array1OfPnt Nodes,
-//	// 	[Const, Ref] TColgp_Array1OfPnt2d UVNodes,
-//	// 	[Const, Ref] Poly_Array1OfTriangle Triangles
-//	// );
-//	[Value] Handle_Poly_Triangulation Copy();
-//	void Poly_Triangulation([Const, Ref] Handle_Poly_Triangulation theTriangulation);
-//	//Standard_Real Deflection();
-//	void Deflection([Const] Standard_Real theDeflection);
-//	void RemoveUVNodes();
-//	Standard_Integer NbNodes();
-//	Standard_Integer NbTriangles();
-//	Standard_Boolean HasUVNodes();
-//	[Const, Ref] TColgp_Array1OfPnt Nodes();
-//	[Ref] TColgp_Array1OfPnt ChangeNodes();
-//	[Const, Ref] gp_Pnt Node([Const] Standard_Integer theIndex);
-//	// [Ref] gp_Pnt ChangeNode([Const] Standard_Integer theIndex);
-//	[Const, Ref] TColgp_Array1OfPnt2d UVNodes();
-//	[Ref] TColgp_Array1OfPnt2d ChangeUVNodes();
-//	[Const, Ref] gp_Pnt2d UVNode([Const] Standard_Integer theIndex);
-//	[Const, Ref] Poly_Array1OfTriangle Triangles();
-//	[Ref] Poly_Array1OfTriangle ChangeTriangles();
-//	// [Const, Ref] Poly_Triangle Triangle([Const] Standard_Integer theIndex);
-//	// [Ref] Poly_Triangle ChangeTriangle([Const] Standard_Integer theIndex);
-//	// void SetNormals([Const, Ref] Handle_TShort_HArray1OfShortReal theNormals);
-//	// [Const, Ref] TShort_Array1OfShortReal Normals();
-//	// [Ref] TShort_Array1OfShortReal ChangeNormals();
-//	Standard_Boolean HasNormals();
-//	[Value] gp_Dir Normal([Const] Standard_Integer theIndex);
-//	void SetNormal(
-//		[Const] Standard_Integer theIndex,
-//		[Const, Ref] gp_Dir theNormal
-//	);
-//};
-//
-//// Full interface
-//// fd47711d682be943f0e0a13d1fb54911b0499c31
-//interface Poly_Triangle {
-//	void Poly_Triangle();
-//	void Poly_Triangle(
-//		[Const] Standard_Integer N1,
-//		[Const] Standard_Integer N2,
-//		[Const] Standard_Integer N3
-//	);
-//	void Set(
-//		[Const] Standard_Integer N1,
-//		[Const] Standard_Integer N2,
-//		[Const] Standard_Integer N3
-//	);
-//	void Set(
-//		[Const] Standard_Integer Index,
-//		[Const] Standard_Integer Node
-//	);
-//	// void Get(
-//	// 	[Ref] Standard_Integer N1,
-//	// 	[Ref] Standard_Integer N2,
-//	// 	[Ref] Standard_Integer N3
-//	// );
-//	Standard_Integer Value([Const] Standard_Integer Index);
-//	Standard_Integer ChangeValue([Const] Standard_Integer Index);
-//};
+// Full interface
+// fd47711d682be943f0e0a13d1fb54911b0499c31
+interface Poly_Triangulation {
+	void Poly_Triangulation(
+		[Const] Standard_Integer nbNodes,
+		[Const] Standard_Integer nbTriangles,
+		[Const] Standard_Boolean UVNodes
+	);
+	// void Poly_Triangulation(
+	// 	[Const, Ref] TColgp_Array1OfPnt Nodes,
+	// 	[Const, Ref] Poly_Array1OfTriangle Triangles
+	// );
+	// void Poly_Triangulation(
+	// 	[Const, Ref] TColgp_Array1OfPnt Nodes,
+	// 	[Const, Ref] TColgp_Array1OfPnt2d UVNodes,
+	// 	[Const, Ref] Poly_Array1OfTriangle Triangles
+	// );
+	[Value] Handle_Poly_Triangulation Copy();
+	void Poly_Triangulation([Const, Ref] Handle_Poly_Triangulation theTriangulation);
+	//Standard_Real Deflection();
+	void Deflection([Const] Standard_Real theDeflection);
+	void RemoveUVNodes();
+	Standard_Integer NbNodes();
+	Standard_Integer NbTriangles();
+	Standard_Boolean HasUVNodes();
+	[Const, Ref] TColgp_Array1OfPnt Nodes();
+	[Ref] TColgp_Array1OfPnt ChangeNodes();
+	[Const, Ref] gp_Pnt Node([Const] Standard_Integer theIndex);
+	// [Ref] gp_Pnt ChangeNode([Const] Standard_Integer theIndex);
+	[Const, Ref] TColgp_Array1OfPnt2d UVNodes();
+	[Ref] TColgp_Array1OfPnt2d ChangeUVNodes();
+	[Const, Ref] gp_Pnt2d UVNode([Const] Standard_Integer theIndex);
+	[Const, Ref] Poly_Array1OfTriangle Triangles();
+	[Ref] Poly_Array1OfTriangle ChangeTriangles();
+	// [Const, Ref] Poly_Triangle Triangle([Const] Standard_Integer theIndex);
+	// [Ref] Poly_Triangle ChangeTriangle([Const] Standard_Integer theIndex);
+	// void SetNormals([Const, Ref] Handle_TShort_HArray1OfShortReal theNormals);
+	// [Const, Ref] TShort_Array1OfShortReal Normals();
+	// [Ref] TShort_Array1OfShortReal ChangeNormals();
+	Standard_Boolean HasNormals();
+	[Value] gp_Dir Normal([Const] Standard_Integer theIndex);
+	void SetNormal(
+		[Const] Standard_Integer theIndex,
+		[Const, Ref] gp_Dir theNormal
+	);
+};
+
+// Full interface
+// fd47711d682be943f0e0a13d1fb54911b0499c31
+interface Poly_Triangle {
+	void Poly_Triangle();
+	void Poly_Triangle(
+		[Const] Standard_Integer N1,
+		[Const] Standard_Integer N2,
+		[Const] Standard_Integer N3
+	);
+	void Set(
+		[Const] Standard_Integer N1,
+		[Const] Standard_Integer N2,
+		[Const] Standard_Integer N3
+	);
+	void Set(
+		[Const] Standard_Integer Index,
+		[Const] Standard_Integer Node
+	);
+	// void Get(
+	// 	[Ref] Standard_Integer N1,
+	// 	[Ref] Standard_Integer N2,
+	// 	[Ref] Standard_Integer N3
+	// );
+	Standard_Integer Value([Const] Standard_Integer Index);
+	Standard_Integer ChangeValue([Const] Standard_Integer Index);
+};
 //
 // Full interface
 // fd47711d682be943f0e0a13d1fb54911b0499c31
