@@ -2420,9 +2420,9 @@ interface BRepTools {
 //	[Const, Ref] Handle_Geom2d_TrimmedCurve Value();
 //};
 //
-//interface Geom_BoundedCurve {
-//};
-//Geom_BoundedCurve implements Geom_Curve;
+interface Geom_BoundedCurve {
+};
+Geom_BoundedCurve implements Geom_Curve;
 //
 //interface Geom2d_Ellipse {
 //	void Geom2d_Ellipse(
