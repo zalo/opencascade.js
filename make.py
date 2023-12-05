@@ -174,7 +174,8 @@ def build():
 
   if not os.path.exists('regal'):
     stage("downloading and extracting regal...")
-    url = "https://github.com/p3/regal/archive/master.tar.gz"
+    #url = "https://github.com/p3/regal/archive/master.tar.gz"
+    url = "https://github.com/emscripten-ports/regal/archive/master.tar.gz"
     myfile = requests.get(url, stream=True)
     open("regal.tar.gz", 'wb').write(myfile.content)
     tar = tarfile.open("regal.tar.gz", "r:gz")
