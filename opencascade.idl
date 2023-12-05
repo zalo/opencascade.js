@@ -1116,64 +1116,64 @@ interface gp_Pnt {
 	);
 };
 //
-//interface gp_XYZ {
-//	//void gp_XYZ();
-//	// void gp_Pnt([Const, Ref] gp_XYZ Coord);
-//	void gp_XYZ(
-//		[Const] Standard_Real X,
-//		[Const] Standard_Real Y,
-//		[Const] Standard_Real Z
-//	);
-//	//void SetCoord(
-//	//	[Const] Standard_Integer Index,
-//	//	[Const] Standard_Real Xi
-//	//);
-//	void SetCoord(
-//		[Const] Standard_Real Xp,
-//		[Const] Standard_Real Yp,
-//		[Const] Standard_Real Zp
-//	);
-//	void SetX([Const] Standard_Real X);
-//	void SetY([Const] Standard_Real Y);
-//	void SetZ([Const] Standard_Real Z);
-//	// void SetXYZ([Const, Ref] gp_XYZ Coord);
-//	Standard_Real Coord([Const] Standard_Integer Index);
-//	// void Coord(
-//	//   [Ref] Standard_Real Xp,
-//	//   [Ref] Standard_Real Yp,
-//	//   [Ref] Standard_Real Zp
-//	// );
-//	Standard_Real X();
-//	Standard_Real Y();
-//	Standard_Real Z();
-//	// [Const, Ref] gp_XYZ XYZ();
-//	// [Const, Ref] gp_XYZ Coord();
-//	// [Ref] gp_XYZ ChangeCoord();
-//	Standard_Boolean IsEqual(
-//		[Const, Ref] gp_XYZ Other,
-//		[Const] Standard_Real Tolerance
-//	);
-//};
-//
-//interface gp_XY {
-//	void gp_XY(
-//		[Const] Standard_Real X,
-//		[Const] Standard_Real Y
-//	);
-//	void SetCoord(
-//		[Const] Standard_Real Xp,
-//		[Const] Standard_Real Yp
-//	);
-//	void SetX([Const] Standard_Real X);
-//	void SetY([Const] Standard_Real Y);
-//	Standard_Real Coord([Const] Standard_Integer Index);
-//	Standard_Real X();
-//	Standard_Real Y();
-//	Standard_Boolean IsEqual(
-//		[Const, Ref] gp_XY Other,
-//		[Const] Standard_Real Tolerance
-//	);
-//};
+interface gp_XYZ {
+	//void gp_XYZ();
+	// void gp_Pnt([Const, Ref] gp_XYZ Coord);
+	void gp_XYZ(
+		[Const] Standard_Real X,
+		[Const] Standard_Real Y,
+		[Const] Standard_Real Z
+	);
+	//void SetCoord(
+	//	[Const] Standard_Integer Index,
+	//	[Const] Standard_Real Xi
+	//);
+	void SetCoord(
+		[Const] Standard_Real Xp,
+		[Const] Standard_Real Yp,
+		[Const] Standard_Real Zp
+	);
+	void SetX([Const] Standard_Real X);
+	void SetY([Const] Standard_Real Y);
+	void SetZ([Const] Standard_Real Z);
+	// void SetXYZ([Const, Ref] gp_XYZ Coord);
+	Standard_Real Coord([Const] Standard_Integer Index);
+	// void Coord(
+	//   [Ref] Standard_Real Xp,
+	//   [Ref] Standard_Real Yp,
+	//   [Ref] Standard_Real Zp
+	// );
+	Standard_Real X();
+	Standard_Real Y();
+	Standard_Real Z();
+	// [Const, Ref] gp_XYZ XYZ();
+	// [Const, Ref] gp_XYZ Coord();
+	// [Ref] gp_XYZ ChangeCoord();
+	Standard_Boolean IsEqual(
+		[Const, Ref] gp_XYZ Other,
+		[Const] Standard_Real Tolerance
+	);
+};
+
+interface gp_XY {
+	void gp_XY(
+		[Const] Standard_Real X,
+		[Const] Standard_Real Y
+	);
+	void SetCoord(
+		[Const] Standard_Real Xp,
+		[Const] Standard_Real Yp
+	);
+	void SetX([Const] Standard_Real X);
+	void SetY([Const] Standard_Real Y);
+	Standard_Real Coord([Const] Standard_Integer Index);
+	Standard_Real X();
+	Standard_Real Y();
+	Standard_Boolean IsEqual(
+		[Const, Ref] gp_XY Other,
+		[Const] Standard_Real Tolerance
+	);
+};
 //
 //// Full interface
 //// fd47711d682be943f0e0a13d1fb54911b0499c31
