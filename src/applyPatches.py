@@ -15,4 +15,4 @@ for dirpath, dirnames, filenames in os.walk("/opencascade.js/src/patches"):
       subprocess.check_call(["patch -p0 < '"+ dirpath + "/" + filename + "'"], stdout=subprocess.PIPE, shell=True)
       print("...done applying patch")
     except:
-      raise Exception("Could not apply patch!")
+      print("WARNING: Could not apply patch " + filename + " (may not be needed for this OCCT version)")

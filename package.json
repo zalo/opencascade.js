@@ -1,14 +1,11 @@
 {
   "name": "opencascade.js",
-  "version": "2.0.0-beta.b5ff984",
+  "version": "2.0.0-cascadestudio",
   "description": "Port of the OpenCascade CAD library to JavaScript and WebAssembly via Emscripten.",
-  "main": "dist/index.js",
+  "main": "dist/cascadestudio.js",
   "author": "Sebastian Alff <donalffons@gmail.com>",
   "license": "LGPL-2.1-only",
-  "repository": "github:donalffons/opencascade.js",
-  "types": "dist/index.d.ts",
-  "peerDependencies": {
-    "ws": "^8.5.0"
-  },
+  "repository": "github:zalo/opencascade.js",
+  "types": "dist/cascadestudio.d.ts",
   "type": "module"
 }

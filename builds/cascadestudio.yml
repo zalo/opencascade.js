@@ -1,0 +1,199 @@
+mainBuild:
+  name: cascadestudio.js
+  bindings:
+    # GP (General Purpose) Geometry Types
+    - symbol: gp
+    - symbol: gp_Pnt
+    - symbol: gp_Vec
+    - symbol: gp_Dir
+    - symbol: gp_Ax1
+    - symbol: gp_Ax2
+    - symbol: gp_Trsf
+    - symbol: gp_Pnt2d
+    - symbol: gp_Dir2d
+    - symbol: gp_Ax2d
+
+    # Topology Data Structures
+    - symbol: TopoDS
+    - symbol: TopoDS_Shape
+    - symbol: TopoDS_Compound
+    - symbol: TopoDS_Solid
+    - symbol: TopoDS_Shell
+    - symbol: TopoDS_Face
+    - symbol: TopoDS_Wire
+    - symbol: TopoDS_Edge
+    - symbol: TopoDS_Vertex
+    - symbol: TopoDS_Iterator
+    - symbol: TopoDS_Builder
+    - symbol: TopExp_Explorer
+    - symbol: TopLoc_Location
+
+    # Topology Enums
+    - symbol: TopAbs_ShapeEnum
+    - symbol: TopAbs_Orientation
+
+    # Offset/Fillet/Pipe Enums
+    - symbol: BRepOffset_Mode
+    - symbol: GeomAbs_JoinType
+    - symbol: BRepFill_TypeOfContact
+    - symbol: ChFi3d_FilletShape
+
+    # Base classes (required by Embind for inheritance)
+    - symbol: Standard_Transient
+    - symbol: BRepBuilderAPI_Command
+    - symbol: BRepBuilderAPI_MakeShape
+    - symbol: BRepBuilderAPI_ModifyShape
+    - symbol: BRepPrimAPI_MakeOneAxis
+    - symbol: BRepPrimAPI_MakeSweep
+    - symbol: BRepAlgoAPI_Algo
+    - symbol: BRepAlgoAPI_BuilderAlgo
+    - symbol: BRepAlgoAPI_BooleanOperation
+    - symbol: BRepFilletAPI_LocalOperation
+    - symbol: BRepMesh_DiscretRoot
+    - symbol: BRepOffsetAPI_MakeOffsetShape
+    - symbol: Adaptor3d_Curve
+    - symbol: GC_Root
+    - symbol: Geom_Geometry
+    - symbol: Geom_Curve
+    - symbol: Geom_BoundedCurve
+    - symbol: Geom_Conic
+    - symbol: Geom_Surface
+    - symbol: Geom_ElementarySurface
+    - symbol: NCollection_BaseMap
+    - symbol: Transfer_ProcessForTransient
+    - symbol: IFSelect_WorkSession
+    - symbol: Geom_TrimmedCurve
+
+    # BRep Primitives
+    - symbol: BRepPrimAPI_MakeBox
+    - symbol: BRepPrimAPI_MakeSphere
+    - symbol: BRepPrimAPI_MakeCylinder
+    - symbol: BRepPrimAPI_MakeCone
+    - symbol: BRepPrimAPI_MakePrism
+    - symbol: BRepPrimAPI_MakeRevol
+    - symbol: BRepPrimAPI_MakeTorus
+    - symbol: BRepPrimAPI_MakeWedge
+
+    # BRep Builder API
+    - symbol: BRepBuilderAPI_MakeWire
+    - symbol: BRepBuilderAPI_MakeEdge
+    - symbol: BRepBuilderAPI_MakeFace
+    - symbol: BRepBuilderAPI_MakeSolid
+    - symbol: BRepBuilderAPI_Transform
+    - symbol: BRepBuilderAPI_Sewing
+    - symbol: BRep_Builder
+    - symbol: BRep_Tool
+
+    # Boolean Operations
+    - symbol: BRepAlgoAPI_Fuse
+    - symbol: BRepAlgoAPI_Cut
+    - symbol: BRepAlgoAPI_Common
+
+    # Offset & Advanced Operations
+    - symbol: BRepOffsetAPI_MakeOffset
+    - symbol: BRepOffsetAPI_MakeOffsetShape
+    - symbol: BRepOffsetAPI_MakePipe
+    - symbol: BRepOffsetAPI_MakePipeShell
+    - symbol: BRepOffsetAPI_ThruSections
+
+    # Fillet & Chamfer
+    - symbol: BRepFilletAPI_MakeFillet
+    - symbol: BRepFilletAPI_MakeChamfer
+    - symbol: BRepFilletAPI_MakeFillet2d
+
+    # Geometry Curves & Surfaces
+    - symbol: GC_MakeSegment
+    - symbol: GC_MakeCircle
+    - symbol: GC_MakeArcOfCircle
+    - symbol: Geom_BezierCurve
+    - symbol: Geom_BSplineCurve
+    - symbol: Geom_Circle
+    - symbol: Geom_Plane
+    - symbol: GeomAPI_PointsToBSpline
+    - symbol: GeomAdaptor_Curve
+    - symbol: GCPnts_TangentialDeflection
+
+    # BRep Adaptor
+    - symbol: BRepAdaptor_Curve
+
+    # Meshing & Visualization
+    - symbol: BRepMesh_IncrementalMesh
+    - symbol: Poly_Triangulation
+    - symbol: Poly_Connect
+    - symbol: Poly_Array1OfTriangle
+    - symbol: Poly_Triangle
+    - symbol: Poly_PolygonOnTriangulation
+    - symbol: StdPrs_ToolTriangulatedShape
+
+    # Collection Types
+    - symbol: TColgp_Array1OfPnt
+    - symbol: TColgp_Array1OfDir
+    - symbol: TColgp_Array1OfPnt2d
+    - symbol: TColgp_Array1OfVec
+    - symbol: TColStd_Array1OfReal
+    - symbol: TColStd_Array1OfInteger
+    - symbol: TopTools_IndexedMapOfShape
+
+    # File I/O
+    - symbol: STEPControl_Reader
+    - symbol: STEPControl_Writer
+    - symbol: STEPControl_StepModelType
+    - symbol: IGESControl_Reader
+    - symbol: StlAPI_Reader
+    - symbol: StlAPI_Writer
+    - symbol: IFSelect_ReturnStatus
+
+    # Handle Types
+    - symbol: Handle_Geom_BezierCurve
+    - symbol: Handle_Geom_BSplineCurve
+    - symbol: Handle_Geom_TrimmedCurve
+    - symbol: Handle_Geom_Curve
+    - symbol: Handle_Geom_Surface
+    - symbol: Handle_Poly_Triangulation
+    - symbol: Handle_Poly_PolygonOnTriangulation
+    - symbol: Handle_TColgp_HArray1OfPnt
+
+    # Shape Upgrade
+    - symbol: ShapeUpgrade_UnifySameDomain
+
+    # Message (needed for Build() calls)
+    - symbol: Message_ProgressRange
+
+    # Transfer/XDE
+    - symbol: Transfer_TransientProcess
+    - symbol: XSControl_WorkSession
+    - symbol: XSControl_Reader
+
+    # BRepGProp (for mass properties / center of mass)
+    - symbol: BRepGProp
+    - symbol: GProp_GProps
+
+    # Shape Check
+    - symbol: BRepCheck_Analyzer
+
+    # OCJS helper
+    - symbol: OCJS
+
+  emccFlags:
+    - "-flto"
+    - "-fexceptions"
+    - "-sDISABLE_EXCEPTION_CATCHING=0"
+    - "-O3"
+    - "-sEXPORT_ES6=1"
+    - "-sUSE_ES6_IMPORT_META=0"
+    - "-sEXPORTED_RUNTIME_METHODS=['FS']"
+    - "-sINITIAL_MEMORY=100MB"
+    - "-sMAXIMUM_MEMORY=4GB"
+    - "-sALLOW_MEMORY_GROWTH=1"
+    - "-sUSE_FREETYPE=1"
+    - "-sLLD_REPORT_UNDEFINED"
+    - "--no-entry"
+
+additionalCppCode: |
+  typedef Handle(IMeshTools_Context) Handle_IMeshTools_Context;
+  class OCJS {
+  public:
+    static Standard_Failure* getStandard_FailureData(intptr_t exceptionPtr) {
+      return reinterpret_cast<Standard_Failure*>(exceptionPtr);
+    }
+  };
