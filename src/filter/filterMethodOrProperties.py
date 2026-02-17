@@ -134,6 +134,48 @@ def filterMethodOrProperty(theClass, methodOrProperty):
   ):
     return False
 
+  # Skip methods/constructors with ostream/istream parameters (non-copyable, can't pass through Embind)
+  # Also detects misresolved types: libclang sometimes reports complex types like
+  # occ::handle<X> or std::istream as 'int' when template resolution fails.
+  # We cross-check against source tokens to catch these cases.
+  if methodOrProperty.kind in [
+    clang.cindex.CursorKind.CXX_METHOD,
+    clang.cindex.CursorKind.CONSTRUCTOR,
+    clang.cindex.CursorKind.FUNCTION_DECL,
+  ]:
+    try:
+      for arg in methodOrProperty.get_arguments():
+        argType = arg.type.spelling.lower()
+        if "ostream" in argType or "istream" in argType:
+          return False
+        # Detect misresolved parameter types: if resolved type is 'int' but source tokens
+        # contain complex type indicators, the type was incorrectly simplified
+        canonical = arg.type.get_canonical().spelling
+        stripped = canonical.replace('const ', '').replace(' &', '').replace('&', '').replace(' *', '').replace('*', '').strip()
+        if stripped in ['int', 'unsigned int']:
+          tokens = [t.spelling for t in arg.get_tokens()]
+          # Source mentions handle/Handle/occ → misresolved occ::handle<X> type
+          if any(t in ['Handle', 'handle', 'occ'] for t in tokens):
+            print(f"  Skipping {theClass.spelling}::{methodOrProperty.spelling}: param '{arg.spelling}' type misresolved to '{canonical}' (source tokens suggest handle type)")
+            return False
+          # Source mentions stream types → misresolved std::istream/ostream
+          if any('stream' in t.lower() for t in tokens):
+            print(f"  Skipping {theClass.spelling}::{methodOrProperty.spelling}: param '{arg.spelling}' type misresolved to '{canonical}' (source tokens suggest stream type)")
+            return False
+    except Exception:
+      pass
+
+
+  # OCCT 8.0: gp_Dir and gp_Dir2d have nested enum class D for axis selection.
+  # The binding generator doesn't fully qualify nested enums, producing 'D' instead of 'gp_Dir::D'.
+  if theClass.spelling in ['gp_Dir', 'gp_Dir2d'] and methodOrProperty.kind == clang.cindex.CursorKind.CONSTRUCTOR:
+    try:
+      for arg in methodOrProperty.get_arguments():
+        if arg.type.spelling in ['D', 'const D']:
+          return False
+    except Exception:
+      pass
+
   # error: call to implicitly-deleted copy constructor of 'Aspect_VKeySet'
   # error: rvalue reference to type 'Aspect_VKeySet' cannot bind to lvalue of type 'Aspect_VKeySet'
   # error: call to implicitly-deleted copy constructor of 'Aspect_VKeySet'
@@ -163,6 +205,30 @@ def filterMethodOrProperty(theClass, methodOrProperty):
   # causes extreme memory growth which fails the build (see corresponding typedef filter)
   if theClass.spelling in ["NCollection_Sequence", "NCollection_List"] and "::Iterator" in methodOrProperty.displayname:
     return False
+
+  # NCollection template containers use nested dependent types (value_type, iterator,
+  # allocator_type, const_reference) that aren't resolved when binding template
+  # specializations via typedef.  Filter out methods/constructors using these types.
+  _ncoll_containers = {"NCollection_Array1", "NCollection_HArray1", "NCollection_IndexedMap"}
+  _ncoll_bad_types = {
+    "value_type", "const value_type &", "value_type &&",
+    "iterator", "const_iterator",
+    "allocator_type", "const allocator_type &",
+    "const_reference", "reference",
+  }
+  if theClass.spelling in _ncoll_containers:
+    if methodOrProperty.result_type.spelling in _ncoll_bad_types:
+      return False
+    if methodOrProperty.kind in [
+      clang.cindex.CursorKind.CXX_METHOD,
+      clang.cindex.CursorKind.CONSTRUCTOR,
+    ]:
+      try:
+        for arg in methodOrProperty.get_arguments():
+          if arg.type.spelling in _ncoll_bad_types:
+            return False
+      except Exception:
+        pass
 
   # Creates error during instantiation:
   # Uncaught (in promise) RuntimeError: abort(Assertion failed: bad export type for `_ZNK19Geom2dHatch_Hatcher6IsDoneEv`: undefined). Build with -s ASSERTIONS=1 for more info.

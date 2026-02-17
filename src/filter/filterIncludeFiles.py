@@ -86,4 +86,34 @@ def filterIncludeFile(filename):
   if filename == "math_Householder.hxx":
     return False
 
+  # error: typedef redefinition with different types (conflicts with emsdk 4.0+ WebGL headers)
+  if (
+    filename == "OpenGl_GLESExtensions.hxx" or
+    filename == "OpenGl_GlFunctions.hxx"
+  ):
+    return False
+
+  # error: rapidjson v1.1.0 const member assignment fails with C++17 strict rules
+  if filename == "RWGltf_GltfJsonParser.hxx":
+    return False
+
+  # error: no member named 'NbIterations' in 'MathLin::EigenResult' (OCCT 8.0 RC4)
+  if filename == "MathLin_Jacobi.hxx":
+    return False
+
+  # error: OCCT #define CONSTRUCTOR macro conflicts with emscripten val.h EM_INVOKER_KIND::CONSTRUCTOR
+  if filename == "IntCurve_IntConicConic.hxx":
+    return False
+
+  # NCollectionAliases headers that reference non-existent types in OCCT 8.0
+  # (BOPDS_ListOfPaveBlock.hxx and Graphic3d_MapOfStructure.hxx were removed)
+  if (
+    filename == "BOPDS_DataMapOfIntegerListOfPaveBlock.hxx" or
+    filename == "BOPDS_DataMapOfPaveBlockListOfPaveBlock.hxx" or
+    filename == "BOPDS_IndexedDataMapOfPaveBlockListOfPaveBlock.hxx" or
+    filename == "BOPDS_VectorOfListOfPaveBlock.hxx" or
+    filename == "Graphic3d_MapIteratorOfMapOfStructure.hxx"
+  ):
+    return False
+
   return True

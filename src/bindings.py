@@ -7,6 +7,42 @@ from filter.filterMethodOrProperties import filterMethodOrProperty
 from Common import occtBasePath
 from typing import Tuple, List
 
+# OCCT 8.0 deprecated Standard_* typedefs in favor of plain C++ types.
+# Generated select_overload<> expressions must use the canonical type to
+# match the actual method signature, otherwise template deduction fails.
+OCCT_DEPRECATED_TYPES = {
+  'Standard_Integer':      'int',
+  'Standard_Real':         'double',
+  'Standard_Boolean':      'bool',
+  'Standard_ShortReal':    'float',
+  'Standard_Character':    'char',
+  'Standard_Byte':         'unsigned char',
+  'Standard_Size':         'size_t',
+  'Standard_Utf8Char':     'char',
+  'Standard_Utf16Char':    'char16_t',
+  'Standard_Utf32Char':    'char32_t',
+  'Standard_WideChar':     'wchar_t',
+  'Standard_CString':      'const char *',
+  'Standard_Address':      'void *',
+  'Standard_ExtCharacter': 'char16_t',
+}
+
+# Pre-compile regex for each deprecated type (word-boundary match)
+_OCCT_TYPE_PATTERNS = [
+  (re.compile(r'\b' + re.escape(old) + r'\b'), new)
+  for old, new in OCCT_DEPRECATED_TYPES.items()
+]
+
+def normalizeOcctType(typeSpelling: str) -> str:
+  """Replace deprecated OCCT typedefs with their C++ equivalents.
+
+  Handles qualified forms like 'const Standard_Integer &' → 'const int &'.
+  """
+  result = typeSpelling
+  for pattern, replacement in _OCCT_TYPE_PATTERNS:
+    result = pattern.sub(replacement, result)
+  return result
+
 def merge(sep: str, *strings: List[str]):
   return sep.join(strings)
 
@@ -159,7 +195,7 @@ class EmbindBindings(Bindings):
     nonPublicDestructor = any(x.kind == clang.cindex.CursorKind.DESTRUCTOR and not x.access_specifier == clang.cindex.AccessSpecifier.PUBLIC for x in theClass.get_children())
     placementDelete = next((x for x in theClass.get_children() if x.spelling == "operator delete" and len(list(x.get_arguments())) == 2), None) is not None
     if nonPublicDestructor or placementDelete:
-      output += "namespace emscripten { namespace internal { template<> void raw_destructor<" + theClass.spelling + ">(" + theClass.spelling + "* ptr) { /* do nothing */ } } }\n"
+      output += "namespace emscripten { namespace internal { template<> void raw_destructor<" + className + ">(" + className + "* ptr) { /* do nothing */ } } }\n"
     return output
 
   def processFinalizeClass(self):
@@ -180,8 +216,8 @@ class EmbindBindings(Bindings):
     if not standardConstructor:
       return output
 
-    argTypesBindings = ", ".join(list(map(lambda x: x.type.spelling, list(standardConstructor.get_arguments()))))
-    
+    argTypesBindings = ", ".join(list(map(lambda x: normalizeOcctType(x.type.spelling), list(standardConstructor.get_arguments()))))
+
     output += "    .constructor<" + argTypesBindings + ">()\n"
     return output
 
@@ -203,7 +239,7 @@ class EmbindBindings(Bindings):
           tokenList = list(arg.get_tokens())
           isConstRef = len(tokenList) > 0 and tokenList[0].spelling == "const"
           if not isConstRef:
-            if typename[-2] == "*" or "".join(typename.rsplit("&", 1)).strip() in ["Standard_Boolean", "Standard_Real", "Standard_Integer"]: # types that can be copied
+            if typename[-2] == "*" or "".join(typename.rsplit("&", 1)).strip() in ["Standard_Boolean", "Standard_Real", "Standard_Integer", "bool", "double", "int"]: # types that can be copied
               typename = "".join(typename.rsplit("&", 1))
               changed = True
             else:
@@ -247,9 +283,9 @@ class EmbindBindings(Bindings):
       if any(argsNeedingWrapper) or returnNeedsWrapper:
         def replaceTemplateArgs(x):
           if templateArgs is not None and args[x[0]].type.get_pointee().spelling.replace("const ", "") in templateArgs:
-            return args[x[0]].type.spelling.replace(args[x[0]].type.get_pointee().spelling.replace("const ", ""), templateArgs[args[x[0]].type.get_pointee().spelling.replace("const ", "")].spelling)
+            return normalizeOcctType(args[x[0]].type.spelling.replace(args[x[0]].type.get_pointee().spelling.replace("const ", ""), templateArgs[args[x[0]].type.get_pointee().spelling.replace("const ", "")].spelling))
           else:
-            return args[x[0]].type.spelling
+            return normalizeOcctType(args[x[0]].type.spelling)
         def getArgName(x):
           return pick(
             not args[x[0]].spelling == "",
@@ -308,7 +344,7 @@ class EmbindBindings(Bindings):
           else:
             return getArgName(x)
         resultTypeSpelling = \
-          pick(returnNeedsWrapper, "emscripten::val", self.getTypedefedTemplateTypeAsString(method.result_type.spelling, templateDecl, templateArgs))
+          pick(returnNeedsWrapper, "emscripten::val", normalizeOcctType(self.getTypedefedTemplateTypeAsString(method.result_type.spelling, templateDecl, templateArgs)))
         functionBindingHead = \
           merge("",
             "\n",
@@ -383,8 +419,8 @@ class EmbindBindings(Bindings):
         else:
           functionBinding = merge("",
             " select_overload<",
-            self.getTypedefedTemplateTypeAsString(method.result_type.spelling, templateDecl, templateArgs),
-            f'({merge(", ", *map(lambda x: self.getSingleArgumentBinding(True, True, templateDecl, templateArgs)(x)[0], list(method.get_arguments())))})',
+            normalizeOcctType(self.getTypedefedTemplateTypeAsString(method.result_type.spelling, templateDecl, templateArgs)),
+            f'({merge(", ", *map(lambda x: normalizeOcctType(self.getSingleArgumentBinding(True, True, templateDecl, templateArgs)(x)[0]), list(method.get_arguments())))})',
             pick(method.is_const_method(), "const", ""),
             pick(not method.is_static_method(), f", {getClassTypeName(theClass, templateDecl)}", ""),
             f">(&{className}::{method.spelling})",
@@ -419,9 +455,9 @@ class EmbindBindings(Bindings):
     for constructor in filter(lambda x: filterMethodOrProperty(theClass, x), constructors):
       overloadPostfix = "" if (not len(allOverloads) > 1) else "_" + str(allOverloads.index(constructor) + 1)
 
-      args = ", ".join(list(map(lambda x: ("std::string " + x.spelling) if isCString(x.type) else self.getSingleArgumentBinding(True, True, templateDecl, templateArgs)(x)[0], constructor.get_arguments())))
+      args = ", ".join(list(map(lambda x: ("std::string " + x.spelling) if isCString(x.type) else normalizeOcctType(self.getSingleArgumentBinding(True, True, templateDecl, templateArgs)(x)[0]), constructor.get_arguments())))
       argNames = ", ".join(list(map(lambda x: (x.spelling + ".c_str()") if isCString(x.type) else x.spelling, constructor.get_arguments())))
-      argTypes = ", ".join(list(map(lambda x: "std::string" if isCString(x.type) else self.getSingleArgumentBinding(False, True, templateDecl, templateArgs)(x)[0], constructor.get_arguments())))
+      argTypes = ", ".join(list(map(lambda x: "std::string" if isCString(x.type) else normalizeOcctType(self.getSingleArgumentBinding(False, True, templateDecl, templateArgs)(x)[0]), constructor.get_arguments())))
 
       name = getClassTypeName(theClass, templateDecl)
       constructorBindings += "    struct " + name + overloadPostfix + " : public " + name + " {\n"

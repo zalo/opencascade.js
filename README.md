@@ -1,33 +1,53 @@
-[![Build OpenCascade.js](https://github.com/donalffons/opencascade.js/actions/workflows/buildFull.yml/badge.svg?event=workflow_dispatch)](https://github.com/donalffons/opencascade.js/actions/workflows/buildFull.yml)
-![OpenCascade Version](https://img.shields.io/badge/OpenCascade%20Version-7.6.2-green.svg)
+# opencascade.js — CascadeStudio Fork
 
-<p align="center">
-  <img src="https://github.com/donalffons/opencascade.js/raw/master/images/logo.svg" alt="Logo" width="50%">
+A custom build of [opencascade.js](https://github.com/donalffons/opencascade.js) for [CascadeStudio](https://github.com/zalo/CascadeStudio).
 
-  <h3 align="center">OpenCascade.js</h3>
+This fork (`cascadestudio-v2` branch) tracks OCCT 8.0.0 RC4 with emsdk 4.0.23 and produces a tailored WASM module containing only the bindings CascadeStudio needs.
 
-  <p align="center">
-    A port of the <a href="https://www.opencascade.com/">OpenCascade</a> CAD library to JavaScript and WebAssembly via Emscripten.
-    <br />
-    <a href="https://ocjs.org/"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/donalffons/opencascade.js-examples">Examples</a>
-    ·
-    <a href="https://github.com/donalffons/opencascade.js/issues">Issues</a>
-    ·
-    <a href="https://github.com/donalffons/opencascade.js/discussions">Discuss</a>
-  </p>
-</p>
+## What's Different
 
-# Projects & Examples:
+| | Upstream | This Fork |
+|---|---------|-----------|
+| OCCT version | 7.6.2 | 8.0.0 RC4 |
+| emsdk version | 3.x | 4.0.23 |
+| Build config | Full (~2000+ classes) | `cascadestudio.yml` (~120 classes) |
+| Output | `opencascade.full.js` | `cascadestudio.js` + `.wasm` |
+| ES modules | Optional | Always (`-sEXPORT_ES6=1`) |
 
-* [ArchiYou](https://archiyou.com/): Library, Code-CAD Design Tool, Community Hub
-* [BitByBit](https://bitbybit.dev/): Code- & node-based - CAD Design Tool
-* [CascadeStudio](https://github.com/zalo/CascadeStudio): Library and Code-CAD Design Tool
-* [RepliCAD](https://replicad.xyz/): Library and Code-CAD Design Tool
-* [OpenCascade.js-examples](https://github.com/donalffons/opencascade.js-examples): Contains general examples on how to use the library.
+## Build
 
-# Contributing
+Requires Docker.
 
-Contributions are welcome! Feel free to have a look at the [todo-list](TODO.md) if you need some inspiration on what else needs to be done.
+```bash
+docker build --target custom-build-image -t ocjs-cascadestudio .
+```
+
+Extract the built files:
+
+```bash
+docker create --name ocjs-extract ocjs-cascadestudio
+docker cp ocjs-extract:/opencascade.js/dist/ ./dist/
+docker rm ocjs-extract
+```
+
+Output: `dist/cascadestudio.js` and `dist/cascadestudio.wasm`
+
+## Configuration
+
+All bindings are defined in [`builds/cascadestudio.yml`](builds/cascadestudio.yml). Add new OCCT classes by appending `- symbol: ClassName` entries.
+
+See [CLAUDE.md](CLAUDE.md) for detailed build system documentation, known issues, and troubleshooting.
+
+## Usage in CascadeStudio
+
+CascadeStudio references this fork via npm:
+
+```json
+"opencascade.js": "github:zalo/opencascade.js#cascadestudio-v2"
+```
+
+The built WASM files are committed to the `dist/` directory so CascadeStudio can consume them without building from source.
+
+## Upstream
+
+Forked from [donalffons/opencascade.js](https://github.com/donalffons/opencascade.js).

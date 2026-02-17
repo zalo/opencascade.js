@@ -20,6 +20,64 @@ buildDirectory = "/opencascade.js/build"
 occtBasePath = "/occt/src/"
 ocIncludeStatements = os.linesep.join(map(lambda x: "#include \"" + os.path.basename(x) + "\"", list(sorted(ocIncludeFiles))))
 
+import re as _re
+
+def _generateHandleTypedefs() -> str:
+  """Generate Handle_ClassName typedefs for all OCCT classes using DEFINE_STANDARD_RTTIEXT.
+
+  OCCT 8.0 removed DEFINE_STANDARD_HANDLE from most classes, so Handle_ClassName
+  typedefs no longer exist. The binding generator needs these typedefs to create
+  Handle binding files via templateTypedefGenerator.
+  """
+  typedefs = []
+  seen = set()
+  pattern = _re.compile(r'DEFINE_STANDARD_RTTIEXT\s*\(\s*(\w+)\s*,')
+  # Classes that are macro parameters or unavailable in WASM builds
+  _skip = {'Class'}
+  _skip_prefixes = ('IVtk', 'IVtkVTK', 'IVtkOCC', 'IVtkDraw')
+  for dirpath, dirnames, filenames in os.walk(occtBasePath):
+    for fname in filenames:
+      if not fname.endswith('.hxx'):
+        continue
+      filepath = os.path.join(dirpath, fname)
+      try:
+        with open(filepath, 'r', errors='replace') as f:
+          for line in f:
+            m = pattern.search(line)
+            if m:
+              className = m.group(1)
+              if className in _skip or className.startswith(_skip_prefixes):
+                continue
+              if className not in seen:
+                seen.add(className)
+                typedefs.append(
+                  f"typedef opencascade::handle<{className}> Handle_{className};"
+                )
+      except OSError:
+        pass
+  return "\n".join(typedefs)
+
+handleTypedefs = _generateHandleTypedefs()
+print(f"Generated {len(handleTypedefs.splitlines())} Handle typedefs for OCCT 8.0 compatibility")
+
+# OCCT 8.0 moved NCollection aliases to Deprecated/NCollectionAliases/.
+# We can't #include those headers (some have broken #include chains referencing
+# removed OCCT types). Instead, inject the needed typedefs directly into myMain.h.
+# Add entries here for any NCollection alias your build config requires.
+ncollectionTypedefs = "\n".join([
+  "typedef NCollection_Array1<gp_Pnt> TColgp_Array1OfPnt;",
+  "typedef NCollection_Array1<gp_Dir> TColgp_Array1OfDir;",
+  "typedef NCollection_Array1<gp_Pnt2d> TColgp_Array1OfPnt2d;",
+  "typedef NCollection_Array1<gp_Vec> TColgp_Array1OfVec;",
+  "typedef NCollection_Array1<double> TColStd_Array1OfReal;",
+  "typedef NCollection_Array1<int> TColStd_Array1OfInteger;",
+  "typedef NCollection_IndexedMap<TopoDS_Shape, TopTools_ShapeMapHasher> TopTools_IndexedMapOfShape;",
+  "typedef NCollection_Array1<Poly_Triangle> Poly_Array1OfTriangle;",
+  "typedef NCollection_HArray1<gp_Pnt> TColgp_HArray1OfPnt;",
+  "typedef opencascade::handle<TColgp_HArray1OfPnt> Handle_TColgp_HArray1OfPnt;",
+])
+print(f"Injecting {len(ncollectionTypedefs.splitlines())} NCollection typedefs for OCCT 8.0 compatibility")
+
 def mkdirp(name: str) -> None:
   try:
     os.makedirs(name)
@@ -49,9 +107,14 @@ def filterTemplates(child, customBuild):
         child.underlying_typedef_type.kind == clang.cindex.TypeKind.UNEXPOSED
       )
     )
-  return ((
-      child.extent.start.file.name.startswith(occtBasePath) and
-      filterPackages(os.path.basename(os.path.dirname(child.location.file.name)))
+  return (
+    (
+      (
+        child.extent.start.file.name.startswith(occtBasePath) and
+        filterPackages(os.path.basename(os.path.dirname(child.location.file.name)))
+      ) or
+      # OCCT 8.0: Handle typedefs injected into myMain.h (no longer in OCCT headers)
+      child.location.file.name == "myMain.h"
     ) and
     child.kind == clang.cindex.CursorKind.TYPEDEF_DECL and
     (
@@ -84,13 +147,16 @@ def processChildBatch(customCode, generator, buildType: str, extension: str, fil
     filename = buildDirectory + "/" + buildType + "/" + relOcFileName + "/" + (child.spelling if not child.spelling == "" else child.type.spelling) + extension
 
     if not os.path.exists(filename):
-      print("Processing " + child.spelling)
-      try:
-        output = processFunction(tu, preamble, child, typedefGenerator(tu), templateTypedefGenerator(tu))
-        bindingsFile = open(filename, "w")
-        bindingsFile.write(output)
-      except SkipException as e:
-        print(str(e))
+      if not child.spelling.startswith("("):
+        print("Processing " + child.spelling)
+        try:
+          output = processFunction(tu, preamble, child, typedefGenerator(tu), templateTypedefGenerator(tu))
+          bindingsFile = open(filename, "w")
+          bindingsFile.write(output)
+        except SkipException as e:
+          print(str(e))
+      else:
+        print("Skipping " + child.spelling)
     else:
       print("file " + child.spelling + ".cpp already exists, skipping")
 
@@ -207,10 +273,11 @@ def parse(additionalCppCode = ""):
     "myMain.h", [
       "-x",
       "c++",
+      "-std=c++17",
       "-stdlib=libc++",
       "-D__EMSCRIPTEN__"
     ] + includePathArgs,
-    [["myMain.h", ocIncludeStatements + "\n" + additionalCppCode]]
+    [["myMain.h", ocIncludeStatements + "\n" + handleTypedefs + "\n" + ncollectionTypedefs + "\n" + additionalCppCode]]
   )
 
   if len(translationUnit.diagnostics) > 0:
@@ -222,6 +289,8 @@ def parse(additionalCppCode = ""):
 
 referenceTypeTemplateDefs = \
   "\n" + \
+  "// Undefine OCCT macros that conflict with Emscripten headers\n" + \
+  "#undef CONSTRUCTOR\n" + \
   "#include <emscripten/bind.h>\n" + \
   "using namespace emscripten;\n" + \
   "#include <functional>\n" + \
@@ -250,7 +319,7 @@ def generateCustomCodeBindings(customCode):
   except Exception:
     pass
 
-  embindPreamble = ocIncludeStatements + "\n" + referenceTypeTemplateDefs + "\n" + customCode
+  embindPreamble = ocIncludeStatements + "\n" + handleTypedefs + "\n" + ncollectionTypedefs + "\n" + referenceTypeTemplateDefs + "\n" + customCode
 
   process(".cpp", embindGenerationFuncClasses, embindGenerationFuncTemplates, embindGenerationFuncEnums, embindPreamble, customCode, True)
   process(".d.ts.json", typescriptGenerationFuncClasses, typescriptGenerationFuncTemplates, typescriptGenerationFuncEnums, "", customCode, True)
@@ -261,7 +330,7 @@ if __name__ == "__main__":
   except Exception:
     pass
 
-  embindPreamble = ocIncludeStatements + "\n" + referenceTypeTemplateDefs
+  embindPreamble = ocIncludeStatements + "\n" + handleTypedefs + "\n" + ncollectionTypedefs + "\n" + referenceTypeTemplateDefs
   process(".cpp", embindGenerationFuncClasses, embindGenerationFuncTemplates, embindGenerationFuncEnums, embindPreamble, "", False)
 
   process(".d.ts.json", typescriptGenerationFuncClasses, typescriptGenerationFuncTemplates, typescriptGenerationFuncEnums, "", "", False)

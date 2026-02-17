@@ -8,6 +8,8 @@ mainBuild:
     - symbol: gp_Dir
     - symbol: gp_Ax1
     - symbol: gp_Ax2
+    - symbol: gp_Ax3
+    - symbol: gp_Pln
     - symbol: gp_Trsf
     - symbol: gp_Pnt2d
     - symbol: gp_Dir2d
@@ -35,6 +37,9 @@ mainBuild:
     # Offset/Fillet/Pipe Enums
     - symbol: BRepOffset_Mode
     - symbol: GeomAbs_JoinType
+    - symbol: GeomAbs_Shape
+    - symbol: GeomAbs_CurveType
+    - symbol: GeomAbs_SurfaceType
     - symbol: BRepFill_TypeOfContact
     - symbol: ChFi3d_FilletShape
 
@@ -52,6 +57,7 @@ mainBuild:
     - symbol: BRepMesh_DiscretRoot
     - symbol: BRepOffsetAPI_MakeOffsetShape
     - symbol: Adaptor3d_Curve
+    - symbol: Adaptor3d_Surface
     - symbol: GC_Root
     - symbol: Geom_Geometry
     - symbol: Geom_Curve
@@ -88,6 +94,7 @@ mainBuild:
     - symbol: BRepAlgoAPI_Fuse
     - symbol: BRepAlgoAPI_Cut
     - symbol: BRepAlgoAPI_Common
+    - symbol: BRepAlgoAPI_Section
 
     # Offset & Advanced Operations
     - symbol: BRepOffsetAPI_MakeOffset
@@ -115,6 +122,7 @@ mainBuild:
 
     # BRep Adaptor
     - symbol: BRepAdaptor_Curve
+    - symbol: BRepAdaptor_Surface
 
     # Meshing & Visualization
     - symbol: BRepMesh_IncrementalMesh
@@ -180,7 +188,7 @@ mainBuild:
     - "-sDISABLE_EXCEPTION_CATCHING=0"
     - "-O3"
     - "-sEXPORT_ES6=1"
-    - "-sUSE_ES6_IMPORT_META=0"
+
     - "-sEXPORTED_RUNTIME_METHODS=['FS']"
     - "-sINITIAL_MEMORY=100MB"
     - "-sMAXIMUM_MEMORY=4GB"

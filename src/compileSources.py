@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import os
+import time
 import subprocess
 import multiprocessing
 
@@ -8,6 +9,12 @@ from filter.filterSourceFiles import filterSourceFile
 from filter.filterPackages import filterPackages
 
 from argparse import ArgumentParser
+
+try:
+  from tqdm import tqdm
+  HAS_TQDM = True
+except ImportError:
+  HAS_TQDM = False
 
 libraryBasePath = "/opencascade.js/build/sources"
 
@@ -50,15 +57,20 @@ def buildObjectFiles(file, args):
     os.makedirs(libraryBasePath + "/" + os.path.dirname(relativeFile))
   except Exception:
     pass
+
+  # Use appropriate language standard based on file extension
+  is_c_file = file.endswith(".c")
+  lang_std = "-std=c17" if is_c_file else "-std=c++17"
+
   command = [
     "emcc",
+    lang_std,
     "-flto",
     "-fexceptions",
     "-sDISABLE_EXCEPTION_CATCHING=0",
     "-DIGNORE_NO_ATOMICS=1",
     "-DOCCT_NO_PLUGINS",
-    "-frtti",
-    "-DHAVE_RAPIDJSON", 
+    "-DHAVE_RAPIDJSON",
     "-Os",
     # "-g3",
     # "-gsource-map",
@@ -70,14 +82,21 @@ def buildObjectFiles(file, args):
     file,
   ]
 
+  # Only add C++-specific flags for C++ files
+  if not is_c_file:
+    command.insert(3, "-frtti")
+
   if not os.path.exists(libraryBasePath + "/" + relativeFile + ".o"):
-    print("Building " + relativeFile)
-    subprocess.check_call([
-      *command,
-      "-o", libraryBasePath + "/" + relativeFile + ".o",
-      ])
+    try:
+      subprocess.check_call([
+        *command,
+        "-o", libraryBasePath + "/" + relativeFile + ".o",
+        ])
+      return ("ok", relativeFile)
+    except subprocess.CalledProcessError:
+      return ("failed", relativeFile)
   else:
-    print(relativeFile + ".o already exists, skipping")
+    return ("skipped", relativeFile)
 
 allModules = {}
 for dirpath, dirnames, filenames in os.walk(sourceBasePath):
@@ -115,10 +134,35 @@ if __name__ == "__main__":
   except Exception:
     pass
 
+  total = len(filesToBuild)
+  print(f"Compiling {total} OCCT source files...")
+
+  ok = failed = skipped = 0
+  start = time.time()
+
   def myBuildFunction(x):
-    buildObjectFiles(x, {
+    return buildObjectFiles(x, {
       "threading": args.threading,
     })
 
   with multiprocessing.Pool(processes=multiprocessing.cpu_count()) as p:
-    p.map(myBuildFunction, filesToBuild)
+    if HAS_TQDM:
+      for status, path in tqdm(p.imap_unordered(myBuildFunction, filesToBuild), total=total, desc="Compiling sources", unit="file"):
+        if status == "ok": ok += 1
+        elif status == "failed": failed += 1
+        else: skipped += 1
+    else:
+      for i, (status, path) in enumerate(p.imap_unordered(myBuildFunction, filesToBuild), 1):
+        if status == "ok": ok += 1
+        elif status == "failed":
+          failed += 1
+          print(f"Warning: failed to compile {path}, skipping")
+        else: skipped += 1
+        if i % 100 == 0 or i == total:
+          elapsed = time.time() - start
+          rate = i / elapsed if elapsed > 0 else 0
+          eta = (total - i) / rate if rate > 0 else 0
+          print(f"[{i}/{total}] {ok} ok, {failed} failed, {skipped} skipped | {rate:.1f} files/s | ETA: {eta/60:.1f}min", flush=True)
+
+  elapsed = time.time() - start
+  print(f"\nSource compilation done: {ok} compiled, {failed} failed, {skipped} skipped (total: {total}) in {elapsed/60:.1f}min")

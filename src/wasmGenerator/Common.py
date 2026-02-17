@@ -100,6 +100,7 @@ def ignoreDuplicateTypedef(typedef):
     "Standard_Character *",
     "Standard_Integer",
     "BVH_Box<Standard_Real, 3>",
+    "BVH_Box<double, 3>",
     "Standard_ExtCharacter *",
     "int (*)(...)",
     "doublereal (*)(...)",
@@ -113,7 +114,10 @@ def ignoreDuplicateTypedef(typedef):
     "struct _XOC *",
     "Standard_Byte *",
     "Standard_Boolean (*)(const opencascade::handle<TCollection_HAsciiString> &)",
-    "Standard_Real"
+    "bool (*)(const opencascade::handle<TCollection_HAsciiString> &)",
+    "Standard_Real",
+    "bool",
+    "wchar_t"
   ]:
     return True
 
@@ -131,30 +135,30 @@ def ignoreDuplicateTypedef(typedef):
   ):
     return True
 
-  # --> NCollection_Vec3<Standard_Real>
+  # --> NCollection_Vec3<Standard_Real> (or NCollection_Vec3<double> in OCCT 8.0+)
   # ----> Graphic3d_Vec3d
   # ----> Select3D_Vec3
   # ----> SelectMgr_Vec3
   if (
-    typedef.underlying_typedef_type.spelling == "NCollection_Vec3<Standard_Real>" and
+    typedef.underlying_typedef_type.spelling in ["NCollection_Vec3<Standard_Real>", "NCollection_Vec3<double>"] and
     typedef.spelling in ["Select3D_Vec3", "SelectMgr_Vec3"]
   ):
     return True
 
-  # --> NCollection_Vec4<Standard_Real>
+  # --> NCollection_Vec4<Standard_Real> (or NCollection_Vec4<double> in OCCT 8.0+)
   # ----> Graphic3d_Vec4d
   # ----> SelectMgr_Vec4
   if (
-    typedef.underlying_typedef_type.spelling == "NCollection_Vec4<Standard_Real>" and
+    typedef.underlying_typedef_type.spelling in ["NCollection_Vec4<Standard_Real>", "NCollection_Vec4<double>"] and
     typedef.spelling in ["SelectMgr_Vec4"]
   ):
     return True
 
-  # --> NCollection_Mat4<Standard_Real>
+  # --> NCollection_Mat4<Standard_Real> (or NCollection_Mat4<double> in OCCT 8.0+)
   # ----> Graphic3d_Mat4d
   # ----> SelectMgr_Mat4
   if (
-    typedef.underlying_typedef_type.spelling == "NCollection_Mat4<Standard_Real>" and
+    typedef.underlying_typedef_type.spelling in ["NCollection_Mat4<Standard_Real>", "NCollection_Mat4<double>"] and
     typedef.spelling in ["SelectMgr_Mat4"]
   ):
     return True
@@ -186,30 +190,38 @@ def ignoreDuplicateTypedef(typedef):
   ):
     return True
 
-  # --> NCollection_UBTree<Standard_Integer, Bnd_Box>
+  # --> NCollection_UBTree<Standard_Integer, Bnd_Box> (or NCollection_UBTree<int, Bnd_Box> in OCCT 8.0+)
   # ----> BRepBuilderAPI_BndBoxTree
   # ----> BRepClass3d_BndBoxTree
   # ----> ShapeAnalysis_BoxBndTree
   if (
-    typedef.underlying_typedef_type.spelling == "NCollection_UBTree<Standard_Integer, Bnd_Box>" and
+    typedef.underlying_typedef_type.spelling in ["NCollection_UBTree<Standard_Integer, Bnd_Box>", "NCollection_UBTree<int, Bnd_Box>"] and
     typedef.spelling in ["BRepClass3d_BndBoxTree", "ShapeAnalysis_BoxBndTree"]
   ):
     return True
 
   # --> NCollection_IndexedDataMap<TCollection_AsciiString, Standard_Integer, TCollection_AsciiString>
+  #     (or with int in OCCT 8.0+)
   # ----> StdStorage_MapOfTypes
   # ----> Storage_PType
   if (
-    typedef.underlying_typedef_type.spelling == "NCollection_IndexedDataMap<TCollection_AsciiString, Standard_Integer, TCollection_AsciiString>" and
+    typedef.underlying_typedef_type.spelling in [
+      "NCollection_IndexedDataMap<TCollection_AsciiString, Standard_Integer, TCollection_AsciiString>",
+      "NCollection_IndexedDataMap<TCollection_AsciiString, int, TCollection_AsciiString>"
+    ] and
     typedef.spelling in ["StdStorage_MapOfTypes"]
   ):
     return True
 
   # --> opencascade::handle<BVH_Tree<Standard_ShortReal, 3, BVH_QuadTree> >
+  #     (or with float in OCCT 8.0+)
   # ----> QuadBvhHandle
   # ----> Handle_Handle_QuadBvhHandle
   if (
-    typedef.underlying_typedef_type.spelling == "opencascade::handle<BVH_Tree<Standard_ShortReal, 3, BVH_QuadTree> >" and
+    typedef.underlying_typedef_type.spelling in [
+      "opencascade::handle<BVH_Tree<Standard_ShortReal, 3, BVH_QuadTree> >",
+      "opencascade::handle<BVH_Tree<float, 3, BVH_QuadTree> >"
+    ] and
     typedef.spelling in ["QuadBvhHandle"]
   ):
     return True
