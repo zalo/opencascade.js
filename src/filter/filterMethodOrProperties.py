@@ -37,6 +37,10 @@ def filterMethodOrProperty(theClass, methodOrProperty):
   if theClass.spelling == "BinTools_Curve2dSet" and methodOrProperty.spelling == "Dump":
     return False
 
+  # error: Implicitly binding raw pointers is illegal (BRepMesh_DiscretRoot* reference parameter)
+  if theClass.spelling == "BRepMesh_IncrementalMesh" and methodOrProperty.spelling == "Discret":
+    return False
+
   # error: call to deleted constructor of 'std::istream'
   if (
     (theClass.spelling == "BinObjMgt_Persistent" and methodOrProperty.spelling == "Read") or
@@ -168,7 +172,9 @@ def filterMethodOrProperty(theClass, methodOrProperty):
 
   # OCCT 8.0: gp_Dir and gp_Dir2d have nested enum class D for axis selection.
   # The binding generator doesn't fully qualify nested enums, producing 'D' instead of 'gp_Dir::D'.
-  if theClass.spelling in ['gp_Dir', 'gp_Dir2d'] and methodOrProperty.kind == clang.cindex.CursorKind.CONSTRUCTOR:
+  # This affects not just gp_Dir itself but any class with constructors/methods taking D parameters
+  # (gp_Ax1, gp_Ax2, gp_Ax3, gp_Pln, etc.).
+  if methodOrProperty.kind in [clang.cindex.CursorKind.CONSTRUCTOR, clang.cindex.CursorKind.CXX_METHOD]:
     try:
       for arg in methodOrProperty.get_arguments():
         if arg.type.spelling in ['D', 'const D']:
@@ -215,6 +221,9 @@ def filterMethodOrProperty(theClass, methodOrProperty):
     "iterator", "const_iterator",
     "allocator_type", "const allocator_type &",
     "const_reference", "reference",
+    # NCollection_HArray1 template parameter names
+    "TheItemType", "const TheItemType &",
+    "Array1Type", "const Array1Type &",
   }
   if theClass.spelling in _ncoll_containers:
     if methodOrProperty.result_type.spelling in _ncoll_bad_types:

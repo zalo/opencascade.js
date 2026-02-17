@@ -180,7 +180,10 @@ class EmbindBindings(Bindings):
     baseSpec = list(filter(lambda x: x.kind == clang.cindex.CursorKind.CXX_BASE_SPECIFIER and x.access_specifier == clang.cindex.AccessSpecifier.PUBLIC, theClass.get_children()))
 
     if len(baseSpec) > 0:
-      baseClassBinding = ", base<" + baseSpec[0].type.spelling + ">"
+      baseClassType = baseSpec[0].type.spelling
+      if templateArgs:
+        baseClassType = self.replaceTemplateArgs(baseClassType, templateArgs)
+      baseClassBinding = ", base<" + baseClassType + ">"
     else:
       baseClassBinding = ""
 
@@ -382,7 +385,7 @@ class EmbindBindings(Bindings):
               ""
             ),
             merge("",
-              pick(not method.is_static_method(), "that.", f"{theClass.spelling}::"),
+              pick(not method.is_static_method(), "that.", f"{className}::"),
               f'{method.spelling}({merge(", ", *map(lambda x: generateInvocationArgs(x), enumerate(argsNeedingWrapper)))})',
             ),
             ";\n",

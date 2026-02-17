@@ -2348,7 +2348,6 @@ export declare class BRepMesh_IncrementalMesh extends BRepMesh_DiscretRoot {
   ChangeParameters(): IMeshTools_Parameters;
   IsModified(): Standard_Boolean;
   GetStatusFlags(): Standard_Integer;
-  static Discret(theShape: TopoDS_Shape, theLinDeflection: Standard_Real, theAngDeflection: Standard_Real, theAlgo: BRepMesh_DiscretRoot): Standard_Integer;
   static IsParallelDefault(): Standard_Boolean;
   static SetParallelDefault(isInParallel: Standard_Boolean): void;
   static get_type_name(): Standard_Character;
