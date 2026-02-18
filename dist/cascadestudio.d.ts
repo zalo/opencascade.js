@@ -1743,6 +1743,80 @@ export declare type TopAbs_Orientation = {
   TopAbs_EXTERNAL: {};
 }
 
+export declare class GeomAdaptor_TransformedSurface extends Adaptor3d_Surface {
+  static get_type_name(): Standard_Character;
+  static get_type_descriptor(): any;
+  DynamicType(): any;
+  ShallowCopy(): any;
+  Load_1(theSurface: any): void;
+  Load_2(theSurface: any, theUFirst: Standard_Real, theULast: Standard_Real, theVFirst: Standard_Real, theVLast: Standard_Real, theTolU: Standard_Real, theTolV: Standard_Real): void;
+  SetTrsf(theTrsf: gp_Trsf): void;
+  Trsf(): gp_Trsf;
+  Surface(): GeomAdaptor_Surface;
+  ChangeSurface(): GeomAdaptor_Surface;
+  GeomSurface(): any;
+  FirstUParameter(): Standard_Real;
+  LastUParameter(): Standard_Real;
+  FirstVParameter(): Standard_Real;
+  LastVParameter(): Standard_Real;
+  UContinuity(): GeomAbs_Shape;
+  VContinuity(): GeomAbs_Shape;
+  NbUIntervals(theS: GeomAbs_Shape): Standard_Integer;
+  NbVIntervals(theS: GeomAbs_Shape): Standard_Integer;
+  UIntervals(theT: NCollection_Array1<double>, theS: GeomAbs_Shape): void;
+  VIntervals(theT: NCollection_Array1<double>, theS: GeomAbs_Shape): void;
+  UTrim(theFirst: Standard_Real, theLast: Standard_Real, theTol: Standard_Real): any;
+  VTrim(theFirst: Standard_Real, theLast: Standard_Real, theTol: Standard_Real): any;
+  IsUClosed(): Standard_Boolean;
+  IsVClosed(): Standard_Boolean;
+  IsUPeriodic(): Standard_Boolean;
+  UPeriod(): Standard_Real;
+  IsVPeriodic(): Standard_Boolean;
+  VPeriod(): Standard_Real;
+  Value(theU: Standard_Real, theV: Standard_Real): gp_Pnt;
+  D0(theU: Standard_Real, theV: Standard_Real, theP: gp_Pnt): void;
+  D1(theU: Standard_Real, theV: Standard_Real, theP: gp_Pnt, theD1U: gp_Vec, theD1V: gp_Vec): void;
+  D2(theU: Standard_Real, theV: Standard_Real, theP: gp_Pnt, theD1U: gp_Vec, theD1V: gp_Vec, theD2U: gp_Vec, theD2V: gp_Vec, theD2UV: gp_Vec): void;
+  D3(theU: Standard_Real, theV: Standard_Real, theP: gp_Pnt, theD1U: gp_Vec, theD1V: gp_Vec, theD2U: gp_Vec, theD2V: gp_Vec, theD2UV: gp_Vec, theD3U: gp_Vec, theD3V: gp_Vec, theD3UUV: gp_Vec, theD3UVV: gp_Vec): void;
+  DN(theU: Standard_Real, theV: Standard_Real, theNu: Standard_Integer, theNv: Standard_Integer): gp_Vec;
+  UResolution(theR3d: Standard_Real): Standard_Real;
+  VResolution(theR3d: Standard_Real): Standard_Real;
+  GetType(): GeomAbs_SurfaceType;
+  Plane(): gp_Pln;
+  Cylinder(): gp_Cylinder;
+  Cone(): gp_Cone;
+  Sphere(): gp_Sphere;
+  Torus(): gp_Torus;
+  UDegree(): Standard_Integer;
+  NbUPoles(): Standard_Integer;
+  VDegree(): Standard_Integer;
+  NbVPoles(): Standard_Integer;
+  NbUKnots(): Standard_Integer;
+  NbVKnots(): Standard_Integer;
+  IsURational(): Standard_Boolean;
+  IsVRational(): Standard_Boolean;
+  Bezier(): any;
+  BSpline(): any;
+  AxeOfRevolution(): gp_Ax1;
+  Direction(): gp_Dir;
+  BasisCurve(): any;
+  BasisSurface(): any;
+  OffsetValue(): Standard_Real;
+  delete(): void;
+}
+
+  export declare class GeomAdaptor_TransformedSurface_1 extends GeomAdaptor_TransformedSurface {
+    constructor();
+  }
+
+  export declare class GeomAdaptor_TransformedSurface_2 extends GeomAdaptor_TransformedSurface {
+    constructor(theSurface: any, theTrsf: gp_Trsf);
+  }
+
+  export declare class GeomAdaptor_TransformedSurface_3 extends GeomAdaptor_TransformedSurface {
+    constructor(theSurface: any, theUFirst: Standard_Real, theULast: Standard_Real, theVFirst: Standard_Real, theVLast: Standard_Real, theTrsf: gp_Trsf, theTolU: Standard_Real, theTolV: Standard_Real);
+  }
+
 export declare class GeomAdaptor_Curve extends Adaptor3d_Curve {
   static get_type_name(): Standard_Character;
   static get_type_descriptor(): any;
@@ -3923,6 +3997,30 @@ export declare class OCJS {
   delete(): void;
 }
 
+export declare class Handle_Geom_Circle {
+  Nullify(): void;
+  IsNull(): boolean;
+  reset(thePtr: Geom_Circle): void;
+  get(): Geom_Circle;
+  delete(): void;
+}
+
+  export declare class Handle_Geom_Circle_1 extends Handle_Geom_Circle {
+    constructor();
+  }
+
+  export declare class Handle_Geom_Circle_2 extends Handle_Geom_Circle {
+    constructor(thePtr: Geom_Circle);
+  }
+
+  export declare class Handle_Geom_Circle_3 extends Handle_Geom_Circle {
+    constructor(theHandle: Handle_Geom_Circle);
+  }
+
+  export declare class Handle_Geom_Circle_4 extends Handle_Geom_Circle {
+    constructor(theHandle: Handle_Geom_Circle);
+  }
+
 export declare class Handle_Geom_BSplineCurve {
   Nullify(): void;
   IsNull(): boolean;
@@ -4320,6 +4418,10 @@ export declare interface OpenCascadeInstance {
   Geom_Circle_2: typeof Geom_Circle_2;
   TopAbs_ShapeEnum: typeof TopAbs_ShapeEnum;
   TopAbs_Orientation: typeof TopAbs_Orientation;
+  GeomAdaptor_TransformedSurface: typeof GeomAdaptor_TransformedSurface;
+  GeomAdaptor_TransformedSurface_1: typeof GeomAdaptor_TransformedSurface_1;
+  GeomAdaptor_TransformedSurface_2: typeof GeomAdaptor_TransformedSurface_2;
+  GeomAdaptor_TransformedSurface_3: typeof GeomAdaptor_TransformedSurface_3;
   GeomAdaptor_Curve: typeof GeomAdaptor_Curve;
   GeomAdaptor_Curve_1: typeof GeomAdaptor_Curve_1;
   GeomAdaptor_Curve_2: typeof GeomAdaptor_Curve_2;
@@ -4598,6 +4700,11 @@ export declare interface OpenCascadeInstance {
   Handle_Geom_Curve_3: typeof Handle_Geom_Curve_3;
   Handle_Geom_Curve_4: typeof Handle_Geom_Curve_4;
   OCJS: typeof OCJS;
+  Handle_Geom_Circle: typeof Handle_Geom_Circle;
+  Handle_Geom_Circle_1: typeof Handle_Geom_Circle_1;
+  Handle_Geom_Circle_2: typeof Handle_Geom_Circle_2;
+  Handle_Geom_Circle_3: typeof Handle_Geom_Circle_3;
+  Handle_Geom_Circle_4: typeof Handle_Geom_Circle_4;
   Handle_Geom_BSplineCurve: typeof Handle_Geom_BSplineCurve;
   Handle_Geom_BSplineCurve_1: typeof Handle_Geom_BSplineCurve_1;
   Handle_Geom_BSplineCurve_2: typeof Handle_Geom_BSplineCurve_2;

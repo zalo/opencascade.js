@@ -60,6 +60,7 @@ mainBuild:
     - symbol: BRepOffsetAPI_MakeOffsetShape
     - symbol: Adaptor3d_Curve
     - symbol: Adaptor3d_Surface
+    - symbol: GeomAdaptor_TransformedSurface
     - symbol: GC_Root
     - symbol: Geom_Geometry
     - symbol: Geom_Curve
@@ -163,6 +164,7 @@ mainBuild:
     - symbol: Handle_Geom_Surface
     - symbol: Handle_Poly_Triangulation
     - symbol: Handle_Poly_PolygonOnTriangulation
+    - symbol: Handle_Geom_Circle
     - symbol: Handle_TColgp_HArray1OfPnt
 
     # Shape Upgrade
