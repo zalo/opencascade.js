@@ -16,7 +16,8 @@ mainBuild:
     - symbol: gp_Ax2d
 
     # Topology Data Structures
-    - symbol: TopoDS_Cast
+    # TopoDS_Cast — registered in additionalBindCode (LTO strips auto-generated .o)
+    # - symbol: TopoDS_Cast
     - symbol: TopoDS_Shape
     - symbol: TopoDS_Compound
     - symbol: TopoDS_Solid
@@ -179,8 +180,8 @@ mainBuild:
     # Shape Check
     - symbol: BRepCheck_Analyzer
 
-    # OCJS helper
-    - symbol: OCJS
+    # OCJS helper — registered in additionalBindCode (LTO strips auto-generated .o)
+    # - symbol: OCJS
 
   emccFlags:
     - "-flto"
@@ -198,9 +199,45 @@ mainBuild:
     - "--no-entry"
 
   additionalBindCode: |
-    // OCCT 8.0: NCollection_Array1 methods Value/SetValue use dependent type 'value_type'
-    // that libclang can't resolve for typedef'd specializations. Add them manually here
-    // with concrete types using lambda wrappers.
+    // TopoDS_Cast and OCJS class definitions (duplicated from additionalCppCode
+    // because additionalBindCode is a separate compilation unit)
+    #include <TopoDS.hxx>
+    #include <TopoDS_Shape.hxx>
+    #include <TopoDS_Vertex.hxx>
+    #include <TopoDS_Edge.hxx>
+    #include <TopoDS_Wire.hxx>
+    #include <TopoDS_Face.hxx>
+    #include <TopoDS_Shell.hxx>
+    #include <TopoDS_Solid.hxx>
+    #include <TopoDS_Compound.hxx>
+    #include <Standard_Failure.hxx>
+    #include <functional>
+    class TopoDS_Cast {
+    public:
+      static const TopoDS_Vertex&    Vertex_1(const TopoDS_Shape& S) { return ::TopoDS::Vertex(S); }
+      static       TopoDS_Vertex&    Vertex_2(TopoDS_Shape& S)       { return ::TopoDS::Vertex(S); }
+      static const TopoDS_Edge&      Edge_1(const TopoDS_Shape& S)   { return ::TopoDS::Edge(S); }
+      static       TopoDS_Edge&      Edge_2(TopoDS_Shape& S)         { return ::TopoDS::Edge(S); }
+      static const TopoDS_Wire&      Wire_1(const TopoDS_Shape& S)   { return ::TopoDS::Wire(S); }
+      static       TopoDS_Wire&      Wire_2(TopoDS_Shape& S)         { return ::TopoDS::Wire(S); }
+      static const TopoDS_Face&      Face_1(const TopoDS_Shape& S)   { return ::TopoDS::Face(S); }
+      static       TopoDS_Face&      Face_2(TopoDS_Shape& S)         { return ::TopoDS::Face(S); }
+      static const TopoDS_Shell&     Shell_1(const TopoDS_Shape& S)  { return ::TopoDS::Shell(S); }
+      static       TopoDS_Shell&     Shell_2(TopoDS_Shape& S)        { return ::TopoDS::Shell(S); }
+      static const TopoDS_Solid&     Solid_1(const TopoDS_Shape& S)  { return ::TopoDS::Solid(S); }
+      static       TopoDS_Solid&     Solid_2(TopoDS_Shape& S)        { return ::TopoDS::Solid(S); }
+      static const TopoDS_Compound&  Compound_1(const TopoDS_Shape& S) { return ::TopoDS::Compound(S); }
+      static       TopoDS_Compound&  Compound_2(TopoDS_Shape& S)      { return ::TopoDS::Compound(S); }
+    };
+    class OCJS {
+    public:
+      static Standard_Failure* getStandard_FailureData(intptr_t exceptionPtr) {
+        return reinterpret_cast<Standard_Failure*>(exceptionPtr);
+      }
+      static int HashCode(const TopoDS_Shape& S, const int Upper) {
+        return static_cast<int>(std::hash<TopoDS_Shape>{}(S) % static_cast<size_t>(Upper));
+      }
+    };
     #include <gp_Pnt.hxx>
     #include <gp_Dir.hxx>
     #include <gp_Pnt2d.hxx>
@@ -215,6 +252,40 @@ mainBuild:
     #undef CONSTRUCTOR
     #include <emscripten/bind.h>
     using namespace emscripten;
+
+    // TopoDS_Cast and OCJS are custom classes (defined in additionalCppCode/myMain.h).
+    // Their auto-generated binding .o files get stripped by LTO, so register them here
+    // in additionalBindCode which is always linked.
+    EMSCRIPTEN_BINDINGS(AdditionalBindCode_TopoDS_Cast) {
+      class_<TopoDS_Cast>("TopoDS_Cast")
+        .constructor<>()
+        .class_function("Vertex_1", &TopoDS_Cast::Vertex_1, allow_raw_pointers())
+        .class_function("Vertex_2", &TopoDS_Cast::Vertex_2, allow_raw_pointers())
+        .class_function("Edge_1", &TopoDS_Cast::Edge_1, allow_raw_pointers())
+        .class_function("Edge_2", &TopoDS_Cast::Edge_2, allow_raw_pointers())
+        .class_function("Wire_1", &TopoDS_Cast::Wire_1, allow_raw_pointers())
+        .class_function("Wire_2", &TopoDS_Cast::Wire_2, allow_raw_pointers())
+        .class_function("Face_1", &TopoDS_Cast::Face_1, allow_raw_pointers())
+        .class_function("Face_2", &TopoDS_Cast::Face_2, allow_raw_pointers())
+        .class_function("Shell_1", &TopoDS_Cast::Shell_1, allow_raw_pointers())
+        .class_function("Shell_2", &TopoDS_Cast::Shell_2, allow_raw_pointers())
+        .class_function("Solid_1", &TopoDS_Cast::Solid_1, allow_raw_pointers())
+        .class_function("Solid_2", &TopoDS_Cast::Solid_2, allow_raw_pointers())
+        .class_function("Compound_1", &TopoDS_Cast::Compound_1, allow_raw_pointers())
+        .class_function("Compound_2", &TopoDS_Cast::Compound_2, allow_raw_pointers())
+        ;
+    }
+    EMSCRIPTEN_BINDINGS(AdditionalBindCode_OCJS) {
+      class_<OCJS>("OCJS")
+        .constructor<>()
+        .class_function("getStandard_FailureData", &OCJS::getStandard_FailureData, allow_raw_pointers())
+        .class_function("HashCode", &OCJS::HashCode, allow_raw_pointers())
+        ;
+    }
+
+    // NCollection_Array1 methods Value/SetValue use dependent type 'value_type'
+    // that libclang can't resolve for typedef'd specializations. Add them manually
+    // with concrete types using lambda wrappers.
     EMSCRIPTEN_BINDINGS(NCollection_Array1_Accessors) {
       class_<TColgp_Array1OfPnt>("TColgp_Array1OfPnt")
         .function("SetValue", +[](TColgp_Array1OfPnt& self, int idx, const gp_Pnt& val) { self.SetValue(idx, val); })

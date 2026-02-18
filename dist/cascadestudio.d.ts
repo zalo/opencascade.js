@@ -147,14 +147,6 @@ export declare class gp_Ax2d {
     constructor(theP: gp_Pnt2d, theV: gp_Dir2d);
   }
 
-  export declare class gp_Ax2d_3 extends gp_Ax2d {
-    constructor(theP: gp_Pnt2d, theDir: any);
-  }
-
-  export declare class gp_Ax2d_4 extends gp_Ax2d {
-    constructor(theDir: any);
-  }
-
 export declare class gp {
   static Resolution(): Standard_Real;
   static Origin(): gp_Pnt;
@@ -399,20 +391,8 @@ export declare class gp_Ax3 {
     constructor(theP: gp_Pnt, theN: gp_Dir, theVx: gp_Dir);
   }
 
-  export declare class gp_Ax3_4 extends gp_Ax3 {
-    constructor(theP: gp_Pnt, theN: any, theVx: any);
-  }
-
   export declare class gp_Ax3_5 extends gp_Ax3 {
     constructor(theP: gp_Pnt, theV: gp_Dir);
-  }
-
-  export declare class gp_Ax3_6 extends gp_Ax3 {
-    constructor(theP: gp_Pnt, theV: any);
-  }
-
-  export declare class gp_Ax3_7 extends gp_Ax3 {
-    constructor(theV: any);
   }
 
 export declare class gp_Trsf {
@@ -503,20 +483,8 @@ export declare class gp_Ax2 {
     constructor(P: gp_Pnt, N: gp_Dir, Vx: gp_Dir);
   }
 
-  export declare class gp_Ax2_3 extends gp_Ax2 {
-    constructor(theP: gp_Pnt, theN: any, theVx: any);
-  }
-
   export declare class gp_Ax2_4 extends gp_Ax2 {
     constructor(P: gp_Pnt, V: gp_Dir);
-  }
-
-  export declare class gp_Ax2_5 extends gp_Ax2 {
-    constructor(theP: gp_Pnt, theV: any);
-  }
-
-  export declare class gp_Ax2_6 extends gp_Ax2 {
-    constructor(theV: any);
   }
 
 export declare class gp_Pnt {
@@ -606,14 +574,6 @@ export declare class gp_Ax1 {
 
   export declare class gp_Ax1_2 extends gp_Ax1 {
     constructor(theP: gp_Pnt, theV: gp_Dir);
-  }
-
-  export declare class gp_Ax1_3 extends gp_Ax1 {
-    constructor(theP: gp_Pnt, theDir: any);
-  }
-
-  export declare class gp_Ax1_4 extends gp_Ax1 {
-    constructor(theDir: any);
   }
 
 export declare class gp_Pln {
@@ -2203,6 +2163,15 @@ export declare class BRepAlgoAPI_BuilderAlgo extends BRepAlgoAPI_Algo {
 
 export declare class BRepAlgoAPI_Algo extends BRepBuilderAPI_MakeShape {
   Shape(): TopoDS_Shape;
+  Clear(): void;
+  ClearWarnings(): void;
+  SetRunParallel(theFlag: Standard_Boolean): void;
+  RunParallel(): Standard_Boolean;
+  SetFuzzyValue(theFuzz: Standard_Real): void;
+  FuzzyValue(): Standard_Real;
+  HasErrors(): Standard_Boolean;
+  HasWarnings(): Standard_Boolean;
+  SetUseOBB(theUseOBB: Standard_Boolean): void;
   delete(): void;
 }
 
@@ -3928,12 +3897,6 @@ export declare class Handle_Geom_Curve {
     constructor(theHandle: Handle_Geom_Curve);
   }
 
-export declare class OCJS {
-  constructor();
-  static getStandard_FailureData(exceptionPtr: intptr_t): Standard_Failure;
-  delete(): void;
-}
-
 export declare class Handle_Geom_BSplineCurve {
   Nullify(): void;
   IsNull(): boolean;
@@ -4160,29 +4123,16 @@ type Standard_ShortReal = number;
 type Standard_Size = number;
 
 declare namespace FS {
-  interface Lookup {
-      path: string;
-      node: FSNode;
-  }
-
+  interface Lookup { path: string; node: FSNode; }
   interface FSStream {}
   interface FSNode {}
   interface ErrnoError {}
-
   let ignorePermissions: boolean;
   let trackingDelegate: any;
   let tracking: any;
   let genericErrors: any;
-
-  //
-  // paths
-  //
   function lookupPath(path: string, opts: any): Lookup;
   function getPath(node: FSNode): string;
-
-  //
-  // nodes
-  //
   function isFile(mode: number): boolean;
   function isDir(mode: number): boolean;
   function isLink(mode: number): boolean;
@@ -4190,29 +4140,20 @@ declare namespace FS {
   function isBlkdev(mode: number): boolean;
   function isFIFO(mode: number): boolean;
   function isSocket(mode: number): boolean;
-
-  //
-  // devices
-  //
   function major(dev: number): number;
   function minor(dev: number): number;
   function makedev(ma: number, mi: number): number;
   function registerDevice(dev: number, ops: any): void;
-
-  //
-  // core
-  //
   function syncfs(populate: boolean, callback: (e: any) => any): void;
   function syncfs(callback: (e: any) => any, populate?: boolean): void;
   function mount(type: any, opts: any, mountpoint: string): any;
   function unmount(mountpoint: string): void;
-
   function mkdir(path: string, mode?: number): any;
   function mkdev(path: string, mode?: number, dev?: number): any;
   function symlink(oldpath: string, newpath: string): any;
   function rename(old_path: string, new_path: string): void;
   function rmdir(path: string): void;
-  function readdir(path: string): any;
+  function readdir(path: string): any[];
   function unlink(path: string): void;
   function readlink(path: string): string;
   function stat(path: string, dontFollow?: boolean): any;
@@ -4230,83 +4171,21 @@ declare namespace FS {
   function close(stream: FSStream): void;
   function llseek(stream: FSStream, offset: number, whence: number): any;
   function read(stream: FSStream, buffer: ArrayBufferView, offset: number, length: number, position?: number): number;
-  function write(
-      stream: FSStream,
-      buffer: ArrayBufferView,
-      offset: number,
-      length: number,
-      position?: number,
-      canOwn?: boolean,
-  ): number;
+  function write(stream: FSStream, buffer: ArrayBufferView, offset: number, length: number, position?: number, canOwn?: boolean): number;
   function allocate(stream: FSStream, offset: number, length: number): void;
-  function mmap(
-      stream: FSStream,
-      buffer: ArrayBufferView,
-      offset: number,
-      length: number,
-      position: number,
-      prot: number,
-      flags: number,
-  ): any;
+  function mmap(stream: FSStream, buffer: ArrayBufferView, offset: number, length: number, position: number, prot: number, flags: number): any;
   function ioctl(stream: FSStream, cmd: any, arg: any): any;
-  function readFile(path: string, opts: { encoding: 'binary'; flags?: string }): Uint8Array;
-  function readFile(path: string, opts: { encoding: 'utf8'; flags?: string }): string;
-  function readFile(path: string, opts?: { flags?: string }): Uint8Array;
+  function readFile(path: string, opts?: { encoding?: string; flags?: string }): any;
   function writeFile(path: string, data: string | ArrayBufferView, opts?: { flags?: string }): void;
-
-  //
-  // module-level FS code
-  //
   function cwd(): string;
   function chdir(path: string): void;
-  function init(
-      input: null | (() => number | null),
-      output: null | ((c: number) => any),
-      error: null | ((c: number) => any),
-  ): void;
-
-  function createLazyFile(
-      parent: string | FSNode,
-      name: string,
-      url: string,
-      canRead: boolean,
-      canWrite: boolean,
-  ): FSNode;
-  function createPreloadedFile(
-      parent: string | FSNode,
-      name: string,
-      url: string,
-      canRead: boolean,
-      canWrite: boolean,
-      onload?: () => void,
-      onerror?: () => void,
-      dontCreateFile?: boolean,
-      canOwn?: boolean,
-  ): void;
-  function createDataFile(
-      parent: string | FSNode,
-      name: string,
-      data: ArrayBufferView | string,
-      canRead: boolean,
-      canWrite: boolean,
-      canOwn: boolean,
-  ): FSNode;
-  interface AnalysisResults {
-    isRoot: boolean,
-    exists: boolean,
-    error: Error,
-    name: string,
-    path: any,
-    object: any,
-    parentExists: boolean,
-    parentPath: any,
-    parentObject: any
-  }
-  function analyzePath(path: string): AnalysisResults;
+  function init(input: null | (() => number | null), output: null | ((c: number) => any), error: null | ((c: number) => any)): void;
+  function createDataFile(parent: string, name: string, data: ArrayBufferView | string, canRead: boolean, canWrite: boolean, canOwn?: boolean): void;
+  function createLazyFile(parent: string, name: string, url: string, canRead: boolean, canWrite: boolean): void;
 }
 
-
-export type OpenCascadeInstance = {FS: typeof FS} & {
+export declare interface OpenCascadeInstance {
+  FS: typeof FS;
   Message_ProgressRange: typeof Message_ProgressRange;
   Message_ProgressRange_1: typeof Message_ProgressRange_1;
   Message_ProgressRange_2: typeof Message_ProgressRange_2;
@@ -4324,8 +4203,6 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   gp_Ax2d: typeof gp_Ax2d;
   gp_Ax2d_1: typeof gp_Ax2d_1;
   gp_Ax2d_2: typeof gp_Ax2d_2;
-  gp_Ax2d_3: typeof gp_Ax2d_3;
-  gp_Ax2d_4: typeof gp_Ax2d_4;
   gp: typeof gp;
   gp_Dir2d: typeof gp_Dir2d;
   gp_Dir2d_1: typeof gp_Dir2d_1;
@@ -4346,20 +4223,14 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   gp_Ax3_1: typeof gp_Ax3_1;
   gp_Ax3_2: typeof gp_Ax3_2;
   gp_Ax3_3: typeof gp_Ax3_3;
-  gp_Ax3_4: typeof gp_Ax3_4;
   gp_Ax3_5: typeof gp_Ax3_5;
-  gp_Ax3_6: typeof gp_Ax3_6;
-  gp_Ax3_7: typeof gp_Ax3_7;
   gp_Trsf: typeof gp_Trsf;
   gp_Trsf_1: typeof gp_Trsf_1;
   gp_Trsf_2: typeof gp_Trsf_2;
   gp_Ax2: typeof gp_Ax2;
   gp_Ax2_1: typeof gp_Ax2_1;
   gp_Ax2_2: typeof gp_Ax2_2;
-  gp_Ax2_3: typeof gp_Ax2_3;
   gp_Ax2_4: typeof gp_Ax2_4;
-  gp_Ax2_5: typeof gp_Ax2_5;
-  gp_Ax2_6: typeof gp_Ax2_6;
   gp_Pnt: typeof gp_Pnt;
   gp_Pnt_1: typeof gp_Pnt_1;
   gp_Pnt_2: typeof gp_Pnt_2;
@@ -4367,17 +4238,15 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   gp_Ax1: typeof gp_Ax1;
   gp_Ax1_1: typeof gp_Ax1_1;
   gp_Ax1_2: typeof gp_Ax1_2;
-  gp_Ax1_3: typeof gp_Ax1_3;
-  gp_Ax1_4: typeof gp_Ax1_4;
   gp_Pln: typeof gp_Pln;
   gp_Pln_1: typeof gp_Pln_1;
   gp_Pln_2: typeof gp_Pln_2;
   gp_Pln_3: typeof gp_Pln_3;
   gp_Pln_4: typeof gp_Pln_4;
-  GeomAbs_CurveType: GeomAbs_CurveType;
-  GeomAbs_Shape: GeomAbs_Shape;
-  GeomAbs_JoinType: GeomAbs_JoinType;
-  GeomAbs_SurfaceType: GeomAbs_SurfaceType;
+  GeomAbs_CurveType: typeof GeomAbs_CurveType;
+  GeomAbs_Shape: typeof GeomAbs_Shape;
+  GeomAbs_JoinType: typeof GeomAbs_JoinType;
+  GeomAbs_SurfaceType: typeof GeomAbs_SurfaceType;
   Poly_Triangle: typeof Poly_Triangle;
   Poly_Triangle_1: typeof Poly_Triangle_1;
   Poly_Triangle_2: typeof Poly_Triangle_2;
@@ -4474,8 +4343,8 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   Geom_Circle: typeof Geom_Circle;
   Geom_Circle_1: typeof Geom_Circle_1;
   Geom_Circle_2: typeof Geom_Circle_2;
-  TopAbs_ShapeEnum: TopAbs_ShapeEnum;
-  TopAbs_Orientation: TopAbs_Orientation;
+  TopAbs_ShapeEnum: typeof TopAbs_ShapeEnum;
+  TopAbs_Orientation: typeof TopAbs_Orientation;
   GeomAdaptor_Curve: typeof GeomAdaptor_Curve;
   GeomAdaptor_Curve_1: typeof GeomAdaptor_Curve_1;
   GeomAdaptor_Curve_2: typeof GeomAdaptor_Curve_2;
@@ -4538,7 +4407,7 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   BRepOffsetAPI_MakeOffset_2: typeof BRepOffsetAPI_MakeOffset_2;
   BRepOffsetAPI_MakeOffset_3: typeof BRepOffsetAPI_MakeOffset_3;
   BRepOffsetAPI_MakePipeShell: typeof BRepOffsetAPI_MakePipeShell;
-  BRepOffset_Mode: BRepOffset_Mode;
+  BRepOffset_Mode: typeof BRepOffset_Mode;
   BRepMesh_DiscretRoot: typeof BRepMesh_DiscretRoot;
   BRepMesh_IncrementalMesh: typeof BRepMesh_IncrementalMesh;
   BRepMesh_IncrementalMesh_1: typeof BRepMesh_IncrementalMesh_1;
@@ -4595,8 +4464,8 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   BRepPrimAPI_MakePrism: typeof BRepPrimAPI_MakePrism;
   BRepPrimAPI_MakePrism_1: typeof BRepPrimAPI_MakePrism_1;
   BRepPrimAPI_MakePrism_2: typeof BRepPrimAPI_MakePrism_2;
-  BRepFill_TypeOfContact: BRepFill_TypeOfContact;
-  ChFi3d_FilletShape: ChFi3d_FilletShape;
+  BRepFill_TypeOfContact: typeof BRepFill_TypeOfContact;
+  ChFi3d_FilletShape: typeof ChFi3d_FilletShape;
   BRepFilletAPI_MakeChamfer: typeof BRepFilletAPI_MakeChamfer;
   BRepFilletAPI_MakeFillet: typeof BRepFilletAPI_MakeFillet;
   BRepFilletAPI_LocalOperation: typeof BRepFilletAPI_LocalOperation;
@@ -4690,7 +4559,7 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   IGESControl_Reader: typeof IGESControl_Reader;
   IGESControl_Reader_1: typeof IGESControl_Reader_1;
   IGESControl_Reader_2: typeof IGESControl_Reader_2;
-  STEPControl_StepModelType: STEPControl_StepModelType;
+  STEPControl_StepModelType: typeof STEPControl_StepModelType;
   STEPControl_Writer: typeof STEPControl_Writer;
   STEPControl_Writer_1: typeof STEPControl_Writer_1;
   STEPControl_Writer_2: typeof STEPControl_Writer_2;
@@ -4700,7 +4569,7 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   StlAPI_Reader: typeof StlAPI_Reader;
   StlAPI_Writer: typeof StlAPI_Writer;
   IFSelect_WorkSession: typeof IFSelect_WorkSession;
-  IFSelect_ReturnStatus: IFSelect_ReturnStatus;
+  IFSelect_ReturnStatus: typeof IFSelect_ReturnStatus;
   Transfer_TransientProcess: typeof Transfer_TransientProcess;
   Transfer_ProcessForTransient: typeof Transfer_ProcessForTransient;
   Transfer_ProcessForTransient_1: typeof Transfer_ProcessForTransient_1;
@@ -4752,7 +4621,6 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   Handle_Geom_Curve_2: typeof Handle_Geom_Curve_2;
   Handle_Geom_Curve_3: typeof Handle_Geom_Curve_3;
   Handle_Geom_Curve_4: typeof Handle_Geom_Curve_4;
-  OCJS: typeof OCJS;
   Handle_Geom_BSplineCurve: typeof Handle_Geom_BSplineCurve;
   Handle_Geom_BSplineCurve_1: typeof Handle_Geom_BSplineCurve_1;
   Handle_Geom_BSplineCurve_2: typeof Handle_Geom_BSplineCurve_2;
@@ -4793,8 +4661,8 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   Handle_TColgp_HArray1OfPnt_2: typeof Handle_TColgp_HArray1OfPnt_2;
   Handle_TColgp_HArray1OfPnt_3: typeof Handle_TColgp_HArray1OfPnt_3;
   Handle_TColgp_HArray1OfPnt_4: typeof Handle_TColgp_HArray1OfPnt_4;
-};
+}
 
-declare function init(): Promise<OpenCascadeInstance>;
+type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
 
-export default init;
+export default function initOpenCascade(settings?: { mainJS?: InitInput; mainWasm?: InitInput; worker?: InitInput; libs?: InitInput[]; module?: Record<string, unknown>; }): Promise<OpenCascadeInstance>;
