@@ -2163,6 +2163,15 @@ export declare class BRepAlgoAPI_BuilderAlgo extends BRepAlgoAPI_Algo {
 
 export declare class BRepAlgoAPI_Algo extends BRepBuilderAPI_MakeShape {
   Shape(): TopoDS_Shape;
+  Clear(): void;
+  ClearWarnings(): void;
+  SetRunParallel(theFlag: Standard_Boolean): void;
+  RunParallel(): Standard_Boolean;
+  SetFuzzyValue(theFuzz: Standard_Real): void;
+  FuzzyValue(): Standard_Real;
+  HasErrors(): Standard_Boolean;
+  HasWarnings(): Standard_Boolean;
+  SetUseOBB(theUseOBB: Standard_Boolean): void;
   delete(): void;
 }
 
@@ -3691,6 +3700,25 @@ export declare class TColgp_Array1OfVec {
     constructor(theOther: TColgp_Array1OfVec);
   }
 
+export declare class TopoDS_Cast {
+  constructor();
+  static Vertex_1(S: TopoDS_Shape): TopoDS_Vertex;
+  static Vertex_2(S: TopoDS_Shape): TopoDS_Vertex;
+  static Edge_1(S: TopoDS_Shape): TopoDS_Edge;
+  static Edge_2(S: TopoDS_Shape): TopoDS_Edge;
+  static Wire_1(S: TopoDS_Shape): TopoDS_Wire;
+  static Wire_2(S: TopoDS_Shape): TopoDS_Wire;
+  static Face_1(S: TopoDS_Shape): TopoDS_Face;
+  static Face_2(S: TopoDS_Shape): TopoDS_Face;
+  static Shell_1(S: TopoDS_Shape): TopoDS_Shell;
+  static Shell_2(S: TopoDS_Shape): TopoDS_Shell;
+  static Solid_1(S: TopoDS_Shape): TopoDS_Solid;
+  static Solid_2(S: TopoDS_Shape): TopoDS_Solid;
+  static Compound_1(S: TopoDS_Shape): TopoDS_Compound;
+  static Compound_2(S: TopoDS_Shape): TopoDS_Compound;
+  delete(): void;
+}
+
 export declare class TopTools_IndexedMapOfShape extends NCollection_BaseMap {
   begin(): iterator;
   end(): iterator;
@@ -4120,29 +4148,16 @@ type Standard_ShortReal = number;
 type Standard_Size = number;
 
 declare namespace FS {
-  interface Lookup {
-      path: string;
-      node: FSNode;
-  }
-
+  interface Lookup { path: string; node: FSNode; }
   interface FSStream {}
   interface FSNode {}
   interface ErrnoError {}
-
   let ignorePermissions: boolean;
   let trackingDelegate: any;
   let tracking: any;
   let genericErrors: any;
-
-  //
-  // paths
-  //
   function lookupPath(path: string, opts: any): Lookup;
   function getPath(node: FSNode): string;
-
-  //
-  // nodes
-  //
   function isFile(mode: number): boolean;
   function isDir(mode: number): boolean;
   function isLink(mode: number): boolean;
@@ -4150,29 +4165,20 @@ declare namespace FS {
   function isBlkdev(mode: number): boolean;
   function isFIFO(mode: number): boolean;
   function isSocket(mode: number): boolean;
-
-  //
-  // devices
-  //
   function major(dev: number): number;
   function minor(dev: number): number;
   function makedev(ma: number, mi: number): number;
   function registerDevice(dev: number, ops: any): void;
-
-  //
-  // core
-  //
   function syncfs(populate: boolean, callback: (e: any) => any): void;
   function syncfs(callback: (e: any) => any, populate?: boolean): void;
   function mount(type: any, opts: any, mountpoint: string): any;
   function unmount(mountpoint: string): void;
-
   function mkdir(path: string, mode?: number): any;
   function mkdev(path: string, mode?: number, dev?: number): any;
   function symlink(oldpath: string, newpath: string): any;
   function rename(old_path: string, new_path: string): void;
   function rmdir(path: string): void;
-  function readdir(path: string): any;
+  function readdir(path: string): any[];
   function unlink(path: string): void;
   function readlink(path: string): string;
   function stat(path: string, dontFollow?: boolean): any;
@@ -4190,83 +4196,21 @@ declare namespace FS {
   function close(stream: FSStream): void;
   function llseek(stream: FSStream, offset: number, whence: number): any;
   function read(stream: FSStream, buffer: ArrayBufferView, offset: number, length: number, position?: number): number;
-  function write(
-      stream: FSStream,
-      buffer: ArrayBufferView,
-      offset: number,
-      length: number,
-      position?: number,
-      canOwn?: boolean,
-  ): number;
+  function write(stream: FSStream, buffer: ArrayBufferView, offset: number, length: number, position?: number, canOwn?: boolean): number;
   function allocate(stream: FSStream, offset: number, length: number): void;
-  function mmap(
-      stream: FSStream,
-      buffer: ArrayBufferView,
-      offset: number,
-      length: number,
-      position: number,
-      prot: number,
-      flags: number,
-  ): any;
+  function mmap(stream: FSStream, buffer: ArrayBufferView, offset: number, length: number, position: number, prot: number, flags: number): any;
   function ioctl(stream: FSStream, cmd: any, arg: any): any;
-  function readFile(path: string, opts: { encoding: 'binary'; flags?: string }): Uint8Array;
-  function readFile(path: string, opts: { encoding: 'utf8'; flags?: string }): string;
-  function readFile(path: string, opts?: { flags?: string }): Uint8Array;
+  function readFile(path: string, opts?: { encoding?: string; flags?: string }): any;
   function writeFile(path: string, data: string | ArrayBufferView, opts?: { flags?: string }): void;
-
-  //
-  // module-level FS code
-  //
   function cwd(): string;
   function chdir(path: string): void;
-  function init(
-      input: null | (() => number | null),
-      output: null | ((c: number) => any),
-      error: null | ((c: number) => any),
-  ): void;
-
-  function createLazyFile(
-      parent: string | FSNode,
-      name: string,
-      url: string,
-      canRead: boolean,
-      canWrite: boolean,
-  ): FSNode;
-  function createPreloadedFile(
-      parent: string | FSNode,
-      name: string,
-      url: string,
-      canRead: boolean,
-      canWrite: boolean,
-      onload?: () => void,
-      onerror?: () => void,
-      dontCreateFile?: boolean,
-      canOwn?: boolean,
-  ): void;
-  function createDataFile(
-      parent: string | FSNode,
-      name: string,
-      data: ArrayBufferView | string,
-      canRead: boolean,
-      canWrite: boolean,
-      canOwn: boolean,
-  ): FSNode;
-  interface AnalysisResults {
-    isRoot: boolean,
-    exists: boolean,
-    error: Error,
-    name: string,
-    path: any,
-    object: any,
-    parentExists: boolean,
-    parentPath: any,
-    parentObject: any
-  }
-  function analyzePath(path: string): AnalysisResults;
+  function init(input: null | (() => number | null), output: null | ((c: number) => any), error: null | ((c: number) => any)): void;
+  function createDataFile(parent: string, name: string, data: ArrayBufferView | string, canRead: boolean, canWrite: boolean, canOwn?: boolean): void;
+  function createLazyFile(parent: string, name: string, url: string, canRead: boolean, canWrite: boolean): void;
 }
 
-
-export type OpenCascadeInstance = {FS: typeof FS} & {
+export declare interface OpenCascadeInstance {
+  FS: typeof FS;
   Message_ProgressRange: typeof Message_ProgressRange;
   Message_ProgressRange_1: typeof Message_ProgressRange_1;
   Message_ProgressRange_2: typeof Message_ProgressRange_2;
@@ -4324,10 +4268,10 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   gp_Pln_2: typeof gp_Pln_2;
   gp_Pln_3: typeof gp_Pln_3;
   gp_Pln_4: typeof gp_Pln_4;
-  GeomAbs_CurveType: GeomAbs_CurveType;
-  GeomAbs_Shape: GeomAbs_Shape;
-  GeomAbs_JoinType: GeomAbs_JoinType;
-  GeomAbs_SurfaceType: GeomAbs_SurfaceType;
+  GeomAbs_CurveType: typeof GeomAbs_CurveType;
+  GeomAbs_Shape: typeof GeomAbs_Shape;
+  GeomAbs_JoinType: typeof GeomAbs_JoinType;
+  GeomAbs_SurfaceType: typeof GeomAbs_SurfaceType;
   Poly_Triangle: typeof Poly_Triangle;
   Poly_Triangle_1: typeof Poly_Triangle_1;
   Poly_Triangle_2: typeof Poly_Triangle_2;
@@ -4424,8 +4368,8 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   Geom_Circle: typeof Geom_Circle;
   Geom_Circle_1: typeof Geom_Circle_1;
   Geom_Circle_2: typeof Geom_Circle_2;
-  TopAbs_ShapeEnum: TopAbs_ShapeEnum;
-  TopAbs_Orientation: TopAbs_Orientation;
+  TopAbs_ShapeEnum: typeof TopAbs_ShapeEnum;
+  TopAbs_Orientation: typeof TopAbs_Orientation;
   GeomAdaptor_Curve: typeof GeomAdaptor_Curve;
   GeomAdaptor_Curve_1: typeof GeomAdaptor_Curve_1;
   GeomAdaptor_Curve_2: typeof GeomAdaptor_Curve_2;
@@ -4488,7 +4432,7 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   BRepOffsetAPI_MakeOffset_2: typeof BRepOffsetAPI_MakeOffset_2;
   BRepOffsetAPI_MakeOffset_3: typeof BRepOffsetAPI_MakeOffset_3;
   BRepOffsetAPI_MakePipeShell: typeof BRepOffsetAPI_MakePipeShell;
-  BRepOffset_Mode: BRepOffset_Mode;
+  BRepOffset_Mode: typeof BRepOffset_Mode;
   BRepMesh_DiscretRoot: typeof BRepMesh_DiscretRoot;
   BRepMesh_IncrementalMesh: typeof BRepMesh_IncrementalMesh;
   BRepMesh_IncrementalMesh_1: typeof BRepMesh_IncrementalMesh_1;
@@ -4545,8 +4489,8 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   BRepPrimAPI_MakePrism: typeof BRepPrimAPI_MakePrism;
   BRepPrimAPI_MakePrism_1: typeof BRepPrimAPI_MakePrism_1;
   BRepPrimAPI_MakePrism_2: typeof BRepPrimAPI_MakePrism_2;
-  BRepFill_TypeOfContact: BRepFill_TypeOfContact;
-  ChFi3d_FilletShape: ChFi3d_FilletShape;
+  BRepFill_TypeOfContact: typeof BRepFill_TypeOfContact;
+  ChFi3d_FilletShape: typeof ChFi3d_FilletShape;
   BRepFilletAPI_MakeChamfer: typeof BRepFilletAPI_MakeChamfer;
   BRepFilletAPI_MakeFillet: typeof BRepFilletAPI_MakeFillet;
   BRepFilletAPI_LocalOperation: typeof BRepFilletAPI_LocalOperation;
@@ -4640,7 +4584,7 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   IGESControl_Reader: typeof IGESControl_Reader;
   IGESControl_Reader_1: typeof IGESControl_Reader_1;
   IGESControl_Reader_2: typeof IGESControl_Reader_2;
-  STEPControl_StepModelType: STEPControl_StepModelType;
+  STEPControl_StepModelType: typeof STEPControl_StepModelType;
   STEPControl_Writer: typeof STEPControl_Writer;
   STEPControl_Writer_1: typeof STEPControl_Writer_1;
   STEPControl_Writer_2: typeof STEPControl_Writer_2;
@@ -4650,7 +4594,7 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   StlAPI_Reader: typeof StlAPI_Reader;
   StlAPI_Writer: typeof StlAPI_Writer;
   IFSelect_WorkSession: typeof IFSelect_WorkSession;
-  IFSelect_ReturnStatus: IFSelect_ReturnStatus;
+  IFSelect_ReturnStatus: typeof IFSelect_ReturnStatus;
   Transfer_TransientProcess: typeof Transfer_TransientProcess;
   Transfer_ProcessForTransient: typeof Transfer_ProcessForTransient;
   Transfer_ProcessForTransient_1: typeof Transfer_ProcessForTransient_1;
@@ -4670,6 +4614,7 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   TColgp_Array1OfVec_2: typeof TColgp_Array1OfVec_2;
   TColgp_Array1OfVec_5: typeof TColgp_Array1OfVec_5;
   TColgp_Array1OfVec_6: typeof TColgp_Array1OfVec_6;
+  TopoDS_Cast: typeof TopoDS_Cast;
   TopTools_IndexedMapOfShape: typeof TopTools_IndexedMapOfShape;
   TopTools_IndexedMapOfShape_1: typeof TopTools_IndexedMapOfShape_1;
   TopTools_IndexedMapOfShape_2: typeof TopTools_IndexedMapOfShape_2;
@@ -4743,8 +4688,8 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   Handle_TColgp_HArray1OfPnt_2: typeof Handle_TColgp_HArray1OfPnt_2;
   Handle_TColgp_HArray1OfPnt_3: typeof Handle_TColgp_HArray1OfPnt_3;
   Handle_TColgp_HArray1OfPnt_4: typeof Handle_TColgp_HArray1OfPnt_4;
-};
+}
 
-declare function init(): Promise<OpenCascadeInstance>;
+type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
 
-export default init;
+export default function initOpenCascade(settings?: { mainJS?: InitInput; mainWasm?: InitInput; worker?: InitInput; libs?: InitInput[]; module?: Record<string, unknown>; }): Promise<OpenCascadeInstance>;

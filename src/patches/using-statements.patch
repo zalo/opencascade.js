@@ -38,57 +38,39 @@ diff -ruN /occt-original/src/BlendFunc/BlendFunc_ConstThroatInv.hxx /occt/src/Bl
    Standard_EXPORT virtual void Set (const Standard_Real theThroat,
                                      const Standard_Real,
 diff -ruN /occt-original/src/BRepAlgoAPI/BRepAlgoAPI_Algo.hxx /occt/src/BRepAlgoAPI/BRepAlgoAPI_Algo.hxx
---- /occt-original/src/BRepAlgoAPI/BRepAlgoAPI_Algo.hxx	2022-02-01 12:05:58.000000000 +0000
-+++ /occt/src/BRepAlgoAPI/BRepAlgoAPI_Algo.hxx	2022-03-15 13:14:55.333279375 +0000
-@@ -40,20 +40,34 @@
- 
+--- /occt-original/src/BRepAlgoAPI/BRepAlgoAPI_Algo.hxx	2024-01-01 00:00:00.000000000 +0000
++++ /occt/src/BRepAlgoAPI/BRepAlgoAPI_Algo.hxx	2024-01-01 00:00:01.000000000 +0000
+@@ -39,20 +39,23 @@
+
    // Provide access to methods of protected base class BOPAlgo_Options
    // (inherited as protected to avoid problems with SWIG wrapper)
 -  using BOPAlgo_Options::Clear;
--  using BOPAlgo_Options::SetRunParallel;
--  using BOPAlgo_Options::RunParallel;
--  using BOPAlgo_Options::SetFuzzyValue;
--  using BOPAlgo_Options::FuzzyValue;
--  using BOPAlgo_Options::HasErrors;
--  using BOPAlgo_Options::HasWarnings;
--  using BOPAlgo_Options::HasError;
--  using BOPAlgo_Options::HasWarning;
+-  using BOPAlgo_Options::ClearWarnings;
 -  using BOPAlgo_Options::DumpErrors;
 -  using BOPAlgo_Options::DumpWarnings;
--  using BOPAlgo_Options::ClearWarnings;
+-  using BOPAlgo_Options::FuzzyValue;
 -  using BOPAlgo_Options::GetReport;
+-  using BOPAlgo_Options::HasError;
+-  using BOPAlgo_Options::HasErrors;
+-  using BOPAlgo_Options::HasWarning;
+-  using BOPAlgo_Options::HasWarnings;
+-  using BOPAlgo_Options::RunParallel;
+-  using BOPAlgo_Options::SetFuzzyValue;
+-  using BOPAlgo_Options::SetRunParallel;
 -  using BOPAlgo_Options::SetUseOBB;
-+  // using BOPAlgo_Options::Clear;
-+  // using BOPAlgo_Options::SetRunParallel;
-+  // using BOPAlgo_Options::RunParallel;
-+  // using BOPAlgo_Options::SetFuzzyValue;
-+  // using BOPAlgo_Options::FuzzyValue;
-+  // using BOPAlgo_Options::HasErrors;
-+  // using BOPAlgo_Options::HasWarnings;
-+  // using BOPAlgo_Options::HasError;
-+  // using BOPAlgo_Options::HasWarning;
-+  // using BOPAlgo_Options::DumpErrors;
-+  // using BOPAlgo_Options::DumpWarnings;
-+  // using BOPAlgo_Options::ClearWarnings;
-+  // using BOPAlgo_Options::GetReport;
-+  // using BOPAlgo_Options::SetUseOBB;
++  // Replaced 'using' declarations with forwarding methods for Embind compatibility.
 +  void Clear() override { BOPAlgo_Options::Clear(); }
++  void ClearWarnings() { BOPAlgo_Options::ClearWarnings(); }
 +  void SetRunParallel(const Standard_Boolean theFlag) { BOPAlgo_Options::SetRunParallel(theFlag); }
 +  Standard_Boolean RunParallel() const { return BOPAlgo_Options::RunParallel(); }
 +  void SetFuzzyValue(const Standard_Real theFuzz) { BOPAlgo_Options::SetFuzzyValue(theFuzz); }
 +  Standard_Real FuzzyValue() const { return BOPAlgo_Options::FuzzyValue(); }
 +  Standard_Boolean HasErrors() const { return BOPAlgo_Options::HasErrors(); }
 +  Standard_Boolean HasWarnings() const { return BOPAlgo_Options::HasWarnings(); }
-+  Standard_Boolean HasError (const Handle(Standard_Type)& theType) const { return BOPAlgo_Options::HasError(theType); }
-+  Standard_Boolean HasWarning (const Handle(Standard_Type)& theType) const { return BOPAlgo_Options::HasWarning(theType); }
-+  void DumpErrors(Standard_OStream& theOS) const { BOPAlgo_Options::DumpErrors(theOS); }
-+  void DumpWarnings(Standard_OStream& theOS) const { BOPAlgo_Options::DumpWarnings(theOS); }
-+  void ClearWarnings() { BOPAlgo_Options::ClearWarnings(); }
-+  const Handle(Message_Report)& GetReport () const { return BOPAlgo_Options::GetReport(); }
 +  void SetUseOBB(const Standard_Boolean theUseOBB) { BOPAlgo_Options::SetUseOBB(theUseOBB); }
- 
+
  protected:
- 
+
 diff -ruN /occt-original/src/Graphic3d/Graphic3d_Buffer.hxx /occt/src/Graphic3d/Graphic3d_Buffer.hxx
 --- /occt-original/src/Graphic3d/Graphic3d_Buffer.hxx	2021-02-02 08:51:56.000000000 +0000
 +++ /occt/src/Graphic3d/Graphic3d_Buffer.hxx	2021-02-14 13:26:26.004271348 +0000

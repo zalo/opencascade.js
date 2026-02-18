@@ -16,7 +16,7 @@ mainBuild:
     - symbol: gp_Ax2d
 
     # Topology Data Structures
-    - symbol: TopoDS
+    - symbol: TopoDS_Cast
     - symbol: TopoDS_Shape
     - symbol: TopoDS_Compound
     - symbol: TopoDS_Solid
@@ -199,6 +199,26 @@ mainBuild:
 
 additionalCppCode: |
   typedef Handle(IMeshTools_Context) Handle_IMeshTools_Context;
+  // OCCT 8.0: TopoDS is now a namespace, not a class.
+  // Provide a wrapper class so JS code can call oc.TopoDS_Cast.Edge_1(shape) etc.
+  #include <TopoDS.hxx>
+  class TopoDS_Cast {
+  public:
+    static const TopoDS_Vertex&    Vertex_1(const TopoDS_Shape& S) { return ::TopoDS::Vertex(S); }
+    static       TopoDS_Vertex&    Vertex_2(TopoDS_Shape& S)       { return ::TopoDS::Vertex(S); }
+    static const TopoDS_Edge&      Edge_1(const TopoDS_Shape& S)   { return ::TopoDS::Edge(S); }
+    static       TopoDS_Edge&      Edge_2(TopoDS_Shape& S)         { return ::TopoDS::Edge(S); }
+    static const TopoDS_Wire&      Wire_1(const TopoDS_Shape& S)   { return ::TopoDS::Wire(S); }
+    static       TopoDS_Wire&      Wire_2(TopoDS_Shape& S)         { return ::TopoDS::Wire(S); }
+    static const TopoDS_Face&      Face_1(const TopoDS_Shape& S)   { return ::TopoDS::Face(S); }
+    static       TopoDS_Face&      Face_2(TopoDS_Shape& S)         { return ::TopoDS::Face(S); }
+    static const TopoDS_Shell&     Shell_1(const TopoDS_Shape& S)  { return ::TopoDS::Shell(S); }
+    static       TopoDS_Shell&     Shell_2(TopoDS_Shape& S)        { return ::TopoDS::Shell(S); }
+    static const TopoDS_Solid&     Solid_1(const TopoDS_Shape& S)  { return ::TopoDS::Solid(S); }
+    static       TopoDS_Solid&     Solid_2(TopoDS_Shape& S)        { return ::TopoDS::Solid(S); }
+    static const TopoDS_Compound&  Compound_1(const TopoDS_Shape& S) { return ::TopoDS::Compound(S); }
+    static       TopoDS_Compound&  Compound_2(TopoDS_Shape& S)      { return ::TopoDS::Compound(S); }
+  };
   class OCJS {
   public:
     static Standard_Failure* getStandard_FailureData(intptr_t exceptionPtr) {
