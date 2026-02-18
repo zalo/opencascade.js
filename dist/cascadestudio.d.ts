@@ -147,14 +147,6 @@ export declare class gp_Ax2d {
     constructor(theP: gp_Pnt2d, theV: gp_Dir2d);
   }
 
-  export declare class gp_Ax2d_3 extends gp_Ax2d {
-    constructor(theP: gp_Pnt2d, theDir: any);
-  }
-
-  export declare class gp_Ax2d_4 extends gp_Ax2d {
-    constructor(theDir: any);
-  }
-
 export declare class gp {
   static Resolution(): Standard_Real;
   static Origin(): gp_Pnt;
@@ -399,20 +391,8 @@ export declare class gp_Ax3 {
     constructor(theP: gp_Pnt, theN: gp_Dir, theVx: gp_Dir);
   }
 
-  export declare class gp_Ax3_4 extends gp_Ax3 {
-    constructor(theP: gp_Pnt, theN: any, theVx: any);
-  }
-
   export declare class gp_Ax3_5 extends gp_Ax3 {
     constructor(theP: gp_Pnt, theV: gp_Dir);
-  }
-
-  export declare class gp_Ax3_6 extends gp_Ax3 {
-    constructor(theP: gp_Pnt, theV: any);
-  }
-
-  export declare class gp_Ax3_7 extends gp_Ax3 {
-    constructor(theV: any);
   }
 
 export declare class gp_Trsf {
@@ -503,20 +483,8 @@ export declare class gp_Ax2 {
     constructor(P: gp_Pnt, N: gp_Dir, Vx: gp_Dir);
   }
 
-  export declare class gp_Ax2_3 extends gp_Ax2 {
-    constructor(theP: gp_Pnt, theN: any, theVx: any);
-  }
-
   export declare class gp_Ax2_4 extends gp_Ax2 {
     constructor(P: gp_Pnt, V: gp_Dir);
-  }
-
-  export declare class gp_Ax2_5 extends gp_Ax2 {
-    constructor(theP: gp_Pnt, theV: any);
-  }
-
-  export declare class gp_Ax2_6 extends gp_Ax2 {
-    constructor(theV: any);
   }
 
 export declare class gp_Pnt {
@@ -606,14 +574,6 @@ export declare class gp_Ax1 {
 
   export declare class gp_Ax1_2 extends gp_Ax1 {
     constructor(theP: gp_Pnt, theV: gp_Dir);
-  }
-
-  export declare class gp_Ax1_3 extends gp_Ax1 {
-    constructor(theP: gp_Pnt, theDir: any);
-  }
-
-  export declare class gp_Ax1_4 extends gp_Ax1 {
-    constructor(theDir: any);
   }
 
 export declare class gp_Pln {
@@ -4324,8 +4284,6 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   gp_Ax2d: typeof gp_Ax2d;
   gp_Ax2d_1: typeof gp_Ax2d_1;
   gp_Ax2d_2: typeof gp_Ax2d_2;
-  gp_Ax2d_3: typeof gp_Ax2d_3;
-  gp_Ax2d_4: typeof gp_Ax2d_4;
   gp: typeof gp;
   gp_Dir2d: typeof gp_Dir2d;
   gp_Dir2d_1: typeof gp_Dir2d_1;
@@ -4346,20 +4304,14 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   gp_Ax3_1: typeof gp_Ax3_1;
   gp_Ax3_2: typeof gp_Ax3_2;
   gp_Ax3_3: typeof gp_Ax3_3;
-  gp_Ax3_4: typeof gp_Ax3_4;
   gp_Ax3_5: typeof gp_Ax3_5;
-  gp_Ax3_6: typeof gp_Ax3_6;
-  gp_Ax3_7: typeof gp_Ax3_7;
   gp_Trsf: typeof gp_Trsf;
   gp_Trsf_1: typeof gp_Trsf_1;
   gp_Trsf_2: typeof gp_Trsf_2;
   gp_Ax2: typeof gp_Ax2;
   gp_Ax2_1: typeof gp_Ax2_1;
   gp_Ax2_2: typeof gp_Ax2_2;
-  gp_Ax2_3: typeof gp_Ax2_3;
   gp_Ax2_4: typeof gp_Ax2_4;
-  gp_Ax2_5: typeof gp_Ax2_5;
-  gp_Ax2_6: typeof gp_Ax2_6;
   gp_Pnt: typeof gp_Pnt;
   gp_Pnt_1: typeof gp_Pnt_1;
   gp_Pnt_2: typeof gp_Pnt_2;
@@ -4367,8 +4319,6 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   gp_Ax1: typeof gp_Ax1;
   gp_Ax1_1: typeof gp_Ax1_1;
   gp_Ax1_2: typeof gp_Ax1_2;
-  gp_Ax1_3: typeof gp_Ax1_3;
-  gp_Ax1_4: typeof gp_Ax1_4;
   gp_Pln: typeof gp_Pln;
   gp_Pln_1: typeof gp_Pln_1;
   gp_Pln_2: typeof gp_Pln_2;

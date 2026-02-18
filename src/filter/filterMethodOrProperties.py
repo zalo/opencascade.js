@@ -1,6 +1,16 @@
 import clang.cindex
 
 def filterMethodOrProperty(theClass, methodOrProperty):
+  # OCCT 8.0: Many classes explicitly delete copy/move constructors and assignment operators.
+  # Embind can't handle these — wire.h tries to instantiate copy construction.
+  # Filter them out generically using libclang's is_deleted_method().
+  if methodOrProperty.kind in [clang.cindex.CursorKind.CONSTRUCTOR, clang.cindex.CursorKind.CXX_METHOD]:
+    try:
+      if methodOrProperty.is_deleted_method():
+        return False
+    except AttributeError:
+      pass
+
   # # error: no matching conversion for functional-style cast from '(lambda at /opencascade.js/build/modules/module.TKHLR.wasm.cpp:8477:153)' to 'std::function<HLRAlgo_BiPoint::PointsT &(HLRAlgo_PolyAlgo &, emscripten::val, emscripten::val, emscripten::val, emscripten::val, emscripten::val)>'
   # if \
   #   (theClass.spelling == "HLRAlgo_PolyAlgo" and methodOrProperty.spelling == "Show") or \
@@ -171,13 +181,13 @@ def filterMethodOrProperty(theClass, methodOrProperty):
 
 
   # OCCT 8.0: gp_Dir and gp_Dir2d have nested enum class D for axis selection.
-  # The binding generator doesn't fully qualify nested enums, producing 'D' instead of 'gp_Dir::D'.
-  # This affects not just gp_Dir itself but any class with constructors/methods taking D parameters
-  # (gp_Ax1, gp_Ax2, gp_Ax3, gp_Pln, etc.).
+  # libclang reports these as 'gp_Dir::D' / 'const gp_Dir::D' (or gp_Dir2d::D) on
+  # consuming classes like gp_Ax1, gp_Ax2, gp_Ax3, gp_Pln, etc.
   if methodOrProperty.kind in [clang.cindex.CursorKind.CONSTRUCTOR, clang.cindex.CursorKind.CXX_METHOD]:
     try:
       for arg in methodOrProperty.get_arguments():
-        if arg.type.spelling in ['D', 'const D']:
+        ts = arg.type.spelling
+        if ts in ['D', 'const D'] or '::D' in ts:
           return False
     except Exception:
       pass
