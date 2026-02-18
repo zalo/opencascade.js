@@ -3700,6 +3700,25 @@ export declare class TColgp_Array1OfVec {
     constructor(theOther: TColgp_Array1OfVec);
   }
 
+export declare class TopoDS_Cast {
+  constructor();
+  static Vertex_1(S: TopoDS_Shape): TopoDS_Vertex;
+  static Vertex_2(S: TopoDS_Shape): TopoDS_Vertex;
+  static Edge_1(S: TopoDS_Shape): TopoDS_Edge;
+  static Edge_2(S: TopoDS_Shape): TopoDS_Edge;
+  static Wire_1(S: TopoDS_Shape): TopoDS_Wire;
+  static Wire_2(S: TopoDS_Shape): TopoDS_Wire;
+  static Face_1(S: TopoDS_Shape): TopoDS_Face;
+  static Face_2(S: TopoDS_Shape): TopoDS_Face;
+  static Shell_1(S: TopoDS_Shape): TopoDS_Shell;
+  static Shell_2(S: TopoDS_Shape): TopoDS_Shell;
+  static Solid_1(S: TopoDS_Shape): TopoDS_Solid;
+  static Solid_2(S: TopoDS_Shape): TopoDS_Solid;
+  static Compound_1(S: TopoDS_Shape): TopoDS_Compound;
+  static Compound_2(S: TopoDS_Shape): TopoDS_Compound;
+  delete(): void;
+}
+
 export declare class TopTools_IndexedMapOfShape extends NCollection_BaseMap {
   begin(): iterator;
   end(): iterator;
@@ -3896,6 +3915,13 @@ export declare class Handle_Geom_Curve {
   export declare class Handle_Geom_Curve_4 extends Handle_Geom_Curve {
     constructor(theHandle: Handle_Geom_Curve);
   }
+
+export declare class OCJS {
+  constructor();
+  static getStandard_FailureData(exceptionPtr: intptr_t): Standard_Failure;
+  static HashCode(S: TopoDS_Shape, Upper: Standard_Integer): Standard_Integer;
+  delete(): void;
+}
 
 export declare class Handle_Geom_BSplineCurve {
   Nullify(): void;
@@ -4127,61 +4153,10 @@ declare namespace FS {
   interface FSStream {}
   interface FSNode {}
   interface ErrnoError {}
-  let ignorePermissions: boolean;
-  let trackingDelegate: any;
-  let tracking: any;
-  let genericErrors: any;
-  function lookupPath(path: string, opts: any): Lookup;
-  function getPath(node: FSNode): string;
-  function isFile(mode: number): boolean;
-  function isDir(mode: number): boolean;
-  function isLink(mode: number): boolean;
-  function isChrdev(mode: number): boolean;
-  function isBlkdev(mode: number): boolean;
-  function isFIFO(mode: number): boolean;
-  function isSocket(mode: number): boolean;
-  function major(dev: number): number;
-  function minor(dev: number): number;
-  function makedev(ma: number, mi: number): number;
-  function registerDevice(dev: number, ops: any): void;
-  function syncfs(populate: boolean, callback: (e: any) => any): void;
-  function syncfs(callback: (e: any) => any, populate?: boolean): void;
-  function mount(type: any, opts: any, mountpoint: string): any;
-  function unmount(mountpoint: string): void;
-  function mkdir(path: string, mode?: number): any;
-  function mkdev(path: string, mode?: number, dev?: number): any;
-  function symlink(oldpath: string, newpath: string): any;
-  function rename(old_path: string, new_path: string): void;
-  function rmdir(path: string): void;
-  function readdir(path: string): any[];
-  function unlink(path: string): void;
-  function readlink(path: string): string;
-  function stat(path: string, dontFollow?: boolean): any;
-  function lstat(path: string): any;
-  function chmod(path: string, mode: number, dontFollow?: boolean): void;
-  function lchmod(path: string, mode: number): void;
-  function fchmod(fd: number, mode: number): void;
-  function chown(path: string, uid: number, gid: number, dontFollow?: boolean): void;
-  function lchown(path: string, uid: number, gid: number): void;
-  function fchown(fd: number, uid: number, gid: number): void;
-  function truncate(path: string, len: number): void;
-  function ftruncate(fd: number, len: number): void;
-  function utime(path: string, atime: number, mtime: number): void;
-  function open(path: string, flags: string, mode?: number, fd_start?: number, fd_end?: number): FSStream;
-  function close(stream: FSStream): void;
-  function llseek(stream: FSStream, offset: number, whence: number): any;
-  function read(stream: FSStream, buffer: ArrayBufferView, offset: number, length: number, position?: number): number;
-  function write(stream: FSStream, buffer: ArrayBufferView, offset: number, length: number, position?: number, canOwn?: boolean): number;
-  function allocate(stream: FSStream, offset: number, length: number): void;
-  function mmap(stream: FSStream, buffer: ArrayBufferView, offset: number, length: number, position: number, prot: number, flags: number): any;
-  function ioctl(stream: FSStream, cmd: any, arg: any): any;
   function readFile(path: string, opts?: { encoding?: string; flags?: string }): any;
   function writeFile(path: string, data: string | ArrayBufferView, opts?: { flags?: string }): void;
-  function cwd(): string;
-  function chdir(path: string): void;
-  function init(input: null | (() => number | null), output: null | ((c: number) => any), error: null | ((c: number) => any)): void;
-  function createDataFile(parent: string, name: string, data: ArrayBufferView | string, canRead: boolean, canWrite: boolean, canOwn?: boolean): void;
-  function createLazyFile(parent: string, name: string, url: string, canRead: boolean, canWrite: boolean): void;
+  function mkdir(path: string, mode?: number): any;
+  function unlink(path: string): void;
 }
 
 export declare interface OpenCascadeInstance {
@@ -4589,6 +4564,7 @@ export declare interface OpenCascadeInstance {
   TColgp_Array1OfVec_2: typeof TColgp_Array1OfVec_2;
   TColgp_Array1OfVec_5: typeof TColgp_Array1OfVec_5;
   TColgp_Array1OfVec_6: typeof TColgp_Array1OfVec_6;
+  TopoDS_Cast: typeof TopoDS_Cast;
   TopTools_IndexedMapOfShape: typeof TopTools_IndexedMapOfShape;
   TopTools_IndexedMapOfShape_1: typeof TopTools_IndexedMapOfShape_1;
   TopTools_IndexedMapOfShape_2: typeof TopTools_IndexedMapOfShape_2;
@@ -4621,6 +4597,7 @@ export declare interface OpenCascadeInstance {
   Handle_Geom_Curve_2: typeof Handle_Geom_Curve_2;
   Handle_Geom_Curve_3: typeof Handle_Geom_Curve_3;
   Handle_Geom_Curve_4: typeof Handle_Geom_Curve_4;
+  OCJS: typeof OCJS;
   Handle_Geom_BSplineCurve: typeof Handle_Geom_BSplineCurve;
   Handle_Geom_BSplineCurve_1: typeof Handle_Geom_BSplineCurve_1;
   Handle_Geom_BSplineCurve_2: typeof Handle_Geom_BSplineCurve_2;
