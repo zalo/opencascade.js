@@ -225,6 +225,7 @@ def filterMethodOrProperty(theClass, methodOrProperty):
   # NCollection template containers use nested dependent types (value_type, iterator,
   # allocator_type, const_reference) that aren't resolved when binding template
   # specializations via typedef.  Filter out methods/constructors using these types.
+  # Note: Value/SetValue are added manually via additionalCppCode in build YAML files.
   _ncoll_containers = {"NCollection_Array1", "NCollection_HArray1", "NCollection_IndexedMap"}
   _ncoll_bad_types = {
     "value_type", "const value_type &", "value_type &&",

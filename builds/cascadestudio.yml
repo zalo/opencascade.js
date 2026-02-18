@@ -197,6 +197,51 @@ mainBuild:
     - "-sLLD_REPORT_UNDEFINED"
     - "--no-entry"
 
+  additionalBindCode: |
+    // OCCT 8.0: NCollection_Array1 methods Value/SetValue use dependent type 'value_type'
+    // that libclang can't resolve for typedef'd specializations. Add them manually here
+    // with concrete types using lambda wrappers.
+    #include <gp_Pnt.hxx>
+    #include <gp_Dir.hxx>
+    #include <gp_Pnt2d.hxx>
+    #include <gp_Vec.hxx>
+    #include <TColgp_Array1OfPnt.hxx>
+    #include <TColgp_Array1OfDir.hxx>
+    #include <TColgp_Array1OfPnt2d.hxx>
+    #include <TColgp_Array1OfVec.hxx>
+    #include <TColStd_Array1OfReal.hxx>
+    #include <TColStd_Array1OfInteger.hxx>
+    #include <TopoDS_Shape.hxx>
+    #undef CONSTRUCTOR
+    #include <emscripten/bind.h>
+    using namespace emscripten;
+    EMSCRIPTEN_BINDINGS(NCollection_Array1_Accessors) {
+      class_<TColgp_Array1OfPnt>("TColgp_Array1OfPnt")
+        .function("SetValue", +[](TColgp_Array1OfPnt& self, int idx, const gp_Pnt& val) { self.SetValue(idx, val); })
+        .function("Value", +[](const TColgp_Array1OfPnt& self, int idx) -> const gp_Pnt& { return self.Value(idx); }, allow_raw_pointers())
+        ;
+      class_<TColgp_Array1OfDir>("TColgp_Array1OfDir")
+        .function("SetValue", +[](TColgp_Array1OfDir& self, int idx, const gp_Dir& val) { self.SetValue(idx, val); })
+        .function("Value", +[](const TColgp_Array1OfDir& self, int idx) -> const gp_Dir& { return self.Value(idx); }, allow_raw_pointers())
+        ;
+      class_<TColgp_Array1OfPnt2d>("TColgp_Array1OfPnt2d")
+        .function("SetValue", +[](TColgp_Array1OfPnt2d& self, int idx, const gp_Pnt2d& val) { self.SetValue(idx, val); })
+        .function("Value", +[](const TColgp_Array1OfPnt2d& self, int idx) -> const gp_Pnt2d& { return self.Value(idx); }, allow_raw_pointers())
+        ;
+      class_<TColgp_Array1OfVec>("TColgp_Array1OfVec")
+        .function("SetValue", +[](TColgp_Array1OfVec& self, int idx, const gp_Vec& val) { self.SetValue(idx, val); })
+        .function("Value", +[](const TColgp_Array1OfVec& self, int idx) -> const gp_Vec& { return self.Value(idx); }, allow_raw_pointers())
+        ;
+      class_<TColStd_Array1OfReal>("TColStd_Array1OfReal")
+        .function("SetValue", +[](TColStd_Array1OfReal& self, int idx, double val) { self.SetValue(idx, val); })
+        .function("Value", +[](const TColStd_Array1OfReal& self, int idx) -> double { return self.Value(idx); })
+        ;
+      class_<TColStd_Array1OfInteger>("TColStd_Array1OfInteger")
+        .function("SetValue", +[](TColStd_Array1OfInteger& self, int idx, int val) { self.SetValue(idx, val); })
+        .function("Value", +[](const TColStd_Array1OfInteger& self, int idx) -> int { return self.Value(idx); })
+        ;
+    }
+
 additionalCppCode: |
   typedef Handle(IMeshTools_Context) Handle_IMeshTools_Context;
   // OCCT 8.0: TopoDS is now a namespace, not a class.
@@ -224,4 +269,9 @@ additionalCppCode: |
     static Standard_Failure* getStandard_FailureData(intptr_t exceptionPtr) {
       return reinterpret_cast<Standard_Failure*>(exceptionPtr);
     }
+    // OCCT 8.0 removed TopoDS_Shape::HashCode(). Provide a replacement.
+    static int HashCode(const TopoDS_Shape& S, const int Upper) {
+      return static_cast<int>(std::hash<TopoDS_Shape>{}(S) % static_cast<size_t>(Upper));
+    }
   };
+
