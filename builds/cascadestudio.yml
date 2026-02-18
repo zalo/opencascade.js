@@ -51,7 +51,8 @@ mainBuild:
     - symbol: BRepBuilderAPI_ModifyShape
     - symbol: BRepPrimAPI_MakeOneAxis
     - symbol: BRepPrimAPI_MakeSweep
-    - symbol: BRepAlgoAPI_Algo
+    # BRepAlgoAPI_Algo — registered in additionalBindCode (protected destructor)
+    # - symbol: BRepAlgoAPI_Algo
     - symbol: BRepAlgoAPI_BuilderAlgo
     - symbol: BRepAlgoAPI_BooleanOperation
     - symbol: BRepFilletAPI_LocalOperation
@@ -135,12 +136,14 @@ mainBuild:
     - symbol: StdPrs_ToolTriangulatedShape
 
     # Collection Types
-    - symbol: TColgp_Array1OfPnt
-    - symbol: TColgp_Array1OfDir
-    - symbol: TColgp_Array1OfPnt2d
-    - symbol: TColgp_Array1OfVec
-    - symbol: TColStd_Array1OfReal
-    - symbol: TColStd_Array1OfInteger
+    # NCollection_Array1 types — registered in additionalBindCode to include
+    # SetValue/Value methods (libclang can't resolve dependent type 'value_type')
+    # - symbol: TColgp_Array1OfPnt
+    # - symbol: TColgp_Array1OfDir
+    # - symbol: TColgp_Array1OfPnt2d
+    # - symbol: TColgp_Array1OfVec
+    # - symbol: TColStd_Array1OfReal
+    # - symbol: TColStd_Array1OfInteger
     - symbol: TopTools_IndexedMapOfShape
 
     # File I/O
@@ -283,35 +286,109 @@ mainBuild:
         ;
     }
 
-    // NCollection_Array1 methods Value/SetValue use dependent type 'value_type'
-    // that libclang can't resolve for typedef'd specializations. Add them manually
-    // with concrete types using lambda wrappers.
-    EMSCRIPTEN_BINDINGS(NCollection_Array1_Accessors) {
+    // BRepAlgoAPI_Algo is an abstract base class with a protected destructor.
+    // Its auto-generated binding .o gets stripped by LTO. Register it here so
+    // derived classes (Cut, Fuse, etc.) can resolve their base type chain.
+    #include <BRepAlgoAPI_Algo.hxx>
+    #include <BRepBuilderAPI_MakeShape.hxx>
+    // Suppress Embind's default destructor (protected in BRepAlgoAPI_Algo)
+    namespace emscripten { namespace internal { template<> void raw_destructor<BRepAlgoAPI_Algo>(BRepAlgoAPI_Algo* ptr) { /* do nothing */ } } }
+    EMSCRIPTEN_BINDINGS(AdditionalBindCode_BRepAlgoAPI_Algo) {
+      class_<BRepAlgoAPI_Algo, base<BRepBuilderAPI_MakeShape>>("BRepAlgoAPI_Algo")
+        .function("Shape", &BRepAlgoAPI_Algo::Shape, allow_raw_pointers())
+        .function("Clear", &BRepAlgoAPI_Algo::Clear, allow_raw_pointers())
+        .function("ClearWarnings", &BRepAlgoAPI_Algo::ClearWarnings, allow_raw_pointers())
+        .function("SetFuzzyValue", &BRepAlgoAPI_Algo::SetFuzzyValue, allow_raw_pointers())
+        .function("FuzzyValue", &BRepAlgoAPI_Algo::FuzzyValue, allow_raw_pointers())
+        .function("HasErrors", &BRepAlgoAPI_Algo::HasErrors, allow_raw_pointers())
+        .function("HasWarnings", &BRepAlgoAPI_Algo::HasWarnings, allow_raw_pointers())
+        .function("SetRunParallel", &BRepAlgoAPI_Algo::SetRunParallel, allow_raw_pointers())
+        .function("RunParallel", &BRepAlgoAPI_Algo::RunParallel, allow_raw_pointers())
+        .function("SetUseOBB", &BRepAlgoAPI_Algo::SetUseOBB, allow_raw_pointers())
+        ;
+    }
+
+    // NCollection_Array1 types: auto-generated bindings can't include SetValue/Value
+    // because libclang can't resolve the dependent type 'value_type' for typedef'd
+    // specializations. We register these types fully here (class + constructors +
+    // methods) instead of relying on auto-generated .o files.
+    //
+    // Macro for common NCollection_Array1 methods
+    #define ARRAY1_METHODS(ArrayType) \
+      .function("Size", &ArrayType::Size, allow_raw_pointers()) \
+      .function("Length", &ArrayType::Length, allow_raw_pointers()) \
+      .function("IsEmpty", &ArrayType::IsEmpty, allow_raw_pointers()) \
+      .function("Lower", &ArrayType::Lower, allow_raw_pointers()) \
+      .function("Upper", &ArrayType::Upper, allow_raw_pointers()) \
+      .function("IsDeletable", &ArrayType::IsDeletable, allow_raw_pointers()) \
+      .function("Resize", &ArrayType::Resize, allow_raw_pointers())
+
+    // Macro for constructor overloads (default + lower/upper)
+    #define ARRAY1_CTORS(ArrayType) \
+      struct ArrayType##_1 : public ArrayType { \
+        ArrayType##_1() : ArrayType() {} \
+      }; \
+      class_<ArrayType##_1, base<ArrayType>>(#ArrayType "_1") \
+        .constructor<>() \
+        ; \
+      struct ArrayType##_2 : public ArrayType { \
+        ArrayType##_2(const int lo, const int hi) : ArrayType(lo, hi) {} \
+      }; \
+      class_<ArrayType##_2, base<ArrayType>>(#ArrayType "_2") \
+        .constructor<const int, const int>() \
+        ;
+
+    EMSCRIPTEN_BINDINGS(NCollection_Array1_Full) {
+      // TColgp_Array1OfPnt
       class_<TColgp_Array1OfPnt>("TColgp_Array1OfPnt")
+        ARRAY1_METHODS(TColgp_Array1OfPnt)
         .function("SetValue", +[](TColgp_Array1OfPnt& self, int idx, const gp_Pnt& val) { self.SetValue(idx, val); })
         .function("Value", +[](const TColgp_Array1OfPnt& self, int idx) -> const gp_Pnt& { return self.Value(idx); }, allow_raw_pointers())
         ;
+      ARRAY1_CTORS(TColgp_Array1OfPnt)
+
+      // TColgp_Array1OfDir
       class_<TColgp_Array1OfDir>("TColgp_Array1OfDir")
+        ARRAY1_METHODS(TColgp_Array1OfDir)
         .function("SetValue", +[](TColgp_Array1OfDir& self, int idx, const gp_Dir& val) { self.SetValue(idx, val); })
         .function("Value", +[](const TColgp_Array1OfDir& self, int idx) -> const gp_Dir& { return self.Value(idx); }, allow_raw_pointers())
         ;
+      ARRAY1_CTORS(TColgp_Array1OfDir)
+
+      // TColgp_Array1OfPnt2d
       class_<TColgp_Array1OfPnt2d>("TColgp_Array1OfPnt2d")
+        ARRAY1_METHODS(TColgp_Array1OfPnt2d)
         .function("SetValue", +[](TColgp_Array1OfPnt2d& self, int idx, const gp_Pnt2d& val) { self.SetValue(idx, val); })
         .function("Value", +[](const TColgp_Array1OfPnt2d& self, int idx) -> const gp_Pnt2d& { return self.Value(idx); }, allow_raw_pointers())
         ;
+      ARRAY1_CTORS(TColgp_Array1OfPnt2d)
+
+      // TColgp_Array1OfVec
       class_<TColgp_Array1OfVec>("TColgp_Array1OfVec")
+        ARRAY1_METHODS(TColgp_Array1OfVec)
         .function("SetValue", +[](TColgp_Array1OfVec& self, int idx, const gp_Vec& val) { self.SetValue(idx, val); })
         .function("Value", +[](const TColgp_Array1OfVec& self, int idx) -> const gp_Vec& { return self.Value(idx); }, allow_raw_pointers())
         ;
+      ARRAY1_CTORS(TColgp_Array1OfVec)
+
+      // TColStd_Array1OfReal
       class_<TColStd_Array1OfReal>("TColStd_Array1OfReal")
+        ARRAY1_METHODS(TColStd_Array1OfReal)
         .function("SetValue", +[](TColStd_Array1OfReal& self, int idx, double val) { self.SetValue(idx, val); })
         .function("Value", +[](const TColStd_Array1OfReal& self, int idx) -> double { return self.Value(idx); })
         ;
+      ARRAY1_CTORS(TColStd_Array1OfReal)
+
+      // TColStd_Array1OfInteger
       class_<TColStd_Array1OfInteger>("TColStd_Array1OfInteger")
+        ARRAY1_METHODS(TColStd_Array1OfInteger)
         .function("SetValue", +[](TColStd_Array1OfInteger& self, int idx, int val) { self.SetValue(idx, val); })
         .function("Value", +[](const TColStd_Array1OfInteger& self, int idx) -> int { return self.Value(idx); })
         ;
+      ARRAY1_CTORS(TColStd_Array1OfInteger)
     }
+    #undef ARRAY1_METHODS
+    #undef ARRAY1_CTORS
 
 additionalCppCode: |
   typedef Handle(IMeshTools_Context) Handle_IMeshTools_Context;
