@@ -517,6 +517,7 @@ mainBuild:
     #define HANDLE_BINDINGS(HandleType, BaseType) \
       class_<HandleType>(#HandleType) \
         .function("IsNull", &HandleType::IsNull) \
+        .function("Nullify", &HandleType::Nullify) \
         .function("get", &HandleType::get, allow_raw_pointers()) \
         ; \
       struct HandleType##_1 : public HandleType { \
