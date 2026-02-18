@@ -53,7 +53,8 @@ mainBuild:
     - symbol: BRepPrimAPI_MakeSweep
     # BRepAlgoAPI_Algo — registered in additionalBindCode (protected destructor)
     # - symbol: BRepAlgoAPI_Algo
-    - symbol: BRepAlgoAPI_BuilderAlgo
+    # BRepAlgoAPI_BuilderAlgo — registered in additionalBindCode (preamble compile error)
+    # - symbol: BRepAlgoAPI_BuilderAlgo
     - symbol: BRepAlgoAPI_BooleanOperation
     - symbol: BRepFilletAPI_LocalOperation
     - symbol: BRepMesh_DiscretRoot
@@ -128,10 +129,12 @@ mainBuild:
     - symbol: BRepAdaptor_Surface
 
     # Meshing & Visualization
-    - symbol: BRepMesh_IncrementalMesh
+    # BRepMesh_IncrementalMesh — registered in additionalBindCode (preamble compile error)
+    # - symbol: BRepMesh_IncrementalMesh
     - symbol: Poly_Triangulation
     - symbol: Poly_Connect
-    - symbol: Poly_Array1OfTriangle
+    # Poly_Array1OfTriangle — NCollection typedef, not directly used by CascadeStudio
+    # - symbol: Poly_Array1OfTriangle
     - symbol: Poly_Triangle
     - symbol: Poly_PolygonOnTriangulation
     - symbol: StdPrs_ToolTriangulatedShape
@@ -145,7 +148,8 @@ mainBuild:
     # - symbol: TColgp_Array1OfVec
     # - symbol: TColStd_Array1OfReal
     # - symbol: TColStd_Array1OfInteger
-    - symbol: TopTools_IndexedMapOfShape
+    # TopTools_IndexedMapOfShape — not directly used by CascadeStudio
+    # - symbol: TopTools_IndexedMapOfShape
 
     # File I/O
     - symbol: STEPControl_Reader
@@ -156,16 +160,16 @@ mainBuild:
     - symbol: StlAPI_Writer
     - symbol: IFSelect_ReturnStatus
 
-    # Handle Types
-    - symbol: Handle_Geom_BezierCurve
-    - symbol: Handle_Geom_BSplineCurve
-    - symbol: Handle_Geom_TrimmedCurve
-    - symbol: Handle_Geom_Curve
-    - symbol: Handle_Geom_Surface
-    - symbol: Handle_Poly_Triangulation
-    - symbol: Handle_Poly_PolygonOnTriangulation
-    - symbol: Handle_Geom_Circle
-    - symbol: Handle_TColgp_HArray1OfPnt
+    # Handle Types — registered in additionalBindCode (auto-generated preamble compile too slow)
+    # - symbol: Handle_Geom_BezierCurve
+    # - symbol: Handle_Geom_BSplineCurve
+    # - symbol: Handle_Geom_TrimmedCurve
+    # - symbol: Handle_Geom_Curve
+    # - symbol: Handle_Geom_Surface
+    # - symbol: Handle_Poly_Triangulation
+    # - symbol: Handle_Poly_PolygonOnTriangulation
+    # - symbol: Handle_Geom_Circle
+    # - symbol: Handle_TColgp_HArray1OfPnt
 
     # Shape Upgrade
     - symbol: ShapeUpgrade_UnifySameDomain
@@ -366,6 +370,37 @@ mainBuild:
         ;
     }
 
+    // BRepAlgoAPI_BuilderAlgo: middle of the base class chain for boolean ops.
+    // Auto-generated binding fails to compile (preamble includes all OCCT headers).
+    // Only needed as a base class registration for BRepAlgoAPI_BooleanOperation.
+    #include <BRepAlgoAPI_BuilderAlgo.hxx>
+    namespace emscripten { namespace internal { template<> void raw_destructor<BRepAlgoAPI_BuilderAlgo>(BRepAlgoAPI_BuilderAlgo* ptr) { /* do nothing */ } } }
+    EMSCRIPTEN_BINDINGS(AdditionalBindCode_BRepAlgoAPI_BuilderAlgo) {
+      class_<BRepAlgoAPI_BuilderAlgo, base<BRepAlgoAPI_Algo>>("BRepAlgoAPI_BuilderAlgo")
+        .function("SetArguments", &BRepAlgoAPI_BuilderAlgo::SetArguments, allow_raw_pointers())
+        .function("SetNonDestructive", +[](BRepAlgoAPI_BuilderAlgo& self, bool f) { self.SetNonDestructive(f); })
+        .function("NonDestructive", &BRepAlgoAPI_BuilderAlgo::NonDestructive)
+        ;
+    }
+
+    // BRepMesh_IncrementalMesh: auto-generated binding fails (preamble compile error).
+    // CascadeStudio only uses the _2 constructor: (shape, deflection, relative, angle, parallel)
+    #include <BRepMesh_IncrementalMesh.hxx>
+    // Numbered overload struct for the 5-arg constructor
+    struct BRepMesh_IncrementalMesh_2 : public BRepMesh_IncrementalMesh {
+      BRepMesh_IncrementalMesh_2(const TopoDS_Shape& theShape, const double theLinDeflection,
+                                  const bool isRelative, const double theAngDeflection,
+                                  const bool isInParallel)
+        : BRepMesh_IncrementalMesh(theShape, theLinDeflection, isRelative, theAngDeflection, isInParallel) {}
+    };
+    EMSCRIPTEN_BINDINGS(AdditionalBindCode_BRepMesh_IncrementalMesh) {
+      class_<BRepMesh_IncrementalMesh, base<BRepMesh_DiscretRoot>>("BRepMesh_IncrementalMesh")
+        ;
+      class_<BRepMesh_IncrementalMesh_2, base<BRepMesh_IncrementalMesh>>("BRepMesh_IncrementalMesh_2")
+        .constructor<const TopoDS_Shape&, const double, const bool, const double, const bool>()
+        ;
+    }
+
     // NCollection_Array1 types: auto-generated bindings can't include SetValue/Value
     // because libclang can't resolve the dependent type 'value_type' for typedef'd
     // specializations. We register these types fully here (class + constructors +
@@ -447,6 +482,68 @@ mainBuild:
     }
     #undef ARRAY1_METHODS
     #undef ARRAY1_CTORS
+
+    // Handle types: auto-generated bindings include ALL OCCT headers in the preamble,
+    // making compilation extremely slow (~7hrs for 2000+ files). Register manually here
+    // with minimal includes for the specific Handle types CascadeStudio needs.
+    //
+    // Pattern: Handle_X is typedef opencascade::handle<X>.
+    // _1 = default constructor (null handle)
+    // _2 = from pointer constructor (handle(const T*)) — used for upcasting
+    // Methods: get(), IsNull()
+    #include <Standard_Handle.hxx>
+    #include <Geom_Curve.hxx>
+    #include <Geom_BezierCurve.hxx>
+    #include <Geom_BSplineCurve.hxx>
+    #include <Geom_TrimmedCurve.hxx>
+    #include <Geom_Circle.hxx>
+    #include <Geom_Surface.hxx>
+    #include <Poly_Triangulation.hxx>
+    #include <Poly_PolygonOnTriangulation.hxx>
+    #include <NCollection_HArray1.hxx>
+    typedef NCollection_HArray1<gp_Pnt> TColgp_HArray1OfPnt;
+    typedef opencascade::handle<Geom_Curve> Handle_Geom_Curve;
+    typedef opencascade::handle<Geom_BezierCurve> Handle_Geom_BezierCurve;
+    typedef opencascade::handle<Geom_BSplineCurve> Handle_Geom_BSplineCurve;
+    typedef opencascade::handle<Geom_TrimmedCurve> Handle_Geom_TrimmedCurve;
+    typedef opencascade::handle<Geom_Circle> Handle_Geom_Circle;
+    typedef opencascade::handle<Geom_Surface> Handle_Geom_Surface;
+    typedef opencascade::handle<Poly_Triangulation> Handle_Poly_Triangulation;
+    typedef opencascade::handle<Poly_PolygonOnTriangulation> Handle_Poly_PolygonOnTriangulation;
+    typedef opencascade::handle<TColgp_HArray1OfPnt> Handle_TColgp_HArray1OfPnt;
+
+    // Macro for Handle type registrations
+    // Each Handle type gets: base class, _1 (null), _2 (from pointer), get(), IsNull()
+    #define HANDLE_BINDINGS(HandleType, BaseType) \
+      class_<HandleType>(#HandleType) \
+        .function("IsNull", &HandleType::IsNull) \
+        .function("get", &HandleType::get, allow_raw_pointers()) \
+        ; \
+      struct HandleType##_1 : public HandleType { \
+        HandleType##_1() : HandleType() {} \
+      }; \
+      class_<HandleType##_1, base<HandleType>>(#HandleType "_1") \
+        .constructor<>() \
+        ; \
+      struct HandleType##_2 : public HandleType { \
+        HandleType##_2(const BaseType* p) : HandleType(p) {} \
+      }; \
+      class_<HandleType##_2, base<HandleType>>(#HandleType "_2") \
+        .constructor<const BaseType*>() \
+        ;
+
+    EMSCRIPTEN_BINDINGS(AdditionalBindCode_HandleTypes) {
+      HANDLE_BINDINGS(Handle_Geom_Curve, Geom_Curve)
+      HANDLE_BINDINGS(Handle_Geom_BezierCurve, Geom_BezierCurve)
+      HANDLE_BINDINGS(Handle_Geom_BSplineCurve, Geom_BSplineCurve)
+      HANDLE_BINDINGS(Handle_Geom_TrimmedCurve, Geom_TrimmedCurve)
+      HANDLE_BINDINGS(Handle_Geom_Circle, Geom_Circle)
+      HANDLE_BINDINGS(Handle_Geom_Surface, Geom_Surface)
+      HANDLE_BINDINGS(Handle_Poly_Triangulation, Poly_Triangulation)
+      HANDLE_BINDINGS(Handle_Poly_PolygonOnTriangulation, Poly_PolygonOnTriangulation)
+      HANDLE_BINDINGS(Handle_TColgp_HArray1OfPnt, TColgp_HArray1OfPnt)
+    }
+    #undef HANDLE_BINDINGS
 
 additionalCppCode: |
   typedef Handle(IMeshTools_Context) Handle_IMeshTools_Context;

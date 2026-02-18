@@ -85,11 +85,28 @@ def mkdirp(name: str) -> None:
     if e.errno != errno.EEXIST:
       raise
 
+# Classes/typedefs registered in additionalBindCode — skip during binding generation
+# to avoid duplicate Embind registrations.
+_additionalBindCodeSymbols = {
+  'TopoDS_Cast', 'OCJS',  # Custom helper classes
+  'TopTools_ListOfShape',  # NCollection_List<TopoDS_Shape>
+  'BRepAlgoAPI_Algo',      # Base class (protected destructor)
+  'BRepAlgoAPI_BuilderAlgo',  # Base class (preamble compile error)
+  'BRepMesh_IncrementalMesh', # Preamble compile error
+  # NCollection_Array1 types (libclang can't resolve value_type)
+  'TColgp_Array1OfPnt', 'TColgp_Array1OfDir', 'TColgp_Array1OfPnt2d',
+  'TColgp_Array1OfVec', 'TColStd_Array1OfReal', 'TColStd_Array1OfInteger',
+  'TColgp_HArray1OfPnt',
+  # NCollection types not directly used
+  'TopTools_IndexedMapOfShape', 'Poly_Array1OfTriangle',
+}
+
 def filterClasses(child, customBuild):
   if customBuild:
     return (
       child.location.file.name == "myMain.h" and
-      shouldProcessClass(child, occtBasePath)
+      shouldProcessClass(child, occtBasePath) and
+      child.spelling not in _additionalBindCodeSymbols
     )
   return (
     child.extent.start.file.name.startswith(occtBasePath) and
@@ -105,7 +122,11 @@ def filterTemplates(child, customBuild):
       (
         child.underlying_typedef_type.kind == clang.cindex.TypeKind.ELABORATED or
         child.underlying_typedef_type.kind == clang.cindex.TypeKind.UNEXPOSED
-      )
+      ) and
+      # Skip Handle typedefs (2000+ slow-to-compile files) and symbols registered
+      # in additionalBindCode to avoid duplicate Embind registrations.
+      not child.spelling.startswith("Handle_") and
+      child.spelling not in _additionalBindCodeSymbols
     )
   return (
     (

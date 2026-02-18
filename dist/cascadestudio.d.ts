@@ -147,6 +147,14 @@ export declare class gp_Ax2d {
     constructor(theP: gp_Pnt2d, theV: gp_Dir2d);
   }
 
+  export declare class gp_Ax2d_3 extends gp_Ax2d {
+    constructor(theP: gp_Pnt2d, theDir: any);
+  }
+
+  export declare class gp_Ax2d_4 extends gp_Ax2d {
+    constructor(theDir: any);
+  }
+
 export declare class gp {
   static Resolution(): Standard_Real;
   static Origin(): gp_Pnt;
@@ -391,8 +399,20 @@ export declare class gp_Ax3 {
     constructor(theP: gp_Pnt, theN: gp_Dir, theVx: gp_Dir);
   }
 
+  export declare class gp_Ax3_4 extends gp_Ax3 {
+    constructor(theP: gp_Pnt, theN: any, theVx: any);
+  }
+
   export declare class gp_Ax3_5 extends gp_Ax3 {
     constructor(theP: gp_Pnt, theV: gp_Dir);
+  }
+
+  export declare class gp_Ax3_6 extends gp_Ax3 {
+    constructor(theP: gp_Pnt, theV: any);
+  }
+
+  export declare class gp_Ax3_7 extends gp_Ax3 {
+    constructor(theV: any);
   }
 
 export declare class gp_Trsf {
@@ -483,8 +503,20 @@ export declare class gp_Ax2 {
     constructor(P: gp_Pnt, N: gp_Dir, Vx: gp_Dir);
   }
 
+  export declare class gp_Ax2_3 extends gp_Ax2 {
+    constructor(theP: gp_Pnt, theN: any, theVx: any);
+  }
+
   export declare class gp_Ax2_4 extends gp_Ax2 {
     constructor(P: gp_Pnt, V: gp_Dir);
+  }
+
+  export declare class gp_Ax2_5 extends gp_Ax2 {
+    constructor(theP: gp_Pnt, theV: any);
+  }
+
+  export declare class gp_Ax2_6 extends gp_Ax2 {
+    constructor(theV: any);
   }
 
 export declare class gp_Pnt {
@@ -574,6 +606,14 @@ export declare class gp_Ax1 {
 
   export declare class gp_Ax1_2 extends gp_Ax1 {
     constructor(theP: gp_Pnt, theV: gp_Dir);
+  }
+
+  export declare class gp_Ax1_3 extends gp_Ax1 {
+    constructor(theP: gp_Pnt, theDir: any);
+  }
+
+  export declare class gp_Ax1_4 extends gp_Ax1 {
+    constructor(theDir: any);
   }
 
 export declare class gp_Pln {
@@ -2193,62 +2233,6 @@ export declare class BRepAlgoAPI_Common extends BRepAlgoAPI_BooleanOperation {
     constructor(S1: TopoDS_Shape, S2: TopoDS_Shape, PF: BOPAlgo_PaveFiller, theRange: Message_ProgressRange);
   }
 
-export declare class BRepAlgoAPI_BuilderAlgo extends BRepAlgoAPI_Algo {
-  SetArguments(theLS: NCollection_List<TopoDS_Shape>): void;
-  Arguments(): any;
-  SetNonDestructive(theFlag: Standard_Boolean): void;
-  NonDestructive(): Standard_Boolean;
-  SetGlue(theGlue: BOPAlgo_GlueEnum): void;
-  Glue(): BOPAlgo_GlueEnum;
-  SetCheckInverted(theCheck: Standard_Boolean): void;
-  CheckInverted(): Standard_Boolean;
-  Build(theRange: Message_ProgressRange): void;
-  SimplifyResult(theUnifyEdges: Standard_Boolean, theUnifyFaces: Standard_Boolean, theAngularTol: Standard_Real): void;
-  Modified(theS: TopoDS_Shape): any;
-  Generated(theS: TopoDS_Shape): any;
-  IsDeleted(aS: TopoDS_Shape): Standard_Boolean;
-  HasModified(): Standard_Boolean;
-  HasGenerated(): Standard_Boolean;
-  HasDeleted(): Standard_Boolean;
-  SetToFillHistory(theHistFlag: Standard_Boolean): void;
-  HasHistory(): Standard_Boolean;
-  SectionEdges(): any;
-  DSFiller(): BOPAlgo_PPaveFiller;
-  Builder(): BOPAlgo_PBuilder;
-  History(): any;
-  delete(): void;
-}
-
-  export declare class BRepAlgoAPI_BuilderAlgo_1 extends BRepAlgoAPI_BuilderAlgo {
-    constructor();
-  }
-
-  export declare class BRepAlgoAPI_BuilderAlgo_2 extends BRepAlgoAPI_BuilderAlgo {
-    constructor(thePF: BOPAlgo_PaveFiller);
-  }
-
-  export declare class BRepAlgoAPI_BuilderAlgo_3 extends BRepAlgoAPI_BuilderAlgo {
-    constructor(a: BRepAlgoAPI_BuilderAlgo);
-  }
-
-  export declare class BRepAlgoAPI_BuilderAlgo_4 extends BRepAlgoAPI_BuilderAlgo {
-    constructor(a: BRepAlgoAPI_BuilderAlgo);
-  }
-
-export declare class BRepAlgoAPI_Algo extends BRepBuilderAPI_MakeShape {
-  Shape(): TopoDS_Shape;
-  Clear(): void;
-  ClearWarnings(): void;
-  SetRunParallel(theFlag: Standard_Boolean): void;
-  RunParallel(): Standard_Boolean;
-  SetFuzzyValue(theFuzz: Standard_Real): void;
-  FuzzyValue(): Standard_Real;
-  HasErrors(): Standard_Boolean;
-  HasWarnings(): Standard_Boolean;
-  SetUseOBB(theUseOBB: Standard_Boolean): void;
-  delete(): void;
-}
-
 export declare class BRepOffsetAPI_MakeOffsetShape extends BRepBuilderAPI_MakeShape {
   constructor()
   PerformBySimple(theS: TopoDS_Shape, theOffsetValue: Standard_Real): void;
@@ -2383,33 +2367,6 @@ export declare class BRepMesh_DiscretRoot extends Standard_Transient {
   DynamicType(): any;
   delete(): void;
 }
-
-export declare class BRepMesh_IncrementalMesh extends BRepMesh_DiscretRoot {
-  Perform_1(theRange: Message_ProgressRange): void;
-  Perform_2(theContext: any, theRange: Message_ProgressRange): void;
-  Parameters(): IMeshTools_Parameters;
-  ChangeParameters(): IMeshTools_Parameters;
-  IsModified(): Standard_Boolean;
-  GetStatusFlags(): Standard_Integer;
-  static IsParallelDefault(): Standard_Boolean;
-  static SetParallelDefault(isInParallel: Standard_Boolean): void;
-  static get_type_name(): Standard_Character;
-  static get_type_descriptor(): any;
-  DynamicType(): any;
-  delete(): void;
-}
-
-  export declare class BRepMesh_IncrementalMesh_1 extends BRepMesh_IncrementalMesh {
-    constructor();
-  }
-
-  export declare class BRepMesh_IncrementalMesh_2 extends BRepMesh_IncrementalMesh {
-    constructor(theShape: TopoDS_Shape, theLinDeflection: Standard_Real, isRelative: Standard_Boolean, theAngDeflection: Standard_Real, isInParallel: Standard_Boolean);
-  }
-
-  export declare class BRepMesh_IncrementalMesh_3 extends BRepMesh_IncrementalMesh {
-    constructor(theShape: TopoDS_Shape, theParameters: IMeshTools_Parameters, theRange: Message_ProgressRange);
-  }
 
 export declare class BRepPrimAPI_MakeSphere extends BRepPrimAPI_MakeOneAxis {
   OneAxis(): C_f;
@@ -3718,525 +3675,6 @@ export declare class XSControl_WorkSession extends IFSelect_WorkSession {
   delete(): void;
 }
 
-export declare class Handle_Poly_Triangulation {
-  Nullify(): void;
-  IsNull(): boolean;
-  reset(thePtr: Poly_Triangulation): void;
-  get(): Poly_Triangulation;
-  delete(): void;
-}
-
-  export declare class Handle_Poly_Triangulation_1 extends Handle_Poly_Triangulation {
-    constructor();
-  }
-
-  export declare class Handle_Poly_Triangulation_2 extends Handle_Poly_Triangulation {
-    constructor(thePtr: Poly_Triangulation);
-  }
-
-  export declare class Handle_Poly_Triangulation_3 extends Handle_Poly_Triangulation {
-    constructor(theHandle: Handle_Poly_Triangulation);
-  }
-
-  export declare class Handle_Poly_Triangulation_4 extends Handle_Poly_Triangulation {
-    constructor(theHandle: Handle_Poly_Triangulation);
-  }
-
-export declare class TColgp_Array1OfVec {
-  Size(): number;
-  Length(): number;
-  IsEmpty(): boolean;
-  Lower(): number;
-  Upper(): number;
-  Assign(theOther: TColgp_Array1OfVec): TColgp_Array1OfVec;
-  Move_1(theOther: TColgp_Array1OfVec): TColgp_Array1OfVec;
-  Move_2(theOther: TColgp_Array1OfVec): TColgp_Array1OfVec;
-  UpdateLowerBound(theLower: number): void;
-  UpdateUpperBound(theUpper: number): void;
-  Resize(theLower: number, theUpper: number, theToCopyData: boolean): void;
-  IsDeletable(): boolean;
-  delete(): void;
-}
-
-  export declare class TColgp_Array1OfVec_1 extends TColgp_Array1OfVec {
-    constructor();
-  }
-
-  export declare class TColgp_Array1OfVec_2 extends TColgp_Array1OfVec {
-    constructor(theLower: number, theUpper: number);
-  }
-
-  export declare class TColgp_Array1OfVec_5 extends TColgp_Array1OfVec {
-    constructor(theOther: TColgp_Array1OfVec);
-  }
-
-  export declare class TColgp_Array1OfVec_6 extends TColgp_Array1OfVec {
-    constructor(theOther: TColgp_Array1OfVec);
-  }
-
-export declare class TopoDS_Cast {
-  constructor();
-  static Vertex_1(S: TopoDS_Shape): TopoDS_Vertex;
-  static Vertex_2(S: TopoDS_Shape): TopoDS_Vertex;
-  static Edge_1(S: TopoDS_Shape): TopoDS_Edge;
-  static Edge_2(S: TopoDS_Shape): TopoDS_Edge;
-  static Wire_1(S: TopoDS_Shape): TopoDS_Wire;
-  static Wire_2(S: TopoDS_Shape): TopoDS_Wire;
-  static Face_1(S: TopoDS_Shape): TopoDS_Face;
-  static Face_2(S: TopoDS_Shape): TopoDS_Face;
-  static Shell_1(S: TopoDS_Shape): TopoDS_Shell;
-  static Shell_2(S: TopoDS_Shape): TopoDS_Shell;
-  static Solid_1(S: TopoDS_Shape): TopoDS_Solid;
-  static Solid_2(S: TopoDS_Shape): TopoDS_Solid;
-  static Compound_1(S: TopoDS_Shape): TopoDS_Compound;
-  static Compound_2(S: TopoDS_Shape): TopoDS_Compound;
-  delete(): void;
-}
-
-export declare class TopTools_IndexedMapOfShape extends NCollection_BaseMap {
-  begin(): iterator;
-  end(): iterator;
-  cbegin(): _iterator;
-  cend(): _iterator;
-  IndexedItems(): IndexedItemsView;
-  Exchange(theOther: TopTools_IndexedMapOfShape): void;
-  GetHasher(): TopTools_ShapeMapHasher;
-  Assign(theOther: TopTools_IndexedMapOfShape): TopTools_IndexedMapOfShape;
-  ReSize(theExtent: number): void;
-  Add_1(theKey1: TopoDS_Shape): number;
-  Add_2(theKey1: TopoDS_Shape): number;
-  Added_1(theKey1: TopoDS_Shape): TopoDS_Shape;
-  Added_2(theKey1: TopoDS_Shape): TopoDS_Shape;
-  Contains(theKey1: TopoDS_Shape): boolean;
-  Contained(theKey1: TopoDS_Shape): any;
-  Substitute(theIndex: number, theKey1: TopoDS_Shape): void;
-  Swap(theIndex1: number, theIndex2: number): void;
-  RemoveLast(): void;
-  RemoveFromIndex(theIndex: number): void;
-  RemoveKey(theKey1: TopoDS_Shape): boolean;
-  FindKey(theIndex: number): TopoDS_Shape;
-  FindIndex(theKey1: TopoDS_Shape): number;
-  Clear_1(doReleaseMemory: boolean): void;
-  Clear_2(theAllocator: any): void;
-  Size(): number;
-  delete(): void;
-}
-
-  export declare class TopTools_IndexedMapOfShape_1 extends TopTools_IndexedMapOfShape {
-    constructor();
-  }
-
-  export declare class TopTools_IndexedMapOfShape_2 extends TopTools_IndexedMapOfShape {
-    constructor(theNbBuckets: number, theAllocator: any);
-  }
-
-  export declare class TopTools_IndexedMapOfShape_3 extends TopTools_IndexedMapOfShape {
-    constructor(theHasher: TopTools_ShapeMapHasher, theNbBuckets: number, theAllocator: any);
-  }
-
-  export declare class TopTools_IndexedMapOfShape_4 extends TopTools_IndexedMapOfShape {
-    constructor(theHasher: TopTools_ShapeMapHasher, theNbBuckets: number, theAllocator: any);
-  }
-
-  export declare class TopTools_IndexedMapOfShape_5 extends TopTools_IndexedMapOfShape {
-    constructor(theOther: TopTools_IndexedMapOfShape);
-  }
-
-  export declare class TopTools_IndexedMapOfShape_6 extends TopTools_IndexedMapOfShape {
-    constructor(theOther: TopTools_IndexedMapOfShape);
-  }
-
-export declare class Poly_Array1OfTriangle {
-  Size(): number;
-  Length(): number;
-  IsEmpty(): boolean;
-  Lower(): number;
-  Upper(): number;
-  Assign(theOther: Poly_Array1OfTriangle): Poly_Array1OfTriangle;
-  Move_1(theOther: Poly_Array1OfTriangle): Poly_Array1OfTriangle;
-  Move_2(theOther: Poly_Array1OfTriangle): Poly_Array1OfTriangle;
-  UpdateLowerBound(theLower: number): void;
-  UpdateUpperBound(theUpper: number): void;
-  Resize(theLower: number, theUpper: number, theToCopyData: boolean): void;
-  IsDeletable(): boolean;
-  delete(): void;
-}
-
-  export declare class Poly_Array1OfTriangle_1 extends Poly_Array1OfTriangle {
-    constructor();
-  }
-
-  export declare class Poly_Array1OfTriangle_2 extends Poly_Array1OfTriangle {
-    constructor(theLower: number, theUpper: number);
-  }
-
-  export declare class Poly_Array1OfTriangle_5 extends Poly_Array1OfTriangle {
-    constructor(theOther: Poly_Array1OfTriangle);
-  }
-
-  export declare class Poly_Array1OfTriangle_6 extends Poly_Array1OfTriangle {
-    constructor(theOther: Poly_Array1OfTriangle);
-  }
-
-export declare class Handle_Poly_PolygonOnTriangulation {
-  Nullify(): void;
-  IsNull(): boolean;
-  reset(thePtr: Poly_PolygonOnTriangulation): void;
-  get(): Poly_PolygonOnTriangulation;
-  delete(): void;
-}
-
-  export declare class Handle_Poly_PolygonOnTriangulation_1 extends Handle_Poly_PolygonOnTriangulation {
-    constructor();
-  }
-
-  export declare class Handle_Poly_PolygonOnTriangulation_2 extends Handle_Poly_PolygonOnTriangulation {
-    constructor(thePtr: Poly_PolygonOnTriangulation);
-  }
-
-  export declare class Handle_Poly_PolygonOnTriangulation_3 extends Handle_Poly_PolygonOnTriangulation {
-    constructor(theHandle: Handle_Poly_PolygonOnTriangulation);
-  }
-
-  export declare class Handle_Poly_PolygonOnTriangulation_4 extends Handle_Poly_PolygonOnTriangulation {
-    constructor(theHandle: Handle_Poly_PolygonOnTriangulation);
-  }
-
-export declare class TColStd_Array1OfReal {
-  Size(): number;
-  Length(): number;
-  IsEmpty(): boolean;
-  Lower(): number;
-  Upper(): number;
-  Assign(theOther: TColStd_Array1OfReal): TColStd_Array1OfReal;
-  Move_1(theOther: TColStd_Array1OfReal): TColStd_Array1OfReal;
-  Move_2(theOther: TColStd_Array1OfReal): TColStd_Array1OfReal;
-  UpdateLowerBound(theLower: number): void;
-  UpdateUpperBound(theUpper: number): void;
-  Resize(theLower: number, theUpper: number, theToCopyData: boolean): void;
-  IsDeletable(): boolean;
-  delete(): void;
-}
-
-  export declare class TColStd_Array1OfReal_1 extends TColStd_Array1OfReal {
-    constructor();
-  }
-
-  export declare class TColStd_Array1OfReal_2 extends TColStd_Array1OfReal {
-    constructor(theLower: number, theUpper: number);
-  }
-
-  export declare class TColStd_Array1OfReal_5 extends TColStd_Array1OfReal {
-    constructor(theOther: TColStd_Array1OfReal);
-  }
-
-  export declare class TColStd_Array1OfReal_6 extends TColStd_Array1OfReal {
-    constructor(theOther: TColStd_Array1OfReal);
-  }
-
-export declare class TColStd_Array1OfInteger {
-  Size(): number;
-  Length(): number;
-  IsEmpty(): boolean;
-  Lower(): number;
-  Upper(): number;
-  Assign(theOther: TColStd_Array1OfInteger): TColStd_Array1OfInteger;
-  Move_1(theOther: TColStd_Array1OfInteger): TColStd_Array1OfInteger;
-  Move_2(theOther: TColStd_Array1OfInteger): TColStd_Array1OfInteger;
-  UpdateLowerBound(theLower: number): void;
-  UpdateUpperBound(theUpper: number): void;
-  Resize(theLower: number, theUpper: number, theToCopyData: boolean): void;
-  IsDeletable(): boolean;
-  delete(): void;
-}
-
-  export declare class TColStd_Array1OfInteger_1 extends TColStd_Array1OfInteger {
-    constructor();
-  }
-
-  export declare class TColStd_Array1OfInteger_2 extends TColStd_Array1OfInteger {
-    constructor(theLower: number, theUpper: number);
-  }
-
-  export declare class TColStd_Array1OfInteger_5 extends TColStd_Array1OfInteger {
-    constructor(theOther: TColStd_Array1OfInteger);
-  }
-
-  export declare class TColStd_Array1OfInteger_6 extends TColStd_Array1OfInteger {
-    constructor(theOther: TColStd_Array1OfInteger);
-  }
-
-export declare class Handle_Geom_Curve {
-  Nullify(): void;
-  IsNull(): boolean;
-  reset(thePtr: Geom_Curve): void;
-  get(): Geom_Curve;
-  delete(): void;
-}
-
-  export declare class Handle_Geom_Curve_1 extends Handle_Geom_Curve {
-    constructor();
-  }
-
-  export declare class Handle_Geom_Curve_2 extends Handle_Geom_Curve {
-    constructor(thePtr: Geom_Curve);
-  }
-
-  export declare class Handle_Geom_Curve_3 extends Handle_Geom_Curve {
-    constructor(theHandle: Handle_Geom_Curve);
-  }
-
-  export declare class Handle_Geom_Curve_4 extends Handle_Geom_Curve {
-    constructor(theHandle: Handle_Geom_Curve);
-  }
-
-export declare class OCJS {
-  constructor();
-  static getStandard_FailureData(exceptionPtr: intptr_t): Standard_Failure;
-  static HashCode(S: TopoDS_Shape, Upper: Standard_Integer): Standard_Integer;
-  delete(): void;
-}
-
-export declare class Handle_Geom_Circle {
-  Nullify(): void;
-  IsNull(): boolean;
-  reset(thePtr: Geom_Circle): void;
-  get(): Geom_Circle;
-  delete(): void;
-}
-
-  export declare class Handle_Geom_Circle_1 extends Handle_Geom_Circle {
-    constructor();
-  }
-
-  export declare class Handle_Geom_Circle_2 extends Handle_Geom_Circle {
-    constructor(thePtr: Geom_Circle);
-  }
-
-  export declare class Handle_Geom_Circle_3 extends Handle_Geom_Circle {
-    constructor(theHandle: Handle_Geom_Circle);
-  }
-
-  export declare class Handle_Geom_Circle_4 extends Handle_Geom_Circle {
-    constructor(theHandle: Handle_Geom_Circle);
-  }
-
-export declare class Handle_Geom_BSplineCurve {
-  Nullify(): void;
-  IsNull(): boolean;
-  reset(thePtr: Geom_BSplineCurve): void;
-  get(): Geom_BSplineCurve;
-  delete(): void;
-}
-
-  export declare class Handle_Geom_BSplineCurve_1 extends Handle_Geom_BSplineCurve {
-    constructor();
-  }
-
-  export declare class Handle_Geom_BSplineCurve_2 extends Handle_Geom_BSplineCurve {
-    constructor(thePtr: Geom_BSplineCurve);
-  }
-
-  export declare class Handle_Geom_BSplineCurve_3 extends Handle_Geom_BSplineCurve {
-    constructor(theHandle: Handle_Geom_BSplineCurve);
-  }
-
-  export declare class Handle_Geom_BSplineCurve_4 extends Handle_Geom_BSplineCurve {
-    constructor(theHandle: Handle_Geom_BSplineCurve);
-  }
-
-export declare class Handle_Geom_TrimmedCurve {
-  Nullify(): void;
-  IsNull(): boolean;
-  reset(thePtr: Geom_TrimmedCurve): void;
-  get(): Geom_TrimmedCurve;
-  delete(): void;
-}
-
-  export declare class Handle_Geom_TrimmedCurve_1 extends Handle_Geom_TrimmedCurve {
-    constructor();
-  }
-
-  export declare class Handle_Geom_TrimmedCurve_2 extends Handle_Geom_TrimmedCurve {
-    constructor(thePtr: Geom_TrimmedCurve);
-  }
-
-  export declare class Handle_Geom_TrimmedCurve_3 extends Handle_Geom_TrimmedCurve {
-    constructor(theHandle: Handle_Geom_TrimmedCurve);
-  }
-
-  export declare class Handle_Geom_TrimmedCurve_4 extends Handle_Geom_TrimmedCurve {
-    constructor(theHandle: Handle_Geom_TrimmedCurve);
-  }
-
-export declare class Handle_Geom_Surface {
-  Nullify(): void;
-  IsNull(): boolean;
-  reset(thePtr: Geom_Surface): void;
-  get(): Geom_Surface;
-  delete(): void;
-}
-
-  export declare class Handle_Geom_Surface_1 extends Handle_Geom_Surface {
-    constructor();
-  }
-
-  export declare class Handle_Geom_Surface_2 extends Handle_Geom_Surface {
-    constructor(thePtr: Geom_Surface);
-  }
-
-  export declare class Handle_Geom_Surface_3 extends Handle_Geom_Surface {
-    constructor(theHandle: Handle_Geom_Surface);
-  }
-
-  export declare class Handle_Geom_Surface_4 extends Handle_Geom_Surface {
-    constructor(theHandle: Handle_Geom_Surface);
-  }
-
-export declare class TColgp_Array1OfPnt2d {
-  Size(): number;
-  Length(): number;
-  IsEmpty(): boolean;
-  Lower(): number;
-  Upper(): number;
-  Assign(theOther: TColgp_Array1OfPnt2d): TColgp_Array1OfPnt2d;
-  Move_1(theOther: TColgp_Array1OfPnt2d): TColgp_Array1OfPnt2d;
-  Move_2(theOther: TColgp_Array1OfPnt2d): TColgp_Array1OfPnt2d;
-  UpdateLowerBound(theLower: number): void;
-  UpdateUpperBound(theUpper: number): void;
-  Resize(theLower: number, theUpper: number, theToCopyData: boolean): void;
-  IsDeletable(): boolean;
-  delete(): void;
-}
-
-  export declare class TColgp_Array1OfPnt2d_1 extends TColgp_Array1OfPnt2d {
-    constructor();
-  }
-
-  export declare class TColgp_Array1OfPnt2d_2 extends TColgp_Array1OfPnt2d {
-    constructor(theLower: number, theUpper: number);
-  }
-
-  export declare class TColgp_Array1OfPnt2d_5 extends TColgp_Array1OfPnt2d {
-    constructor(theOther: TColgp_Array1OfPnt2d);
-  }
-
-  export declare class TColgp_Array1OfPnt2d_6 extends TColgp_Array1OfPnt2d {
-    constructor(theOther: TColgp_Array1OfPnt2d);
-  }
-
-export declare class TColgp_Array1OfPnt {
-  Size(): number;
-  Length(): number;
-  IsEmpty(): boolean;
-  Lower(): number;
-  Upper(): number;
-  Assign(theOther: TColgp_Array1OfPnt): TColgp_Array1OfPnt;
-  Move_1(theOther: TColgp_Array1OfPnt): TColgp_Array1OfPnt;
-  Move_2(theOther: TColgp_Array1OfPnt): TColgp_Array1OfPnt;
-  UpdateLowerBound(theLower: number): void;
-  UpdateUpperBound(theUpper: number): void;
-  Resize(theLower: number, theUpper: number, theToCopyData: boolean): void;
-  IsDeletable(): boolean;
-  delete(): void;
-}
-
-  export declare class TColgp_Array1OfPnt_1 extends TColgp_Array1OfPnt {
-    constructor();
-  }
-
-  export declare class TColgp_Array1OfPnt_2 extends TColgp_Array1OfPnt {
-    constructor(theLower: number, theUpper: number);
-  }
-
-  export declare class TColgp_Array1OfPnt_5 extends TColgp_Array1OfPnt {
-    constructor(theOther: TColgp_Array1OfPnt);
-  }
-
-  export declare class TColgp_Array1OfPnt_6 extends TColgp_Array1OfPnt {
-    constructor(theOther: TColgp_Array1OfPnt);
-  }
-
-export declare class TColgp_Array1OfDir {
-  Size(): number;
-  Length(): number;
-  IsEmpty(): boolean;
-  Lower(): number;
-  Upper(): number;
-  Assign(theOther: TColgp_Array1OfDir): TColgp_Array1OfDir;
-  Move_1(theOther: TColgp_Array1OfDir): TColgp_Array1OfDir;
-  Move_2(theOther: TColgp_Array1OfDir): TColgp_Array1OfDir;
-  UpdateLowerBound(theLower: number): void;
-  UpdateUpperBound(theUpper: number): void;
-  Resize(theLower: number, theUpper: number, theToCopyData: boolean): void;
-  IsDeletable(): boolean;
-  delete(): void;
-}
-
-  export declare class TColgp_Array1OfDir_1 extends TColgp_Array1OfDir {
-    constructor();
-  }
-
-  export declare class TColgp_Array1OfDir_2 extends TColgp_Array1OfDir {
-    constructor(theLower: number, theUpper: number);
-  }
-
-  export declare class TColgp_Array1OfDir_5 extends TColgp_Array1OfDir {
-    constructor(theOther: TColgp_Array1OfDir);
-  }
-
-  export declare class TColgp_Array1OfDir_6 extends TColgp_Array1OfDir {
-    constructor(theOther: TColgp_Array1OfDir);
-  }
-
-export declare class Handle_Geom_BezierCurve {
-  Nullify(): void;
-  IsNull(): boolean;
-  reset(thePtr: Geom_BezierCurve): void;
-  get(): Geom_BezierCurve;
-  delete(): void;
-}
-
-  export declare class Handle_Geom_BezierCurve_1 extends Handle_Geom_BezierCurve {
-    constructor();
-  }
-
-  export declare class Handle_Geom_BezierCurve_2 extends Handle_Geom_BezierCurve {
-    constructor(thePtr: Geom_BezierCurve);
-  }
-
-  export declare class Handle_Geom_BezierCurve_3 extends Handle_Geom_BezierCurve {
-    constructor(theHandle: Handle_Geom_BezierCurve);
-  }
-
-  export declare class Handle_Geom_BezierCurve_4 extends Handle_Geom_BezierCurve {
-    constructor(theHandle: Handle_Geom_BezierCurve);
-  }
-
-export declare class Handle_TColgp_HArray1OfPnt {
-  Nullify(): void;
-  IsNull(): boolean;
-  reset(thePtr: TColgp_HArray1OfPnt): void;
-  get(): TColgp_HArray1OfPnt;
-  delete(): void;
-}
-
-  export declare class Handle_TColgp_HArray1OfPnt_1 extends Handle_TColgp_HArray1OfPnt {
-    constructor();
-  }
-
-  export declare class Handle_TColgp_HArray1OfPnt_2 extends Handle_TColgp_HArray1OfPnt {
-    constructor(thePtr: TColgp_HArray1OfPnt);
-  }
-
-  export declare class Handle_TColgp_HArray1OfPnt_3 extends Handle_TColgp_HArray1OfPnt {
-    constructor(theHandle: Handle_TColgp_HArray1OfPnt);
-  }
-
-  export declare class Handle_TColgp_HArray1OfPnt_4 extends Handle_TColgp_HArray1OfPnt {
-    constructor(theHandle: Handle_TColgp_HArray1OfPnt);
-  }
-
 type Standard_Boolean = boolean;
 type Standard_Byte = number;
 type Standard_Character = number;
@@ -4247,18 +3685,153 @@ type Standard_ShortReal = number;
 type Standard_Size = number;
 
 declare namespace FS {
-  interface Lookup { path: string; node: FSNode; }
+  interface Lookup {
+      path: string;
+      node: FSNode;
+  }
+
   interface FSStream {}
   interface FSNode {}
   interface ErrnoError {}
-  function readFile(path: string, opts?: { encoding?: string; flags?: string }): any;
-  function writeFile(path: string, data: string | ArrayBufferView, opts?: { flags?: string }): void;
+
+  let ignorePermissions: boolean;
+  let trackingDelegate: any;
+  let tracking: any;
+  let genericErrors: any;
+
+  //
+  // paths
+  //
+  function lookupPath(path: string, opts: any): Lookup;
+  function getPath(node: FSNode): string;
+
+  //
+  // nodes
+  //
+  function isFile(mode: number): boolean;
+  function isDir(mode: number): boolean;
+  function isLink(mode: number): boolean;
+  function isChrdev(mode: number): boolean;
+  function isBlkdev(mode: number): boolean;
+  function isFIFO(mode: number): boolean;
+  function isSocket(mode: number): boolean;
+
+  //
+  // devices
+  //
+  function major(dev: number): number;
+  function minor(dev: number): number;
+  function makedev(ma: number, mi: number): number;
+  function registerDevice(dev: number, ops: any): void;
+
+  //
+  // core
+  //
+  function syncfs(populate: boolean, callback: (e: any) => any): void;
+  function syncfs(callback: (e: any) => any, populate?: boolean): void;
+  function mount(type: any, opts: any, mountpoint: string): any;
+  function unmount(mountpoint: string): void;
+
   function mkdir(path: string, mode?: number): any;
+  function mkdev(path: string, mode?: number, dev?: number): any;
+  function symlink(oldpath: string, newpath: string): any;
+  function rename(old_path: string, new_path: string): void;
+  function rmdir(path: string): void;
+  function readdir(path: string): any;
   function unlink(path: string): void;
+  function readlink(path: string): string;
+  function stat(path: string, dontFollow?: boolean): any;
+  function lstat(path: string): any;
+  function chmod(path: string, mode: number, dontFollow?: boolean): void;
+  function lchmod(path: string, mode: number): void;
+  function fchmod(fd: number, mode: number): void;
+  function chown(path: string, uid: number, gid: number, dontFollow?: boolean): void;
+  function lchown(path: string, uid: number, gid: number): void;
+  function fchown(fd: number, uid: number, gid: number): void;
+  function truncate(path: string, len: number): void;
+  function ftruncate(fd: number, len: number): void;
+  function utime(path: string, atime: number, mtime: number): void;
+  function open(path: string, flags: string, mode?: number, fd_start?: number, fd_end?: number): FSStream;
+  function close(stream: FSStream): void;
+  function llseek(stream: FSStream, offset: number, whence: number): any;
+  function read(stream: FSStream, buffer: ArrayBufferView, offset: number, length: number, position?: number): number;
+  function write(
+      stream: FSStream,
+      buffer: ArrayBufferView,
+      offset: number,
+      length: number,
+      position?: number,
+      canOwn?: boolean,
+  ): number;
+  function allocate(stream: FSStream, offset: number, length: number): void;
+  function mmap(
+      stream: FSStream,
+      buffer: ArrayBufferView,
+      offset: number,
+      length: number,
+      position: number,
+      prot: number,
+      flags: number,
+  ): any;
+  function ioctl(stream: FSStream, cmd: any, arg: any): any;
+  function readFile(path: string, opts: { encoding: 'binary'; flags?: string }): Uint8Array;
+  function readFile(path: string, opts: { encoding: 'utf8'; flags?: string }): string;
+  function readFile(path: string, opts?: { flags?: string }): Uint8Array;
+  function writeFile(path: string, data: string | ArrayBufferView, opts?: { flags?: string }): void;
+
+  //
+  // module-level FS code
+  //
+  function cwd(): string;
+  function chdir(path: string): void;
+  function init(
+      input: null | (() => number | null),
+      output: null | ((c: number) => any),
+      error: null | ((c: number) => any),
+  ): void;
+
+  function createLazyFile(
+      parent: string | FSNode,
+      name: string,
+      url: string,
+      canRead: boolean,
+      canWrite: boolean,
+  ): FSNode;
+  function createPreloadedFile(
+      parent: string | FSNode,
+      name: string,
+      url: string,
+      canRead: boolean,
+      canWrite: boolean,
+      onload?: () => void,
+      onerror?: () => void,
+      dontCreateFile?: boolean,
+      canOwn?: boolean,
+  ): void;
+  function createDataFile(
+      parent: string | FSNode,
+      name: string,
+      data: ArrayBufferView | string,
+      canRead: boolean,
+      canWrite: boolean,
+      canOwn: boolean,
+  ): FSNode;
+  interface AnalysisResults {
+    isRoot: boolean,
+    exists: boolean,
+    error: Error,
+    name: string,
+    path: any,
+    object: any,
+    parentExists: boolean,
+    parentPath: any,
+    parentObject: any
+  }
+  function analyzePath(path: string): AnalysisResults;
 }
 
-export declare interface OpenCascadeInstance {
-  FS: typeof FS;
+
+export type OpenCascadeInstance = {FS: typeof FS} & {
   Message_ProgressRange: typeof Message_ProgressRange;
   Message_ProgressRange_1: typeof Message_ProgressRange_1;
   Message_ProgressRange_2: typeof Message_ProgressRange_2;
@@ -4276,6 +3849,8 @@ export declare interface OpenCascadeInstance {
   gp_Ax2d: typeof gp_Ax2d;
   gp_Ax2d_1: typeof gp_Ax2d_1;
   gp_Ax2d_2: typeof gp_Ax2d_2;
+  gp_Ax2d_3: typeof gp_Ax2d_3;
+  gp_Ax2d_4: typeof gp_Ax2d_4;
   gp: typeof gp;
   gp_Dir2d: typeof gp_Dir2d;
   gp_Dir2d_1: typeof gp_Dir2d_1;
@@ -4296,14 +3871,20 @@ export declare interface OpenCascadeInstance {
   gp_Ax3_1: typeof gp_Ax3_1;
   gp_Ax3_2: typeof gp_Ax3_2;
   gp_Ax3_3: typeof gp_Ax3_3;
+  gp_Ax3_4: typeof gp_Ax3_4;
   gp_Ax3_5: typeof gp_Ax3_5;
+  gp_Ax3_6: typeof gp_Ax3_6;
+  gp_Ax3_7: typeof gp_Ax3_7;
   gp_Trsf: typeof gp_Trsf;
   gp_Trsf_1: typeof gp_Trsf_1;
   gp_Trsf_2: typeof gp_Trsf_2;
   gp_Ax2: typeof gp_Ax2;
   gp_Ax2_1: typeof gp_Ax2_1;
   gp_Ax2_2: typeof gp_Ax2_2;
+  gp_Ax2_3: typeof gp_Ax2_3;
   gp_Ax2_4: typeof gp_Ax2_4;
+  gp_Ax2_5: typeof gp_Ax2_5;
+  gp_Ax2_6: typeof gp_Ax2_6;
   gp_Pnt: typeof gp_Pnt;
   gp_Pnt_1: typeof gp_Pnt_1;
   gp_Pnt_2: typeof gp_Pnt_2;
@@ -4311,15 +3892,17 @@ export declare interface OpenCascadeInstance {
   gp_Ax1: typeof gp_Ax1;
   gp_Ax1_1: typeof gp_Ax1_1;
   gp_Ax1_2: typeof gp_Ax1_2;
+  gp_Ax1_3: typeof gp_Ax1_3;
+  gp_Ax1_4: typeof gp_Ax1_4;
   gp_Pln: typeof gp_Pln;
   gp_Pln_1: typeof gp_Pln_1;
   gp_Pln_2: typeof gp_Pln_2;
   gp_Pln_3: typeof gp_Pln_3;
   gp_Pln_4: typeof gp_Pln_4;
-  GeomAbs_CurveType: typeof GeomAbs_CurveType;
-  GeomAbs_Shape: typeof GeomAbs_Shape;
-  GeomAbs_JoinType: typeof GeomAbs_JoinType;
-  GeomAbs_SurfaceType: typeof GeomAbs_SurfaceType;
+  GeomAbs_CurveType: GeomAbs_CurveType;
+  GeomAbs_Shape: GeomAbs_Shape;
+  GeomAbs_JoinType: GeomAbs_JoinType;
+  GeomAbs_SurfaceType: GeomAbs_SurfaceType;
   Poly_Triangle: typeof Poly_Triangle;
   Poly_Triangle_1: typeof Poly_Triangle_1;
   Poly_Triangle_2: typeof Poly_Triangle_2;
@@ -4416,8 +3999,8 @@ export declare interface OpenCascadeInstance {
   Geom_Circle: typeof Geom_Circle;
   Geom_Circle_1: typeof Geom_Circle_1;
   Geom_Circle_2: typeof Geom_Circle_2;
-  TopAbs_ShapeEnum: typeof TopAbs_ShapeEnum;
-  TopAbs_Orientation: typeof TopAbs_Orientation;
+  TopAbs_ShapeEnum: TopAbs_ShapeEnum;
+  TopAbs_Orientation: TopAbs_Orientation;
   GeomAdaptor_TransformedSurface: typeof GeomAdaptor_TransformedSurface;
   GeomAdaptor_TransformedSurface_1: typeof GeomAdaptor_TransformedSurface_1;
   GeomAdaptor_TransformedSurface_2: typeof GeomAdaptor_TransformedSurface_2;
@@ -4468,12 +4051,6 @@ export declare interface OpenCascadeInstance {
   BRepAlgoAPI_Common_2: typeof BRepAlgoAPI_Common_2;
   BRepAlgoAPI_Common_3: typeof BRepAlgoAPI_Common_3;
   BRepAlgoAPI_Common_4: typeof BRepAlgoAPI_Common_4;
-  BRepAlgoAPI_BuilderAlgo: typeof BRepAlgoAPI_BuilderAlgo;
-  BRepAlgoAPI_BuilderAlgo_1: typeof BRepAlgoAPI_BuilderAlgo_1;
-  BRepAlgoAPI_BuilderAlgo_2: typeof BRepAlgoAPI_BuilderAlgo_2;
-  BRepAlgoAPI_BuilderAlgo_3: typeof BRepAlgoAPI_BuilderAlgo_3;
-  BRepAlgoAPI_BuilderAlgo_4: typeof BRepAlgoAPI_BuilderAlgo_4;
-  BRepAlgoAPI_Algo: typeof BRepAlgoAPI_Algo;
   BRepOffsetAPI_MakeOffsetShape: typeof BRepOffsetAPI_MakeOffsetShape;
   BRepOffsetAPI_MakePipe: typeof BRepOffsetAPI_MakePipe;
   BRepOffsetAPI_MakePipe_1: typeof BRepOffsetAPI_MakePipe_1;
@@ -4484,12 +4061,8 @@ export declare interface OpenCascadeInstance {
   BRepOffsetAPI_MakeOffset_2: typeof BRepOffsetAPI_MakeOffset_2;
   BRepOffsetAPI_MakeOffset_3: typeof BRepOffsetAPI_MakeOffset_3;
   BRepOffsetAPI_MakePipeShell: typeof BRepOffsetAPI_MakePipeShell;
-  BRepOffset_Mode: typeof BRepOffset_Mode;
+  BRepOffset_Mode: BRepOffset_Mode;
   BRepMesh_DiscretRoot: typeof BRepMesh_DiscretRoot;
-  BRepMesh_IncrementalMesh: typeof BRepMesh_IncrementalMesh;
-  BRepMesh_IncrementalMesh_1: typeof BRepMesh_IncrementalMesh_1;
-  BRepMesh_IncrementalMesh_2: typeof BRepMesh_IncrementalMesh_2;
-  BRepMesh_IncrementalMesh_3: typeof BRepMesh_IncrementalMesh_3;
   BRepPrimAPI_MakeSphere: typeof BRepPrimAPI_MakeSphere;
   BRepPrimAPI_MakeSphere_1: typeof BRepPrimAPI_MakeSphere_1;
   BRepPrimAPI_MakeSphere_2: typeof BRepPrimAPI_MakeSphere_2;
@@ -4541,8 +4114,8 @@ export declare interface OpenCascadeInstance {
   BRepPrimAPI_MakePrism: typeof BRepPrimAPI_MakePrism;
   BRepPrimAPI_MakePrism_1: typeof BRepPrimAPI_MakePrism_1;
   BRepPrimAPI_MakePrism_2: typeof BRepPrimAPI_MakePrism_2;
-  BRepFill_TypeOfContact: typeof BRepFill_TypeOfContact;
-  ChFi3d_FilletShape: typeof ChFi3d_FilletShape;
+  BRepFill_TypeOfContact: BRepFill_TypeOfContact;
+  ChFi3d_FilletShape: ChFi3d_FilletShape;
   BRepFilletAPI_MakeChamfer: typeof BRepFilletAPI_MakeChamfer;
   BRepFilletAPI_MakeFillet: typeof BRepFilletAPI_MakeFillet;
   BRepFilletAPI_LocalOperation: typeof BRepFilletAPI_LocalOperation;
@@ -4636,7 +4209,7 @@ export declare interface OpenCascadeInstance {
   IGESControl_Reader: typeof IGESControl_Reader;
   IGESControl_Reader_1: typeof IGESControl_Reader_1;
   IGESControl_Reader_2: typeof IGESControl_Reader_2;
-  STEPControl_StepModelType: typeof STEPControl_StepModelType;
+  STEPControl_StepModelType: STEPControl_StepModelType;
   STEPControl_Writer: typeof STEPControl_Writer;
   STEPControl_Writer_1: typeof STEPControl_Writer_1;
   STEPControl_Writer_2: typeof STEPControl_Writer_2;
@@ -4646,7 +4219,7 @@ export declare interface OpenCascadeInstance {
   StlAPI_Reader: typeof StlAPI_Reader;
   StlAPI_Writer: typeof StlAPI_Writer;
   IFSelect_WorkSession: typeof IFSelect_WorkSession;
-  IFSelect_ReturnStatus: typeof IFSelect_ReturnStatus;
+  IFSelect_ReturnStatus: IFSelect_ReturnStatus;
   Transfer_TransientProcess: typeof Transfer_TransientProcess;
   Transfer_ProcessForTransient: typeof Transfer_ProcessForTransient;
   Transfer_ProcessForTransient_1: typeof Transfer_ProcessForTransient_1;
@@ -4656,97 +4229,8 @@ export declare interface OpenCascadeInstance {
   XSControl_Reader_2: typeof XSControl_Reader_2;
   XSControl_Reader_3: typeof XSControl_Reader_3;
   XSControl_WorkSession: typeof XSControl_WorkSession;
-  Handle_Poly_Triangulation: typeof Handle_Poly_Triangulation;
-  Handle_Poly_Triangulation_1: typeof Handle_Poly_Triangulation_1;
-  Handle_Poly_Triangulation_2: typeof Handle_Poly_Triangulation_2;
-  Handle_Poly_Triangulation_3: typeof Handle_Poly_Triangulation_3;
-  Handle_Poly_Triangulation_4: typeof Handle_Poly_Triangulation_4;
-  TColgp_Array1OfVec: typeof TColgp_Array1OfVec;
-  TColgp_Array1OfVec_1: typeof TColgp_Array1OfVec_1;
-  TColgp_Array1OfVec_2: typeof TColgp_Array1OfVec_2;
-  TColgp_Array1OfVec_5: typeof TColgp_Array1OfVec_5;
-  TColgp_Array1OfVec_6: typeof TColgp_Array1OfVec_6;
-  TopoDS_Cast: typeof TopoDS_Cast;
-  TopTools_IndexedMapOfShape: typeof TopTools_IndexedMapOfShape;
-  TopTools_IndexedMapOfShape_1: typeof TopTools_IndexedMapOfShape_1;
-  TopTools_IndexedMapOfShape_2: typeof TopTools_IndexedMapOfShape_2;
-  TopTools_IndexedMapOfShape_3: typeof TopTools_IndexedMapOfShape_3;
-  TopTools_IndexedMapOfShape_4: typeof TopTools_IndexedMapOfShape_4;
-  TopTools_IndexedMapOfShape_5: typeof TopTools_IndexedMapOfShape_5;
-  TopTools_IndexedMapOfShape_6: typeof TopTools_IndexedMapOfShape_6;
-  Poly_Array1OfTriangle: typeof Poly_Array1OfTriangle;
-  Poly_Array1OfTriangle_1: typeof Poly_Array1OfTriangle_1;
-  Poly_Array1OfTriangle_2: typeof Poly_Array1OfTriangle_2;
-  Poly_Array1OfTriangle_5: typeof Poly_Array1OfTriangle_5;
-  Poly_Array1OfTriangle_6: typeof Poly_Array1OfTriangle_6;
-  Handle_Poly_PolygonOnTriangulation: typeof Handle_Poly_PolygonOnTriangulation;
-  Handle_Poly_PolygonOnTriangulation_1: typeof Handle_Poly_PolygonOnTriangulation_1;
-  Handle_Poly_PolygonOnTriangulation_2: typeof Handle_Poly_PolygonOnTriangulation_2;
-  Handle_Poly_PolygonOnTriangulation_3: typeof Handle_Poly_PolygonOnTriangulation_3;
-  Handle_Poly_PolygonOnTriangulation_4: typeof Handle_Poly_PolygonOnTriangulation_4;
-  TColStd_Array1OfReal: typeof TColStd_Array1OfReal;
-  TColStd_Array1OfReal_1: typeof TColStd_Array1OfReal_1;
-  TColStd_Array1OfReal_2: typeof TColStd_Array1OfReal_2;
-  TColStd_Array1OfReal_5: typeof TColStd_Array1OfReal_5;
-  TColStd_Array1OfReal_6: typeof TColStd_Array1OfReal_6;
-  TColStd_Array1OfInteger: typeof TColStd_Array1OfInteger;
-  TColStd_Array1OfInteger_1: typeof TColStd_Array1OfInteger_1;
-  TColStd_Array1OfInteger_2: typeof TColStd_Array1OfInteger_2;
-  TColStd_Array1OfInteger_5: typeof TColStd_Array1OfInteger_5;
-  TColStd_Array1OfInteger_6: typeof TColStd_Array1OfInteger_6;
-  Handle_Geom_Curve: typeof Handle_Geom_Curve;
-  Handle_Geom_Curve_1: typeof Handle_Geom_Curve_1;
-  Handle_Geom_Curve_2: typeof Handle_Geom_Curve_2;
-  Handle_Geom_Curve_3: typeof Handle_Geom_Curve_3;
-  Handle_Geom_Curve_4: typeof Handle_Geom_Curve_4;
-  OCJS: typeof OCJS;
-  Handle_Geom_Circle: typeof Handle_Geom_Circle;
-  Handle_Geom_Circle_1: typeof Handle_Geom_Circle_1;
-  Handle_Geom_Circle_2: typeof Handle_Geom_Circle_2;
-  Handle_Geom_Circle_3: typeof Handle_Geom_Circle_3;
-  Handle_Geom_Circle_4: typeof Handle_Geom_Circle_4;
-  Handle_Geom_BSplineCurve: typeof Handle_Geom_BSplineCurve;
-  Handle_Geom_BSplineCurve_1: typeof Handle_Geom_BSplineCurve_1;
-  Handle_Geom_BSplineCurve_2: typeof Handle_Geom_BSplineCurve_2;
-  Handle_Geom_BSplineCurve_3: typeof Handle_Geom_BSplineCurve_3;
-  Handle_Geom_BSplineCurve_4: typeof Handle_Geom_BSplineCurve_4;
-  Handle_Geom_TrimmedCurve: typeof Handle_Geom_TrimmedCurve;
-  Handle_Geom_TrimmedCurve_1: typeof Handle_Geom_TrimmedCurve_1;
-  Handle_Geom_TrimmedCurve_2: typeof Handle_Geom_TrimmedCurve_2;
-  Handle_Geom_TrimmedCurve_3: typeof Handle_Geom_TrimmedCurve_3;
-  Handle_Geom_TrimmedCurve_4: typeof Handle_Geom_TrimmedCurve_4;
-  Handle_Geom_Surface: typeof Handle_Geom_Surface;
-  Handle_Geom_Surface_1: typeof Handle_Geom_Surface_1;
-  Handle_Geom_Surface_2: typeof Handle_Geom_Surface_2;
-  Handle_Geom_Surface_3: typeof Handle_Geom_Surface_3;
-  Handle_Geom_Surface_4: typeof Handle_Geom_Surface_4;
-  TColgp_Array1OfPnt2d: typeof TColgp_Array1OfPnt2d;
-  TColgp_Array1OfPnt2d_1: typeof TColgp_Array1OfPnt2d_1;
-  TColgp_Array1OfPnt2d_2: typeof TColgp_Array1OfPnt2d_2;
-  TColgp_Array1OfPnt2d_5: typeof TColgp_Array1OfPnt2d_5;
-  TColgp_Array1OfPnt2d_6: typeof TColgp_Array1OfPnt2d_6;
-  TColgp_Array1OfPnt: typeof TColgp_Array1OfPnt;
-  TColgp_Array1OfPnt_1: typeof TColgp_Array1OfPnt_1;
-  TColgp_Array1OfPnt_2: typeof TColgp_Array1OfPnt_2;
-  TColgp_Array1OfPnt_5: typeof TColgp_Array1OfPnt_5;
-  TColgp_Array1OfPnt_6: typeof TColgp_Array1OfPnt_6;
-  TColgp_Array1OfDir: typeof TColgp_Array1OfDir;
-  TColgp_Array1OfDir_1: typeof TColgp_Array1OfDir_1;
-  TColgp_Array1OfDir_2: typeof TColgp_Array1OfDir_2;
-  TColgp_Array1OfDir_5: typeof TColgp_Array1OfDir_5;
-  TColgp_Array1OfDir_6: typeof TColgp_Array1OfDir_6;
-  Handle_Geom_BezierCurve: typeof Handle_Geom_BezierCurve;
-  Handle_Geom_BezierCurve_1: typeof Handle_Geom_BezierCurve_1;
-  Handle_Geom_BezierCurve_2: typeof Handle_Geom_BezierCurve_2;
-  Handle_Geom_BezierCurve_3: typeof Handle_Geom_BezierCurve_3;
-  Handle_Geom_BezierCurve_4: typeof Handle_Geom_BezierCurve_4;
-  Handle_TColgp_HArray1OfPnt: typeof Handle_TColgp_HArray1OfPnt;
-  Handle_TColgp_HArray1OfPnt_1: typeof Handle_TColgp_HArray1OfPnt_1;
-  Handle_TColgp_HArray1OfPnt_2: typeof Handle_TColgp_HArray1OfPnt_2;
-  Handle_TColgp_HArray1OfPnt_3: typeof Handle_TColgp_HArray1OfPnt_3;
-  Handle_TColgp_HArray1OfPnt_4: typeof Handle_TColgp_HArray1OfPnt_4;
-}
+};
 
-type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
+declare function init(): Promise<OpenCascadeInstance>;
 
-export default function initOpenCascade(settings?: { mainJS?: InitInput; mainWasm?: InitInput; worker?: InitInput; libs?: InitInput[]; module?: Record<string, unknown>; }): Promise<OpenCascadeInstance>;
+export default init;
