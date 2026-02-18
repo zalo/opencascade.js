@@ -217,6 +217,11 @@ mainBuild:
     #include <TopoDS_Compound.hxx>
     #include <Standard_Failure.hxx>
     #include <functional>
+    #include <BRepAlgoAPI_Cut.hxx>
+    #include <BRepAlgoAPI_Fuse.hxx>
+    #include <BRepAlgoAPI_Common.hxx>
+    #include <TopTools_ListOfShape.hxx>
+    #include <Message_ProgressRange.hxx>
     class TopoDS_Cast {
     public:
       static const TopoDS_Vertex&    Vertex_1(const TopoDS_Shape& S) { return ::TopoDS::Vertex(S); }
@@ -241,6 +246,40 @@ mainBuild:
       }
       static int HashCode(const TopoDS_Shape& S, const int Upper) {
         return static_cast<int>(std::hash<TopoDS_Shape>{}(S) % static_cast<size_t>(Upper));
+      }
+      // Boolean helpers: single-build with fuzzy value + non-destructive mode.
+      // The convenience constructors (Cut_3, Fuse_3, Common_3) build immediately
+      // in destructive mode, making it impossible to set fuzzy value beforehand.
+      // These helpers use the default constructor + SetArguments/SetTools pattern.
+      static TopoDS_Shape BooleanCut(const TopoDS_Shape& S1, const TopoDS_Shape& S2, double fuzz) {
+        BRepAlgoAPI_Cut op;
+        TopTools_ListOfShape args, tools;
+        args.Append(S1); tools.Append(S2);
+        op.SetArguments(args); op.SetTools(tools);
+        op.SetFuzzyValue(fuzz);
+        op.SetNonDestructive(Standard_True);
+        op.Build(Message_ProgressRange());
+        return op.Shape();
+      }
+      static TopoDS_Shape BooleanFuse(const TopoDS_Shape& S1, const TopoDS_Shape& S2, double fuzz) {
+        BRepAlgoAPI_Fuse op;
+        TopTools_ListOfShape args, tools;
+        args.Append(S1); tools.Append(S2);
+        op.SetArguments(args); op.SetTools(tools);
+        op.SetFuzzyValue(fuzz);
+        op.SetNonDestructive(Standard_True);
+        op.Build(Message_ProgressRange());
+        return op.Shape();
+      }
+      static TopoDS_Shape BooleanCommon(const TopoDS_Shape& S1, const TopoDS_Shape& S2, double fuzz) {
+        BRepAlgoAPI_Common op;
+        TopTools_ListOfShape args, tools;
+        args.Append(S1); tools.Append(S2);
+        op.SetArguments(args); op.SetTools(tools);
+        op.SetFuzzyValue(fuzz);
+        op.SetNonDestructive(Standard_True);
+        op.Build(Message_ProgressRange());
+        return op.Shape();
       }
     };
     #include <gp_Pnt.hxx>
@@ -285,6 +324,22 @@ mainBuild:
         .constructor<>()
         .class_function("getStandard_FailureData", &OCJS::getStandard_FailureData, allow_raw_pointers())
         .class_function("HashCode", &OCJS::HashCode, allow_raw_pointers())
+        .class_function("BooleanCut", &OCJS::BooleanCut, allow_raw_pointers())
+        .class_function("BooleanFuse", &OCJS::BooleanFuse, allow_raw_pointers())
+        .class_function("BooleanCommon", &OCJS::BooleanCommon, allow_raw_pointers())
+        ;
+    }
+
+    // TopTools_ListOfShape (NCollection_List<TopoDS_Shape>) — needed for
+    // SetArguments/SetTools on boolean operations when using the _1 constructor
+    #include <TopTools_ListOfShape.hxx>
+    EMSCRIPTEN_BINDINGS(AdditionalBindCode_TopTools_ListOfShape) {
+      class_<TopTools_ListOfShape>("TopTools_ListOfShape")
+        .constructor<>()
+        .function("Append", +[](TopTools_ListOfShape& self, const TopoDS_Shape& S) -> TopoDS_Shape& { return self.Append(S); }, allow_raw_pointers())
+        .function("Size", &TopTools_ListOfShape::Size)
+        .function("Clear", +[](TopTools_ListOfShape& self) { self.Clear(); })
+        .function("First", +[](TopTools_ListOfShape& self) -> const TopoDS_Shape& { return self.First(); }, allow_raw_pointers())
         ;
     }
 
@@ -414,6 +469,11 @@ additionalCppCode: |
     static const TopoDS_Compound&  Compound_1(const TopoDS_Shape& S) { return ::TopoDS::Compound(S); }
     static       TopoDS_Compound&  Compound_2(TopoDS_Shape& S)      { return ::TopoDS::Compound(S); }
   };
+  #include <BRepAlgoAPI_Cut.hxx>
+  #include <BRepAlgoAPI_Fuse.hxx>
+  #include <BRepAlgoAPI_Common.hxx>
+  #include <TopTools_ListOfShape.hxx>
+  #include <Message_ProgressRange.hxx>
   class OCJS {
   public:
     static Standard_Failure* getStandard_FailureData(intptr_t exceptionPtr) {
@@ -422,6 +482,36 @@ additionalCppCode: |
     // OCCT 8.0 removed TopoDS_Shape::HashCode(). Provide a replacement.
     static int HashCode(const TopoDS_Shape& S, const int Upper) {
       return static_cast<int>(std::hash<TopoDS_Shape>{}(S) % static_cast<size_t>(Upper));
+    }
+    static TopoDS_Shape BooleanCut(const TopoDS_Shape& S1, const TopoDS_Shape& S2, double fuzz) {
+      BRepAlgoAPI_Cut op;
+      TopTools_ListOfShape args, tools;
+      args.Append(S1); tools.Append(S2);
+      op.SetArguments(args); op.SetTools(tools);
+      op.SetFuzzyValue(fuzz);
+      op.SetNonDestructive(Standard_True);
+      op.Build(Message_ProgressRange());
+      return op.Shape();
+    }
+    static TopoDS_Shape BooleanFuse(const TopoDS_Shape& S1, const TopoDS_Shape& S2, double fuzz) {
+      BRepAlgoAPI_Fuse op;
+      TopTools_ListOfShape args, tools;
+      args.Append(S1); tools.Append(S2);
+      op.SetArguments(args); op.SetTools(tools);
+      op.SetFuzzyValue(fuzz);
+      op.SetNonDestructive(Standard_True);
+      op.Build(Message_ProgressRange());
+      return op.Shape();
+    }
+    static TopoDS_Shape BooleanCommon(const TopoDS_Shape& S1, const TopoDS_Shape& S2, double fuzz) {
+      BRepAlgoAPI_Common op;
+      TopTools_ListOfShape args, tools;
+      args.Append(S1); tools.Append(S2);
+      op.SetArguments(args); op.SetTools(tools);
+      op.SetFuzzyValue(fuzz);
+      op.SetNonDestructive(Standard_True);
+      op.Build(Message_ProgressRange());
+      return op.Shape();
     }
   };
 
