@@ -220,8 +220,9 @@ mainBuild:
     #include <BRepAlgoAPI_Cut.hxx>
     #include <BRepAlgoAPI_Fuse.hxx>
     #include <BRepAlgoAPI_Common.hxx>
-    #include <TopTools_ListOfShape.hxx>
+    #include <NCollection_List.hxx>
     #include <Message_ProgressRange.hxx>
+    typedef NCollection_List<TopoDS_Shape> TopTools_ListOfShape;
     class TopoDS_Cast {
     public:
       static const TopoDS_Vertex&    Vertex_1(const TopoDS_Shape& S) { return ::TopoDS::Vertex(S); }
@@ -257,7 +258,7 @@ mainBuild:
         args.Append(S1); tools.Append(S2);
         op.SetArguments(args); op.SetTools(tools);
         op.SetFuzzyValue(fuzz);
-        op.SetNonDestructive(Standard_True);
+        op.SetNonDestructive(true);
         op.Build(Message_ProgressRange());
         return op.Shape();
       }
@@ -267,7 +268,7 @@ mainBuild:
         args.Append(S1); tools.Append(S2);
         op.SetArguments(args); op.SetTools(tools);
         op.SetFuzzyValue(fuzz);
-        op.SetNonDestructive(Standard_True);
+        op.SetNonDestructive(true);
         op.Build(Message_ProgressRange());
         return op.Shape();
       }
@@ -277,7 +278,7 @@ mainBuild:
         args.Append(S1); tools.Append(S2);
         op.SetArguments(args); op.SetTools(tools);
         op.SetFuzzyValue(fuzz);
-        op.SetNonDestructive(Standard_True);
+        op.SetNonDestructive(true);
         op.Build(Message_ProgressRange());
         return op.Shape();
       }
@@ -286,12 +287,13 @@ mainBuild:
     #include <gp_Dir.hxx>
     #include <gp_Pnt2d.hxx>
     #include <gp_Vec.hxx>
-    #include <TColgp_Array1OfPnt.hxx>
-    #include <TColgp_Array1OfDir.hxx>
-    #include <TColgp_Array1OfPnt2d.hxx>
-    #include <TColgp_Array1OfVec.hxx>
-    #include <TColStd_Array1OfReal.hxx>
-    #include <TColStd_Array1OfInteger.hxx>
+    #include <NCollection_Array1.hxx>
+    typedef NCollection_Array1<gp_Pnt> TColgp_Array1OfPnt;
+    typedef NCollection_Array1<gp_Dir> TColgp_Array1OfDir;
+    typedef NCollection_Array1<gp_Pnt2d> TColgp_Array1OfPnt2d;
+    typedef NCollection_Array1<gp_Vec> TColgp_Array1OfVec;
+    typedef NCollection_Array1<double> TColStd_Array1OfReal;
+    typedef NCollection_Array1<int> TColStd_Array1OfInteger;
     #include <TopoDS_Shape.hxx>
     #undef CONSTRUCTOR
     #include <emscripten/bind.h>
@@ -332,7 +334,6 @@ mainBuild:
 
     // TopTools_ListOfShape (NCollection_List<TopoDS_Shape>) — needed for
     // SetArguments/SetTools on boolean operations when using the _1 constructor
-    #include <TopTools_ListOfShape.hxx>
     EMSCRIPTEN_BINDINGS(AdditionalBindCode_TopTools_ListOfShape) {
       class_<TopTools_ListOfShape>("TopTools_ListOfShape")
         .constructor<>()
@@ -472,8 +473,9 @@ additionalCppCode: |
   #include <BRepAlgoAPI_Cut.hxx>
   #include <BRepAlgoAPI_Fuse.hxx>
   #include <BRepAlgoAPI_Common.hxx>
-  #include <TopTools_ListOfShape.hxx>
+  #include <NCollection_List.hxx>
   #include <Message_ProgressRange.hxx>
+  typedef NCollection_List<TopoDS_Shape> TopTools_ListOfShape;
   class OCJS {
   public:
     static Standard_Failure* getStandard_FailureData(intptr_t exceptionPtr) {
@@ -489,7 +491,7 @@ additionalCppCode: |
       args.Append(S1); tools.Append(S2);
       op.SetArguments(args); op.SetTools(tools);
       op.SetFuzzyValue(fuzz);
-      op.SetNonDestructive(Standard_True);
+      op.SetNonDestructive(true);
       op.Build(Message_ProgressRange());
       return op.Shape();
     }
@@ -499,7 +501,7 @@ additionalCppCode: |
       args.Append(S1); tools.Append(S2);
       op.SetArguments(args); op.SetTools(tools);
       op.SetFuzzyValue(fuzz);
-      op.SetNonDestructive(Standard_True);
+      op.SetNonDestructive(true);
       op.Build(Message_ProgressRange());
       return op.Shape();
     }
@@ -509,7 +511,7 @@ additionalCppCode: |
       args.Append(S1); tools.Append(S2);
       op.SetArguments(args); op.SetTools(tools);
       op.SetFuzzyValue(fuzz);
-      op.SetNonDestructive(Standard_True);
+      op.SetNonDestructive(true);
       op.Build(Message_ProgressRange());
       return op.Shape();
     }

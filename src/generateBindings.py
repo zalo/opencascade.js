@@ -212,24 +212,33 @@ def embindGenerationFuncEnums(tu, preamble, child, typedefs, templateTypedefs) -
 
   return preamble + output
 
+_generator_cache = {}
+
+def _cached_generator(name, tu, filter_fn=None):
+  key = (name, id(tu))
+  if key in _generator_cache:
+    return _generator_cache[key]
+  children = list(tu.cursor.get_children())
+  result = list(filter(filter_fn, children)) if filter_fn else children
+  _generator_cache[key] = result
+  return result
+
 def templateTypedefGenerator(tu):
-  return list(filter(
-    lambda x:
+  return _cached_generator("templateTypedef", tu, lambda x:
       x.kind == clang.cindex.CursorKind.TYPEDEF_DECL and
       not (x.get_definition() is None or not x == x.get_definition()) and
       filterTypedef(x) and
       x.type.get_num_template_arguments() != -1 and
-      not ignoreDuplicateTypedef(x),
-    tu.cursor.get_children()))
+      not ignoreDuplicateTypedef(x))
 
 def typedefGenerator(tu):
-  return list(filter(lambda x: x.kind == clang.cindex.CursorKind.TYPEDEF_DECL, tu.cursor.get_children()))
+  return _cached_generator("typedef", tu, lambda x: x.kind == clang.cindex.CursorKind.TYPEDEF_DECL)
 
 def allChildrenGenerator(tu):
-  return list(tu.cursor.get_children())
+  return _cached_generator("allChildren", tu)
 
 def enumGenerator(tu):
-  return list(filter(lambda x: x.kind == clang.cindex.CursorKind.ENUM_DECL and filterEnum(x), tu.cursor.get_children()))
+  return _cached_generator("enum", tu, lambda x: x.kind == clang.cindex.CursorKind.ENUM_DECL and filterEnum(x))
 
 def process(extension, embindGenerationFuncClasses, embindGenerationFuncTemplates, embindGenerationFuncEnums, preamble, customCode, customBuild):
   processChildren(allChildrenGenerator, "bindings", extension, filterClasses, embindGenerationFuncClasses, typedefGenerator, templateTypedefGenerator, preamble, customCode, customBuild)
@@ -267,7 +276,12 @@ def typescriptGenerationFuncEnums(tu, preamble, child, typedefs, templateTypedef
     "exports": typescript.exports,
   })
 
+_parse_cache = {}
+
 def parse(additionalCppCode = ""):
+  if additionalCppCode in _parse_cache:
+    return _parse_cache[additionalCppCode]
+
   index = clang.cindex.Index.create()
   translationUnit = index.parse(
     "myMain.h", [
@@ -285,6 +299,7 @@ def parse(additionalCppCode = ""):
     for d in translationUnit.diagnostics:
       print("  " + d.format())
 
+  _parse_cache[additionalCppCode] = translationUnit
   return translationUnit
 
 referenceTypeTemplateDefs = \
