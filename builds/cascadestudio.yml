@@ -386,12 +386,24 @@ mainBuild:
     // BRepMesh_IncrementalMesh: auto-generated binding fails (preamble compile error).
     // CascadeStudio only uses the _2 constructor: (shape, deflection, relative, angle, parallel)
     #include <BRepMesh_IncrementalMesh.hxx>
-    // Numbered overload struct for the 5-arg constructor
+    #include <IMeshTools_Parameters.hxx>
+    // Uses DelaBella triangulation algorithm instead of Watson (BRepMesh_Delaun)
+    // because Watson has a bug in OCCT 8.0 RC4 that drops nodes on constrained
+    // faces (sphere-with-holes produces 55 unused nodes and bridging triangles).
     struct BRepMesh_IncrementalMesh_2 : public BRepMesh_IncrementalMesh {
       BRepMesh_IncrementalMesh_2(const TopoDS_Shape& theShape, const double theLinDeflection,
                                   const bool isRelative, const double theAngDeflection,
                                   const bool isInParallel)
-        : BRepMesh_IncrementalMesh(theShape, theLinDeflection, isRelative, theAngDeflection, isInParallel) {}
+        : BRepMesh_IncrementalMesh()
+      {
+        IMeshTools_Parameters params;
+        params.Deflection = theLinDeflection;
+        params.Angle      = theAngDeflection;
+        params.Relative   = isRelative;
+        params.InParallel = isInParallel;
+        params.MeshAlgo   = IMeshTools_MeshAlgoType_Delabella;
+        BRepMesh_IncrementalMesh mesher(theShape, params);
+      }
     };
     EMSCRIPTEN_BINDINGS(AdditionalBindCode_BRepMesh_IncrementalMesh) {
       class_<BRepMesh_IncrementalMesh, base<BRepMesh_DiscretRoot>>("BRepMesh_IncrementalMesh")
