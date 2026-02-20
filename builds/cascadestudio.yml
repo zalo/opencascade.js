@@ -387,9 +387,14 @@ mainBuild:
     // CascadeStudio only uses the _2 constructor: (shape, deflection, relative, angle, parallel)
     #include <BRepMesh_IncrementalMesh.hxx>
     #include <IMeshTools_Parameters.hxx>
-    // Uses DelaBella triangulation algorithm instead of Watson (BRepMesh_Delaun)
-    // because Watson has a bug in OCCT 8.0 RC4 that drops nodes on constrained
-    // faces (sphere-with-holes produces 55 unused nodes and bridging triangles).
+    #include <TopExp_Explorer.hxx>
+    #include <BRep_Tool.hxx>
+    #include <BRep_Builder.hxx>
+    #include <TopLoc_Location.hxx>
+    #include <Poly_Triangulation.hxx>
+    // Two-pass meshing: Watson first (reliable for all face types), then DelaBella
+    // to fix curved faces with boolean cuts where Watson drops nodes (OCCT 8.0 RC4 bug).
+    // Watson results are restored for any face where DelaBella fails.
     struct BRepMesh_IncrementalMesh_2 : public BRepMesh_IncrementalMesh {
       BRepMesh_IncrementalMesh_2(const TopoDS_Shape& theShape, const double theLinDeflection,
                                   const bool isRelative, const double theAngDeflection,
@@ -401,8 +406,33 @@ mainBuild:
         params.Angle      = theAngDeflection;
         params.Relative   = isRelative;
         params.InParallel = isInParallel;
-        params.MeshAlgo   = IMeshTools_MeshAlgoType_Delabella;
-        BRepMesh_IncrementalMesh mesher(theShape, params);
+
+        // Pass 1: Watson — meshes all face types reliably
+        params.MeshAlgo = IMeshTools_MeshAlgoType_DEFAULT;
+        BRepMesh_IncrementalMesh(theShape, params);
+
+        // Save Watson triangulations
+        std::vector<std::pair<TopoDS_Face, occ::handle<Poly_Triangulation>>> watsonTris;
+        for (TopExp_Explorer ex(theShape, TopAbs_FACE); ex.More(); ex.Next()) {
+          TopoDS_Face face = TopoDS::Face(ex.Current());
+          TopLoc_Location loc;
+          auto tri = BRep_Tool::Triangulation(face, loc, 0);
+          watsonTris.push_back({face, tri});
+        }
+
+        // Pass 2: DelaBella — fixes curved faces with boolean cuts
+        params.MeshAlgo = IMeshTools_MeshAlgoType_Delabella;
+        BRepMesh_IncrementalMesh(theShape, params);
+
+        // Restore Watson triangulations where DelaBella produced null
+        BRep_Builder builder;
+        for (auto& [face, watsonTri] : watsonTris) {
+          TopLoc_Location loc;
+          auto delabellaTri = BRep_Tool::Triangulation(face, loc, 0);
+          if (delabellaTri.IsNull() && !watsonTri.IsNull()) {
+            builder.UpdateFace(face, watsonTri);
+          }
+        }
       }
     };
     EMSCRIPTEN_BINDINGS(AdditionalBindCode_BRepMesh_IncrementalMesh) {
