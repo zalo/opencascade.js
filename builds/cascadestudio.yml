@@ -200,8 +200,9 @@ mainBuild:
     - "-sEXPORT_ES6=1"
 
     - "-sEXPORTED_RUNTIME_METHODS=['FS']"
-    - "-sINITIAL_MEMORY=100MB"
+    - "-sINITIAL_MEMORY=128MB"
     - "-sMAXIMUM_MEMORY=4GB"
+    - "-sSTACK_SIZE=64MB"
     - "-sALLOW_MEMORY_GROWTH=1"
     - "-sUSE_FREETYPE=1"
     - "-sLLD_REPORT_UNDEFINED"
