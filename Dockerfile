@@ -38,8 +38,8 @@ WORKDIR /freetype/
 RUN \
   git clone -b VER-2-13-0 https://github.com/freetype/freetype.git .
 
-# OCCT 8.0.0 RC4 from GitHub
-ENV OCCT_VERSION=V8_0_0_rc4
+# OCCT 8.0.1 from GitHub
+ENV OCCT_VERSION=V8_0_1
 WORKDIR /occt/
 RUN \
   curl -L "https://github.com/Open-Cascade-SAS/OCCT/archive/refs/tags/${OCCT_VERSION}.tar.gz" -o occt.tar.gz && \

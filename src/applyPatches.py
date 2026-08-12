@@ -2,17 +2,17 @@
 
 import os
 import subprocess
+from buildPaths import OCJS_ROOT, OCCT_ROOT
 
-os.chdir("/")
-
-for dirpath, dirnames, filenames in os.walk("/opencascade.js/src/patches"):
+# Patch files address OCCT as /occt/src/... — strip the '/occt/' prefix (-p2)
+# and apply relative to OCCT_ROOT so the patches work for any checkout location.
+for dirpath, dirnames, filenames in os.walk(OCJS_ROOT + "/src/patches"):
   for filename in filenames:
     print("applying patch " + dirpath + "/" + filename)
-    patchFile = open(dirpath + "/" + filename, 'r')
-    p = patchFile.read()
-    patchFile.close()
     try:
-      subprocess.check_call(["patch -p0 < '"+ dirpath + "/" + filename + "'"], stdout=subprocess.PIPE, shell=True)
+      subprocess.check_call(
+        ["patch -p2 -N -d '" + OCCT_ROOT + "' < '" + dirpath + "/" + filename + "'"],
+        stdout=subprocess.PIPE, shell=True)
       print("...done applying patch")
-    except:
+    except Exception:
       print("WARNING: Could not apply patch " + filename + " (may not be needed for this OCCT version)")

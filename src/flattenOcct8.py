@@ -14,7 +14,10 @@ import os
 import re
 import sys
 
-OCCT_SRC = "/occt/src"
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from buildPaths import OCCT_ROOT
+
+OCCT_SRC = OCCT_ROOT + "/src"
 
 def parse_cmake_list(filepath):
     """Parse a CMake set() list and return the list items."""
@@ -110,10 +113,10 @@ def flatten():
 
 def generate_version_header():
     """Generate Standard_Version.hxx from CMake version info."""
-    version_cmake = "/occt/adm/cmake/version.cmake"
+    version_cmake = OCCT_ROOT + "/adm/cmake/version.cmake"
     if not os.path.exists(version_cmake):
         # Try alternative location for RC4+
-        version_cmake = "/occt/version.cmake"
+        version_cmake = OCCT_ROOT + "/version.cmake"
     if not os.path.exists(version_cmake):
         print("  Warning: version.cmake not found, creating stub Standard_Version.hxx")
         major, minor, maint, dev = 8, 0, 0, ""

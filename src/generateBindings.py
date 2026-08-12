@@ -15,9 +15,11 @@ import os
 from filter.filterPackages import filterPackages
 from functools import partial
 
-libraryBasePath = "/opencascade.js/build/bindings"
-buildDirectory = "/opencascade.js/build"
-occtBasePath = "/occt/src/"
+from buildPaths import OCJS_ROOT, OCCT_ROOT, numJobs
+
+libraryBasePath = OCJS_ROOT + "/build/bindings"
+buildDirectory = OCJS_ROOT + "/build"
+occtBasePath = OCCT_ROOT + "/src/"
 ocIncludeStatements = os.linesep.join(map(lambda x: "#include \"" + os.path.basename(x) + "\"", list(sorted(ocIncludeFiles))))
 
 import re as _re
@@ -75,6 +77,23 @@ ncollectionTypedefs = "\n".join([
   "typedef NCollection_Array1<Poly_Triangle> Poly_Array1OfTriangle;",
   "typedef NCollection_HArray1<gp_Pnt> TColgp_HArray1OfPnt;",
   "typedef opencascade::handle<TColgp_HArray1OfPnt> Handle_TColgp_HArray1OfPnt;",
+  # Aliases required by build123d's OCP import surface (from
+  # Deprecated/NCollectionAliases, which can't be #included directly)
+  "typedef NCollection_HArray1<bool> TColStd_HArray1OfBoolean;",
+  "typedef NCollection_HArray1<double> TColStd_HArray1OfReal;",
+  "typedef NCollection_HArray2<double> TColStd_HArray2OfReal;",
+  "typedef NCollection_IndexedDataMap<TCollection_AsciiString, TCollection_AsciiString> TColStd_IndexedDataMapOfStringString;",
+  "typedef NCollection_Sequence<opencascade::handle<TCollection_HAsciiString>> TColStd_SequenceOfHAsciiString;",
+  "typedef NCollection_HArray2<gp_Pnt> TColgp_HArray2OfPnt;",
+  "typedef NCollection_Sequence<TDF_Label> TDF_LabelSequence;",
+  "typedef NCollection_HSequence<TopoDS_Shape> TopTools_HSequenceOfShape;",
+  "typedef NCollection_IndexedDataMap<TopoDS_Shape, TopTools_ListOfShape, TopTools_ShapeMapHasher> TopTools_IndexedDataMapOfShapeListOfShape;",
+  "typedef NCollection_Sequence<TopoDS_Shape> TopTools_SequenceOfShape;",
+  "typedef opencascade::handle<TColStd_HArray1OfBoolean> Handle_TColStd_HArray1OfBoolean;",
+  "typedef opencascade::handle<TColStd_HArray1OfReal> Handle_TColStd_HArray1OfReal;",
+  "typedef opencascade::handle<TColStd_HArray2OfReal> Handle_TColStd_HArray2OfReal;",
+  "typedef opencascade::handle<TColgp_HArray2OfPnt> Handle_TColgp_HArray2OfPnt;",
+  "typedef opencascade::handle<TopTools_HSequenceOfShape> Handle_TopTools_HSequenceOfShape;",
 ])
 print(f"Injecting {len(ncollectionTypedefs.splitlines())} NCollection typedefs for OCCT 8.0 compatibility")
 
@@ -189,7 +208,7 @@ def processChildren(generator, buildType: str, extension: str, filterFunction: C
   tu = parse(customCode)
   func = partial(processChildBatch, customCode, generator, buildType, extension, filterFunction, processFunction, typedefs, templateTypedefs, preamble, customBuild)
   if not customBuild:
-    numthreads = multiprocessing.cpu_count()
+    numthreads = numJobs()
     batches = split(range(len(generator(tu))), numthreads)
     with multiprocessing.Pool(processes=numthreads) as p:
       p.map(func, batches)

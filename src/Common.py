@@ -1,8 +1,9 @@
 from filter.filterIncludeFiles import filterIncludeFile
+from buildPaths import OCJS_ROOT, OCCT_ROOT, RAPIDJSON_ROOT, FREETYPE_ROOT, EMSDK_ROOT
 from typing import Set
 import os
 
-occtBasePath = "/occt/src/"
+occtBasePath = OCCT_ROOT + "/src/"
 
 def getGlobalIncludes() -> Set[str]:
   includeFiles = list()
@@ -28,9 +29,9 @@ def getGlobalIncludes() -> Set[str]:
 [ocIncludeFiles, ocIncludePaths] = getGlobalIncludes()
 
 additionalIncludePaths = [
-  "/rapidjson/include",
-  "/freetype/include/freetype",
-  "/freetype/include",
+  RAPIDJSON_ROOT + "/include",
+  FREETYPE_ROOT + "/include/freetype",
+  FREETYPE_ROOT + "/include",
 ]
 
 includePathArgs = \
@@ -46,16 +47,16 @@ includePathArgs = \
   ] + \
   list(map(lambda x: "-I" + x, [
     # Stubs directory FIRST — provides xlocale.h stub
-    "/opencascade.js/src/stubs",
+    OCJS_ROOT + "/src/stubs",
     # libc++ BEFORE sysroot: libc++ wrapper headers (e.g. cstdlib) use
     # #include_next <stdlib.h> which must find the sysroot version, not host
-    "/emsdk/upstream/emscripten/system/lib/libcxx/include/",
-    "/emsdk/upstream/emscripten/system/lib/libcxx/include/__support/newlib/",
+    EMSDK_ROOT + "/upstream/emscripten/system/lib/libcxx/include/",
+    EMSDK_ROOT + "/upstream/emscripten/system/lib/libcxx/include/__support/newlib/",
     # Emscripten sysroot C headers (replaces /usr/include)
-    "/emsdk/upstream/emscripten/cache/sysroot/include/",
-    "/emsdk/upstream/emscripten/system/include/",
+    EMSDK_ROOT + "/upstream/emscripten/cache/sysroot/include/",
+    EMSDK_ROOT + "/upstream/emscripten/system/include/",
     # Clang builtins (stdarg.h, limits.h, etc.)
-    "/emsdk/upstream/lib/clang/" + next(os.walk('/emsdk/upstream/lib/clang/'))[1][0] + "/include/",
+    EMSDK_ROOT + "/upstream/lib/clang/" + next(os.walk(EMSDK_ROOT + '/upstream/lib/clang/'))[1][0] + "/include/",
   ])) + \
   list(map(lambda x: "-I" + x, ocIncludePaths + additionalIncludePaths))
   

@@ -16,7 +16,40 @@ try:
 except ImportError:
   HAS_TQDM = False
 
-libraryBasePath = "/opencascade.js/build/bindings"
+from buildPaths import OCJS_ROOT, numJobs
+
+libraryBasePath = OCJS_ROOT + "/build/bindings"
+failureReportPath = OCJS_ROOT + "/build/binding-compile-failures.txt"
+
+
+def writeFailureReport(failedPaths):
+  """Persist the list of binding files that failed to compile.
+
+  Per-file failures are tolerated (some generated bindings legitimately do not
+  compile), but silently dropping them has caused symbols to vanish from
+  builds unnoticed. The report makes the drop auditable, and buildFromYaml
+  cross-checks requested symbols against it.
+  """
+  with open(failureReportPath, "a") as f:
+    for p in failedPaths:
+      f.write(p + "\n")
+  if failedPaths:
+    print(f"Failure report appended to {failureReportPath} ({len(failedPaths)} entries)")
+
+
+def filterToRequestedSymbols(filesToBuild):
+  """If OCJS_ONLY_SYMBOLS points to a newline-separated symbol list, compile
+  only the binding files for those symbols instead of every generated file.
+  This turns the multi-hour compile-everything stage into minutes for
+  single-purpose builds."""
+  symbolsFile = os.environ.get("OCJS_ONLY_SYMBOLS", "")
+  if not symbolsFile:
+    return filesToBuild
+  with open(symbolsFile) as f:
+    wanted = {line.strip() for line in f if line.strip()}
+  filtered = [p for p in filesToBuild if os.path.basename(p)[:-4] in wanted]
+  print(f"OCJS_ONLY_SYMBOLS: compiling {len(filtered)} of {len(filesToBuild)} binding files")
+  return filtered
 
 def buildOneFile(args, item):
   if not os.path.exists(item + ".o"):
@@ -55,11 +88,14 @@ def compileCustomCodeBindings(args):
   print(f"Compiling {total} custom binding files...")
 
   ok = failed = skipped = 0
-  with multiprocessing.Pool(processes=int(multiprocessing.cpu_count() / 1)) as p:
+  failedPaths = []
+  with multiprocessing.Pool(processes=numJobs()) as p:
     if HAS_TQDM:
       for status, path in tqdm(p.imap_unordered(partial(buildOneFile, args), sorted(filesToBuild)), total=total, desc="Compiling bindings", unit="file"):
         if status == "ok": ok += 1
-        elif status == "failed": failed += 1
+        elif status == "failed":
+          failed += 1
+          failedPaths.append(path)
         else: skipped += 1
     else:
       start = time.time()
@@ -67,6 +103,7 @@ def compileCustomCodeBindings(args):
         if status == "ok": ok += 1
         elif status == "failed":
           failed += 1
+          failedPaths.append(path)
           print(f"Warning: failed to compile {path}, skipping")
         else: skipped += 1
         if i % 50 == 0 or i == total:
@@ -75,6 +112,7 @@ def compileCustomCodeBindings(args):
           eta = (total - i) / rate if rate > 0 else 0
           print(f"[{i}/{total}] {ok} ok, {failed} failed, {skipped} skipped | {rate:.1f} files/s | ETA: {eta/60:.1f}min", flush=True)
 
+  writeFailureReport(failedPaths)
   print(f"\nCustom bindings done: {ok} compiled, {failed} failed, {skipped} skipped (total: {total})")
 
 if __name__ == "__main__":
@@ -86,19 +124,24 @@ if __name__ == "__main__":
   for dirpath, dirnames, filenames in os.walk(libraryBasePath):
     filesToBuild.extend(map(lambda x: dirpath + "/" + x, filter(lambda x: x.endswith(".cpp"), filenames)))
 
+  filesToBuild = filterToRequestedSymbols(filesToBuild)
+
   total = len(filesToBuild)
   print(f"Compiling {total} binding files...")
 
   ok = failed = skipped = 0
+  failedPaths = []
   start = time.time()
 
-  with multiprocessing.Pool(processes=int(multiprocessing.cpu_count() / 1)) as p:
+  with multiprocessing.Pool(processes=numJobs()) as p:
     if HAS_TQDM:
       for status, path in tqdm(p.imap_unordered(partial(buildOneFile, {
         "threading": args.threading,
       }), sorted(filesToBuild)), total=total, desc="Compiling bindings", unit="file"):
         if status == "ok": ok += 1
-        elif status == "failed": failed += 1
+        elif status == "failed":
+          failed += 1
+          failedPaths.append(path)
         else: skipped += 1
     else:
       for i, (status, path) in enumerate(p.imap_unordered(partial(buildOneFile, {
@@ -107,6 +150,7 @@ if __name__ == "__main__":
         if status == "ok": ok += 1
         elif status == "failed":
           failed += 1
+          failedPaths.append(path)
           print(f"Warning: failed to compile {path}, skipping")
         else: skipped += 1
         if i % 50 == 0 or i == total:
@@ -116,4 +160,5 @@ if __name__ == "__main__":
           print(f"[{i}/{total}] {ok} ok, {failed} failed, {skipped} skipped | {rate:.1f} files/s | ETA: {eta/60:.1f}min", flush=True)
 
   elapsed = time.time() - start
+  writeFailureReport(failedPaths)
   print(f"\nBinding compilation done: {ok} compiled, {failed} failed, {skipped} skipped (total: {total}) in {elapsed/60:.1f}min")

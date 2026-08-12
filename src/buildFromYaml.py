@@ -2,24 +2,29 @@
 
 import os
 import subprocess
+import sys
 import json
+import multiprocessing
+from functools import partial
 from itertools import chain
 import yaml
-from generateBindings import generateCustomCodeBindings
-from compileBindings import compileCustomCodeBindings
+from generateBindings import generateCustomCodeBindings, _additionalBindCodeSymbols
+from compileBindings import compileCustomCodeBindings, buildOneFile as compileOneBindingFile
+from linkClosure import resolveClosure, indexBindings
 import shutil
 from cerberus import Validator
 from argparse import ArgumentParser
 from Common import ocIncludePaths, additionalIncludePaths
+from buildPaths import OCJS_ROOT, numJobs
 
 parser = ArgumentParser()
 parser.add_argument(dest="filename", help="Custom build input file (.yml)", metavar="FILE.yml")
 args = parser.parse_args()
 
-libraryBasePath = "/opencascade.js/build"
+libraryBasePath = OCJS_ROOT + "/build"
 
 buildConfig = yaml.safe_load(open(args.filename, "r"))
-schema = eval(open("/opencascade.js/src/customBuildSchema.py", "r").read())
+schema = eval(open(OCJS_ROOT + "/src/customBuildSchema.py", "r").read())
 v = Validator(schema)
 if not v.validate(buildConfig, schema):
   raise Exception(v.errors)
@@ -45,6 +50,55 @@ compileCustomCodeBindings({
   "threading": os.environ['threading'],
 })
 
+# ---------------------------------------------------------------------------
+# Link-closure resolution: yml lists the API the consumer wants; base classes
+# (required by Embind) and Handle_ types (optional, OCJS_INCLUDE_HANDLES=1)
+# are pulled in automatically from the generated binding sources. Any closure
+# symbol whose .cpp exists but whose .cpp.o was never compiled (e.g. when the
+# compile-everything stage was skipped via OCJS_ONLY_SYMBOLS) is compiled here
+# on demand, making single-yml builds incremental end to end.
+# ---------------------------------------------------------------------------
+
+def closureFor(bindings):
+  """None means 'link everything' (empty bindings list, legacy behavior)."""
+  requested = [b["symbol"] for b in bindings]
+  if not requested:
+    return None
+  closure, missing = resolveClosure(
+    requested, libraryBasePath + "/bindings",
+    knownExternal=set(_additionalBindCodeSymbols))
+  if missing:
+    print(f"WARNING: no generated bindings for: {', '.join(sorted(missing))}")
+  derived = closure - set(requested)
+  if derived:
+    print(f"Link closure added {len(derived)} symbols (bases/handles): {', '.join(sorted(derived))}")
+  return closure
+
+def ensureCompiled(closure):
+  if closure is None:
+    return
+  idx = indexBindings(libraryBasePath + "/bindings")
+  toCompile = [idx[s] for s in closure if s in idx and not os.path.exists(idx[s] + ".o")]
+  if not toCompile:
+    return
+  print(f"Compiling {len(toCompile)} missing binding objects for link closure...")
+  failedPaths = []
+  compileArgs = {"threading": os.environ["threading"]}
+  with multiprocessing.Pool(processes=numJobs()) as p:
+    for status, path in p.imap_unordered(partial(compileOneBindingFile, compileArgs), sorted(toCompile)):
+      if status == "failed":
+        failedPaths.append(path)
+        print("Warning: failed to compile " + path)
+  if failedPaths:
+    print(f"*** {len(failedPaths)} closure bindings failed to compile ***")
+
+buildClosures = {}
+buildClosures[buildConfig["mainBuild"]["name"]] = closureFor(buildConfig["mainBuild"]["bindings"])
+for extraBuild in buildConfig["extraBuilds"]:
+  buildClosures[extraBuild["name"]] = closureFor(extraBuild["bindings"])
+for closure in buildClosures.values():
+  ensureCompiled(closure)
+
 def verifyBinding(binding) -> bool:
   for dirpath, dirnames, filenames in os.walk(libraryBasePath + "/bindings"):
     for item in filenames:
@@ -60,24 +114,33 @@ def verifyBindings(bindings) -> list:
       missing.append(binding["symbol"])
   return missing
 
-missingBindings = verifyBindings(buildConfig["mainBuild"]["bindings"])
+missingBindings = [s for s in verifyBindings(buildConfig["mainBuild"]["bindings"])
+                   if s not in _additionalBindCodeSymbols]
 for extraBuild in buildConfig["extraBuilds"]:
-  missingBindings.extend(verifyBindings(extraBuild["bindings"]))
+  missingBindings.extend(s for s in verifyBindings(extraBuild["bindings"])
+                         if s not in _additionalBindCodeSymbols)
 if missingBindings:
   print(f"\n*** {len(missingBindings)} bindings missing: {', '.join(missingBindings)} ***\n")
+  if os.environ.get("OCJS_STRICT", "") == "1":
+    print("OCJS_STRICT=1: aborting — see build/binding-compile-failures.txt for compile failures")
+    sys.exit(1)
 
-def shouldProcessSymbol(symbol: str, bindings) -> bool:
-  if len(bindings) == 0:
-    return True
-  entry = next((b for b in bindings if b["symbol"] == symbol), None)
-  if not entry is None:
-    return True
-  return False
+def shouldProcessSymbol(symbol: str, closure) -> bool:
+  return closure is None or symbol in closure
+
+def _dtsClosure():
+  union = set()
+  for closure in buildClosures.values():
+    if closure is None:
+      return None
+    union |= closure
+  return union
 
 typescriptDefinitions = []
+_dtsSet = _dtsClosure()
 for dirpath, dirnames, filenames in os.walk(libraryBasePath + "/bindings"):
   for item in filenames:
-    if item.endswith(".d.ts.json") and shouldProcessSymbol(item[:-10], list(chain(buildConfig["mainBuild"]["bindings"], *list(map(lambda x: x["bindings"], buildConfig["extraBuilds"]))))):
+    if item.endswith(".d.ts.json") and shouldProcessSymbol(item[:-10], _dtsSet):
       f = open(dirpath + "/" + item, "r")
       typescriptDefinitions.append(json.loads(f.read()))
 
@@ -120,7 +183,7 @@ def runBuild(build):
   bindingsO = []
   for dirpath, dirnames, filenames in os.walk(libraryBasePath + "/bindings"):
     for item in filenames:
-      if item.endswith(".cpp.o") and shouldProcessSymbol(item[:-6], build["bindings"]):
+      if item.endswith(".cpp.o") and shouldProcessSymbol(item[:-6], buildClosures[build["name"]]):
         bindingsO.append(dirpath + "/" + item)
   sourcesO = []
   for dirpath, dirnames, filenames in os.walk(libraryBasePath + "/sources"):

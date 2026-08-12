@@ -16,7 +16,9 @@ try:
 except ImportError:
   HAS_TQDM = False
 
-libraryBasePath = "/opencascade.js/build/sources"
+from buildPaths import OCJS_ROOT, OCCT_ROOT, RAPIDJSON_ROOT, FREETYPE_ROOT, numJobs
+
+libraryBasePath = OCJS_ROOT + "/build/sources"
 
 # Potentially problematic packages, when used with dynamic linking
 # These files contain function pointer definitions and header files and are therefore likely to cause problems.
@@ -40,13 +42,13 @@ libraryBasePath = "/opencascade.js/build/sources"
 # "StdObjMgt"
 # "TDF
 
-sourceBasePath = "/occt/src/"
+sourceBasePath = OCCT_ROOT + "/src/"
 
 includePaths = []
 includePaths.extend([
-  "/rapidjson/include",
-  "/freetype/include/freetype",
-  "/freetype/include",
+  RAPIDJSON_ROOT + "/include",
+  FREETYPE_ROOT + "/include/freetype",
+  FREETYPE_ROOT + "/include",
 ])
 for dirpath, dirnames, filenames in os.walk(os.path.join(sourceBasePath)):
   includePaths.append(dirpath)
@@ -145,7 +147,7 @@ if __name__ == "__main__":
       "threading": args.threading,
     })
 
-  with multiprocessing.Pool(processes=multiprocessing.cpu_count()) as p:
+  with multiprocessing.Pool(processes=numJobs()) as p:
     if HAS_TQDM:
       for status, path in tqdm(p.imap_unordered(myBuildFunction, filesToBuild), total=total, desc="Compiling sources", unit="file"):
         if status == "ok": ok += 1
