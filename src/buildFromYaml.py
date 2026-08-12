@@ -181,9 +181,16 @@ def runBuild(build):
   additionalBindCodeO = getAdditionalBindCodeO()
   print("Running build: " + build["name"])
   bindingsO = []
+  seenBindingSymbols = set()
   for dirpath, dirnames, filenames in os.walk(libraryBasePath + "/bindings"):
     for item in filenames:
       if item.endswith(".cpp.o") and shouldProcessSymbol(item[:-6], buildClosures[build["name"]]):
+        # The same symbol can be generated from more than one location (e.g. a
+        # myMain.h typedef AND the OCCT header); linking both would duplicate
+        # the Embind registration and abort at module init. Keep one.
+        if item[:-6] in seenBindingSymbols:
+          continue
+        seenBindingSymbols.add(item[:-6])
         bindingsO.append(dirpath + "/" + item)
   sourcesO = []
   for dirpath, dirnames, filenames in os.walk(libraryBasePath + "/sources"):

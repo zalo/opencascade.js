@@ -508,6 +508,35 @@ mainBuild:
         ;
     }
 
+    // Indexed data maps used by build123d's OCP surface. The generator cannot
+    // process NCollection_IndexedDataMap typedefs (default template args), so
+    // register the minimal query surface by hand.
+    #include <TopExp.hxx>
+    #include <TopTools_ShapeMapHasher.hxx>
+    #include <NCollection_IndexedDataMap.hxx>
+    #include <TCollection_AsciiString.hxx>
+    typedef NCollection_IndexedDataMap<TopoDS_Shape, TopTools_ListOfShape, TopTools_ShapeMapHasher> TopTools_IndexedDataMapOfShapeListOfShape;
+    typedef NCollection_IndexedDataMap<TCollection_AsciiString, TCollection_AsciiString> TColStd_IndexedDataMapOfStringString;
+    EMSCRIPTEN_BINDINGS(AdditionalBindCode_IndexedDataMaps) {
+      class_<TopTools_IndexedDataMapOfShapeListOfShape>("TopTools_IndexedDataMapOfShapeListOfShape")
+        .constructor<>()
+        .function("Extent", &TopTools_IndexedDataMapOfShapeListOfShape::Extent)
+        .function("Contains", +[](const TopTools_IndexedDataMapOfShapeListOfShape& self, const TopoDS_Shape& S) { return self.Contains(S); })
+        .function("FindKey", +[](const TopTools_IndexedDataMapOfShapeListOfShape& self, int i) -> const TopoDS_Shape& { return self.FindKey(i); }, allow_raw_pointers())
+        .function("FindFromIndex", +[](const TopTools_IndexedDataMapOfShapeListOfShape& self, int i) -> const TopTools_ListOfShape& { return self.FindFromIndex(i); }, allow_raw_pointers())
+        .function("FindFromKey", +[](const TopTools_IndexedDataMapOfShapeListOfShape& self, const TopoDS_Shape& S) -> const TopTools_ListOfShape& { return self.FindFromKey(S); }, allow_raw_pointers())
+        .function("FindIndex", +[](const TopTools_IndexedDataMapOfShapeListOfShape& self, const TopoDS_Shape& S) { return self.FindIndex(S); })
+        .function("Clear", +[](TopTools_IndexedDataMapOfShapeListOfShape& self) { self.Clear(); })
+        ;
+      class_<TColStd_IndexedDataMapOfStringString>("TColStd_IndexedDataMapOfStringString")
+        .constructor<>()
+        .function("Extent", &TColStd_IndexedDataMapOfStringString::Extent)
+        .function("Add", +[](TColStd_IndexedDataMapOfStringString& self, const TCollection_AsciiString& k, const TCollection_AsciiString& v) { return self.Add(k, v); })
+        ;
+      // (TopExp::MapShapesAndAncestors comes from the generated TopExp binding;
+      // its map argument resolves against the registration above.)
+    }
+
     // BRepAlgoAPI_Algo is an abstract base class with a protected destructor.
     // Its auto-generated binding .o gets stripped by LTO. Register it here so
     // derived classes (Cut, Fuse, etc.) can resolve their base type chain.
@@ -623,7 +652,8 @@ mainBuild:
       .function("Lower", &ArrayType::Lower, allow_raw_pointers()) \
       .function("Upper", &ArrayType::Upper, allow_raw_pointers()) \
       .function("IsDeletable", &ArrayType::IsDeletable, allow_raw_pointers()) \
-      .function("Resize", &ArrayType::Resize, allow_raw_pointers())
+      /* OCCT 8.0.1 added Resize(size_t, bool); pin the (int,int,bool) overload */ \
+      .function("Resize", +[](ArrayType& self, const int theLower, const int theUpper, const bool theToCopyData) { self.Resize(theLower, theUpper, theToCopyData); })
 
     // Macro for constructor overloads (default + lower/upper)
     #define ARRAY1_CTORS(ArrayType) \

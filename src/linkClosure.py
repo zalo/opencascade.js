@@ -70,5 +70,8 @@ def resolveClosure(symbols, bindingsDir, includeHandles=None, knownExternal=froz
       handleSym = "Handle_" + sym
       if handleSym in idx and handleSym not in closure:
         queue.append(handleSym)
-  # Only keep symbols that actually have bindings (missing ones are reported)
-  return {s for s in closure if s in idx}, missing
+  # Only keep symbols that actually have bindings (missing ones are reported).
+  # knownExternal symbols are provided by additionalBindCode — linking their
+  # generated .o too would duplicate Embind registrations and raw_destructor
+  # template specializations (wasm-ld duplicate-symbol errors).
+  return {s for s in closure if s in idx and s not in knownExternal}, missing

@@ -140,6 +140,7 @@ def generate_version_header():
 #define OCC_VERSION_MAJOR {major}
 #define OCC_VERSION_MINOR {minor}
 #define OCC_VERSION_MAINTENANCE {maint}
+#define OCC_VERSION {major}.{minor}
 #define OCC_VERSION_DEVELOPMENT "{dev}"
 #define OCC_VERSION_HEX 0x{version_hex:06x}
 #define OCC_VERSION_STRING "{version_str}"

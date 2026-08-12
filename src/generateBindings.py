@@ -34,8 +34,10 @@ def _generateHandleTypedefs() -> str:
   typedefs = []
   seen = set()
   pattern = _re.compile(r'DEFINE_STANDARD_RTTIEXT\s*\(\s*(\w+)\s*,')
-  # Classes that are macro parameters or unavailable in WASM builds
-  _skip = {'Class'}
+  # Classes that are macro parameters, nested classes, or unavailable in WASM
+  # builds. 'Driver' is a nested class in BRepGraph_CacheMesh.hxx (OCCT 8.0.1)
+  # whose RTTIEXT match would emit a typedef for a nonexistent global type.
+  _skip = {'Class', 'Driver'}
   _skip_prefixes = ('IVtk', 'IVtkVTK', 'IVtkOCC', 'IVtkDraw')
   for dirpath, dirnames, filenames in os.walk(occtBasePath):
     for fname in filenames:
@@ -87,8 +89,16 @@ ncollectionTypedefs = "\n".join([
   "typedef NCollection_HArray2<gp_Pnt> TColgp_HArray2OfPnt;",
   "typedef NCollection_Sequence<TDF_Label> TDF_LabelSequence;",
   "typedef NCollection_HSequence<TopoDS_Shape> TopTools_HSequenceOfShape;",
+  "typedef NCollection_List<TopoDS_Shape> TopTools_ListOfShape;",
   "typedef NCollection_IndexedDataMap<TopoDS_Shape, TopTools_ListOfShape, TopTools_ShapeMapHasher> TopTools_IndexedDataMapOfShapeListOfShape;",
   "typedef NCollection_Sequence<TopoDS_Shape> TopTools_SequenceOfShape;",
+  # TopTools_ListOfShape is registered in additionalBindCode, but the typedef
+  # must exist in the TU so dependent typedefs (IndexedDataMapOfShapeListOfShape)
+  # resolve; generation of TopTools_ListOfShape itself is skipped via
+  # _additionalBindCodeSymbols.
+  # OCCT 8 renamed NCollection_Utf8String -> NCollection_String (UTF-8);
+  # bind it under the 8.0 name (the OCP shim maps the old name onto it).
+  "typedef NCollection_UtfString<char> NCollection_String;",
   "typedef opencascade::handle<TColStd_HArray1OfBoolean> Handle_TColStd_HArray1OfBoolean;",
   "typedef opencascade::handle<TColStd_HArray1OfReal> Handle_TColStd_HArray1OfReal;",
   "typedef opencascade::handle<TColStd_HArray2OfReal> Handle_TColStd_HArray2OfReal;",
@@ -118,6 +128,16 @@ _additionalBindCodeSymbols = {
   'TColgp_HArray1OfPnt',
   # NCollection types not directly used
   'TopTools_IndexedMapOfShape', 'Poly_Array1OfTriangle',
+  # Indexed data maps registered in additionalBindCode (generator cannot
+  # process NCollection_IndexedDataMap typedefs with default template args)
+  'TopTools_IndexedDataMapOfShapeListOfShape', 'TColStd_IndexedDataMapOfStringString',
+  # Handle types registered manually in additionalBindCode (HANDLE_BINDINGS
+  # macro); linking the generated versions too would register the same public
+  # name twice and abort Embind at module init
+  'Handle_Geom_Curve', 'Handle_Geom_BezierCurve', 'Handle_Geom_BSplineCurve',
+  'Handle_Geom_TrimmedCurve', 'Handle_Geom_Circle', 'Handle_Geom_Surface',
+  'Handle_Poly_Triangulation', 'Handle_Poly_PolygonOnTriangulation',
+  'Handle_TColgp_HArray1OfPnt',
 }
 
 def filterClasses(child, customBuild):

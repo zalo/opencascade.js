@@ -361,6 +361,14 @@ def filterMethodOrProperty(theClass, methodOrProperty):
   ]:
     return False
 
+  # OCCT 8.0.1 declares this static overload in TCollection_AsciiString.hxx
+  # (line ~1415) but never defines it — declare-without-define upstream bug:
+  # wasm-ld: error: undefined symbol: TCollection_AsciiString::IsEqual(TCollection_AsciiString const&, char const*)
+  if theClass.spelling == "TCollection_AsciiString" and methodOrProperty.spelling == "IsEqual":
+    _args = [a.type.spelling for a in methodOrProperty.get_arguments()]
+    if len(_args) == 2 and "char" in _args[1]:
+      return False
+
   # wasm-ld: error: /opencascade.js/build/bindings/OpenGl/OpenGl_ShaderProgram.hxx/OpenGl_ShaderProgram.cpp.o: undefined symbol: OpenGl_ShaderProgram::compileShaderVerbose(opencascade::handle<OpenGl_Context> const&, opencascade::handle<OpenGl_ShaderObject> const&, TCollection_AsciiString const&, bool)
   if theClass.spelling == "OpenGl_ShaderProgram" and methodOrProperty.spelling == "compileShaderVerbose":
     return False
