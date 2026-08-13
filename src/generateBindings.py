@@ -141,6 +141,8 @@ _additionalBindCodeSymbols = {
   # Interpolation input arrays registered in additionalBindCode
   'TColStd_HArray1OfBoolean', 'Handle_TColStd_HArray1OfBoolean',
   'TColgp_Array2OfPnt',
+  # Surface handle registered in additionalBindCode (generated binding fails)
+  'Handle_Geom_BSplineSurface',
 }
 
 def filterClasses(child, customBuild):

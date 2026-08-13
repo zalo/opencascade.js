@@ -595,6 +595,29 @@ mainBuild:
         ;
     }
 
+    // Handle_Geom_BSplineSurface: the generated binding fails to compile, but
+    // GeomAPI_PointsToBSplineSurface::Surface() returns this handle type —
+    // register it manually so the return value is usable. Upcast to
+    // Handle_Geom_Surface via Handle_Geom_Surface_2(h.get()) for MakeFace.
+    #include <Geom_BSplineSurface.hxx>
+    typedef opencascade::handle<Geom_BSplineSurface> Handle_Geom_BSplineSurface;
+    EMSCRIPTEN_BINDINGS(AdditionalBindCode_Handle_Geom_BSplineSurface) {
+      class_<Handle_Geom_BSplineSurface>("Handle_Geom_BSplineSurface")
+        .function("IsNull", &Handle_Geom_BSplineSurface::IsNull)
+        .function("Nullify", &Handle_Geom_BSplineSurface::Nullify)
+        // get() would surface Geom_BSplineSurface* whose concrete class is not
+        // registered (generated binding fails to compile); convert to the
+        // manually-registered Handle_Geom_Surface by value instead.
+        .function("AsGeomSurface", +[](const Handle_Geom_BSplineSurface& h) -> opencascade::handle<Geom_Surface> { return h; })
+        ;
+      struct Handle_Geom_BSplineSurface_2 : public Handle_Geom_BSplineSurface {
+        Handle_Geom_BSplineSurface_2(const Geom_BSplineSurface* p) : Handle_Geom_BSplineSurface(p) {}
+      };
+      class_<Handle_Geom_BSplineSurface_2, base<Handle_Geom_BSplineSurface>>("Handle_Geom_BSplineSurface_2")
+        .constructor<const Geom_BSplineSurface*>()
+        ;
+    }
+
     // BRepAlgoAPI_Algo is an abstract base class with a protected destructor.
     // Its auto-generated binding .o gets stripped by LTO. Register it here so
     // derived classes (Cut, Fuse, etc.) can resolve their base type chain.
