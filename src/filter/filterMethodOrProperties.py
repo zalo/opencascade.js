@@ -361,6 +361,15 @@ def filterMethodOrProperty(theClass, methodOrProperty):
   ]:
     return False
 
+  # Several BSplCLib statics (Analyse, KnotAnalysis, ...) take non-const enum
+  # references as out-params (GeomAbs_BSplKnotDistribution&) which Embind
+  # cannot bind — drop any method with such a parameter so the rest of
+  # BSplCLib compiles.
+  if theClass.spelling == "BSplCLib":
+    for _arg in methodOrProperty.get_arguments():
+      if "BSplKnotDistribution" in _arg.type.spelling:
+        return False
+
   # OCCT 8.0.1 declares this static overload in TCollection_AsciiString.hxx
   # (line ~1415) but never defines it — declare-without-define upstream bug:
   # wasm-ld: error: undefined symbol: TCollection_AsciiString::IsEqual(TCollection_AsciiString const&, char const*)

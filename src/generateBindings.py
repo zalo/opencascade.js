@@ -143,6 +143,11 @@ _additionalBindCodeSymbols = {
   'TColgp_Array2OfPnt',
   # Surface handle registered in additionalBindCode (generated binding fails)
   'Handle_Geom_BSplineSurface',
+  # Gordon-interpolator support types registered in additionalBindCode
+  'math_Matrix', 'TColStd_Array2OfReal',
+  'TColStd_HArray1OfInteger', 'Handle_TColStd_HArray1OfInteger',
+  'TColgp_HArray1OfPnt2d', 'Handle_TColgp_HArray1OfPnt2d',
+  'TColStd_HArray1OfReal', 'Handle_TColStd_HArray1OfReal',
 }
 
 def filterClasses(child, customBuild):

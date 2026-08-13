@@ -352,6 +352,14 @@ mainBuild:
     - symbol: gp_Vec2d
     - symbol: gp_XYZ
 
+    # ------------------------------------------------------------------
+    # ocp_gordon (Gordon curve-network surfaces) — real classes, no shims
+    # ------------------------------------------------------------------
+    - symbol: BSplCLib
+    - symbol: Geom2dAPI_Interpolate
+    - symbol: GeomConvert_ApproxCurve
+    - symbol: Geom_BSplineSurface
+
   emccFlags:
     - "-flto"
     - "-fexceptions"
@@ -592,6 +600,105 @@ mainBuild:
       };
       class_<TColgp_Array2OfPnt_2, base<TColgp_Array2OfPnt>>("TColgp_Array2OfPnt_2")
         .constructor<const int, const int, const int, const int>()
+        ;
+    }
+
+    // Gordon-interpolator support types the generator cannot produce:
+    // math_Matrix (never generated) and NCollection aliases.
+    #include <math_Matrix.hxx>
+    typedef NCollection_Array2<double> TColStd_Array2OfReal;
+    typedef NCollection_HArray1<int> TColStd_HArray1OfInteger;
+    typedef opencascade::handle<TColStd_HArray1OfInteger> Handle_TColStd_HArray1OfInteger;
+    typedef NCollection_HArray1<double> TColStd_HArray1OfReal;
+    typedef opencascade::handle<TColStd_HArray1OfReal> Handle_TColStd_HArray1OfReal;
+    typedef NCollection_HArray1<gp_Pnt2d> TColgp_HArray1OfPnt2d;
+    typedef opencascade::handle<TColgp_HArray1OfPnt2d> Handle_TColgp_HArray1OfPnt2d;
+    EMSCRIPTEN_BINDINGS(AdditionalBindCode_GordonSupport) {
+      class_<math_Matrix>("math_Matrix")
+        .function("Value", +[](const math_Matrix& self, int r, int c) -> double { return self(r, c); })
+        .function("SetValue", +[](math_Matrix& self, int r, int c, double v) { self(r, c) = v; })
+        .function("LowerRow", &math_Matrix::LowerRow)
+        .function("UpperRow", &math_Matrix::UpperRow)
+        .function("LowerCol", &math_Matrix::LowerCol)
+        .function("UpperCol", &math_Matrix::UpperCol)
+        ;
+      struct math_Matrix_1 : public math_Matrix {
+        math_Matrix_1(const int lr, const int ur, const int lc, const int uc) : math_Matrix(lr, ur, lc, uc) {}
+      };
+      class_<math_Matrix_1, base<math_Matrix>>("math_Matrix_1")
+        .constructor<const int, const int, const int, const int>()
+        ;
+      class_<TColStd_Array2OfReal>("TColStd_Array2OfReal")
+        .function("Value", +[](const TColStd_Array2OfReal& self, int r, int c) -> double { return self.Value(r, c); })
+        .function("SetValue", +[](TColStd_Array2OfReal& self, int r, int c, double v) { self.SetValue(r, c, v); })
+        .function("NbRows", &TColStd_Array2OfReal::NbRows)
+        .function("NbColumns", &TColStd_Array2OfReal::NbColumns)
+        ;
+      struct TColStd_Array2OfReal_2 : public TColStd_Array2OfReal {
+        TColStd_Array2OfReal_2(const int r1, const int r2, const int c1, const int c2) : TColStd_Array2OfReal(r1, r2, c1, c2) {}
+      };
+      class_<TColStd_Array2OfReal_2, base<TColStd_Array2OfReal>>("TColStd_Array2OfReal_2")
+        .constructor<const int, const int, const int, const int>()
+        ;
+      class_<TColStd_HArray1OfInteger>("TColStd_HArray1OfInteger")
+        .function("Value", +[](const TColStd_HArray1OfInteger& self, int i) -> int { return self.Value(i); })
+        .function("SetValue", +[](TColStd_HArray1OfInteger& self, int i, int v) { self.SetValue(i, v); })
+        ;
+      struct TColStd_HArray1OfInteger_2 : public TColStd_HArray1OfInteger {
+        TColStd_HArray1OfInteger_2(const int lo, const int hi) : TColStd_HArray1OfInteger(lo, hi) {}
+      };
+      class_<TColStd_HArray1OfInteger_2, base<TColStd_HArray1OfInteger>>("TColStd_HArray1OfInteger_2")
+        .constructor<const int, const int>()
+        ;
+      class_<TColStd_HArray1OfReal>("TColStd_HArray1OfReal")
+        .function("Value", +[](const TColStd_HArray1OfReal& self, int i) -> double { return self.Value(i); })
+        .function("SetValue", +[](TColStd_HArray1OfReal& self, int i, double v) { self.SetValue(i, v); })
+        ;
+      struct TColStd_HArray1OfReal_2 : public TColStd_HArray1OfReal {
+        TColStd_HArray1OfReal_2(const int lo, const int hi) : TColStd_HArray1OfReal(lo, hi) {}
+      };
+      class_<TColStd_HArray1OfReal_2, base<TColStd_HArray1OfReal>>("TColStd_HArray1OfReal_2")
+        .constructor<const int, const int>()
+        ;
+      class_<Handle_TColStd_HArray1OfReal>("Handle_TColStd_HArray1OfReal")
+        .function("IsNull", &Handle_TColStd_HArray1OfReal::IsNull)
+        .function("get", &Handle_TColStd_HArray1OfReal::get, allow_raw_pointers())
+        ;
+      struct Handle_TColStd_HArray1OfReal_2 : public Handle_TColStd_HArray1OfReal {
+        Handle_TColStd_HArray1OfReal_2(const TColStd_HArray1OfReal* p) : Handle_TColStd_HArray1OfReal(p) {}
+      };
+      class_<Handle_TColStd_HArray1OfReal_2, base<Handle_TColStd_HArray1OfReal>>("Handle_TColStd_HArray1OfReal_2")
+        .constructor<const TColStd_HArray1OfReal*>()
+        ;
+      class_<Handle_TColStd_HArray1OfInteger>("Handle_TColStd_HArray1OfInteger")
+        .function("IsNull", &Handle_TColStd_HArray1OfInteger::IsNull)
+        .function("get", &Handle_TColStd_HArray1OfInteger::get, allow_raw_pointers())
+        ;
+      struct Handle_TColStd_HArray1OfInteger_2 : public Handle_TColStd_HArray1OfInteger {
+        Handle_TColStd_HArray1OfInteger_2(const TColStd_HArray1OfInteger* p) : Handle_TColStd_HArray1OfInteger(p) {}
+      };
+      class_<Handle_TColStd_HArray1OfInteger_2, base<Handle_TColStd_HArray1OfInteger>>("Handle_TColStd_HArray1OfInteger_2")
+        .constructor<const TColStd_HArray1OfInteger*>()
+        ;
+      class_<TColgp_HArray1OfPnt2d>("TColgp_HArray1OfPnt2d")
+        .function("Value", +[](const TColgp_HArray1OfPnt2d& self, int i) -> const gp_Pnt2d& { return self.Value(i); }, allow_raw_pointers())
+        .function("SetValue", +[](TColgp_HArray1OfPnt2d& self, int i, const gp_Pnt2d& v) { self.SetValue(i, v); })
+        ;
+      struct TColgp_HArray1OfPnt2d_2 : public TColgp_HArray1OfPnt2d {
+        TColgp_HArray1OfPnt2d_2(const int lo, const int hi) : TColgp_HArray1OfPnt2d(lo, hi) {}
+      };
+      class_<TColgp_HArray1OfPnt2d_2, base<TColgp_HArray1OfPnt2d>>("TColgp_HArray1OfPnt2d_2")
+        .constructor<const int, const int>()
+        ;
+      class_<Handle_TColgp_HArray1OfPnt2d>("Handle_TColgp_HArray1OfPnt2d")
+        .function("IsNull", &Handle_TColgp_HArray1OfPnt2d::IsNull)
+        .function("get", &Handle_TColgp_HArray1OfPnt2d::get, allow_raw_pointers())
+        ;
+      struct Handle_TColgp_HArray1OfPnt2d_2 : public Handle_TColgp_HArray1OfPnt2d {
+        Handle_TColgp_HArray1OfPnt2d_2(const TColgp_HArray1OfPnt2d* p) : Handle_TColgp_HArray1OfPnt2d(p) {}
+      };
+      class_<Handle_TColgp_HArray1OfPnt2d_2, base<Handle_TColgp_HArray1OfPnt2d>>("Handle_TColgp_HArray1OfPnt2d_2")
+        .constructor<const TColgp_HArray1OfPnt2d*>()
         ;
     }
 

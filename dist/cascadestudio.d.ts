@@ -2240,6 +2240,164 @@ export declare class Poly_Connect {
     constructor(theTriangulation: any);
   }
 
+export declare class BSplCLib {
+  constructor();
+  static Hunt(theArray: NCollection_Array1<double>, theX: Standard_Real, theXPos: Standard_Integer): void;
+  static FirstUKnotIndex(Degree: Standard_Integer, Mults: NCollection_Array1<int>): Standard_Integer;
+  static LastUKnotIndex(Degree: Standard_Integer, Mults: NCollection_Array1<int>): Standard_Integer;
+  static FlatIndex(Degree: Standard_Integer, Index: Standard_Integer, Mults: NCollection_Array1<int>, Periodic: Standard_Boolean): Standard_Integer;
+  static LocateParameter_1(Degree: Standard_Integer, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, U: Standard_Real, IsPeriodic: Standard_Boolean, FromK1: Standard_Integer, ToK2: Standard_Integer, KnotIndex: Standard_Integer, NewU: Standard_Real): void;
+  static LocateParameter_2(Degree: Standard_Integer, Knots: NCollection_Array1<double>, U: Standard_Real, IsPeriodic: Standard_Boolean, FromK1: Standard_Integer, ToK2: Standard_Integer, KnotIndex: Standard_Integer, NewU: Standard_Real): void;
+  static LocateParameter_3(Degree: Standard_Integer, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, U: Standard_Real, Periodic: Standard_Boolean, Index: Standard_Integer, NewU: Standard_Real): void;
+  static MaxKnotMult(Mults: NCollection_Array1<int>, K1: Standard_Integer, K2: Standard_Integer): Standard_Integer;
+  static MinKnotMult(Mults: NCollection_Array1<int>, K1: Standard_Integer, K2: Standard_Integer): Standard_Integer;
+  static NbPoles(Degree: Standard_Integer, Periodic: Standard_Boolean, Mults: NCollection_Array1<int>): Standard_Integer;
+  static KnotSequenceLength(Mults: NCollection_Array1<int>, Degree: Standard_Integer, Periodic: Standard_Boolean): Standard_Integer;
+  static KnotSequence_1(Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, KnotSeq: NCollection_Array1<double>, Periodic: Standard_Boolean): void;
+  static KnotSequence_2(Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, Degree: Standard_Integer, Periodic: Standard_Boolean, KnotSeq: NCollection_Array1<double>): void;
+  static KnotsLength(KnotSeq: NCollection_Array1<double>, Periodic: Standard_Boolean): Standard_Integer;
+  static Knots(KnotSeq: NCollection_Array1<double>, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, Periodic: Standard_Boolean): void;
+  static KnotForm(Knots: NCollection_Array1<double>, FromK1: Standard_Integer, ToK2: Standard_Integer): BSplCLib_KnotDistribution;
+  static MultForm(Mults: NCollection_Array1<int>, FromK1: Standard_Integer, ToK2: Standard_Integer): BSplCLib_MultDistribution;
+  static KnotAnalysis(Degree: Standard_Integer, Periodic: Standard_Boolean, CKnots: NCollection_Array1<double>, CMults: NCollection_Array1<int>, KnotForm: GeomAbs_BSplKnotDistribution, MaxKnotMult: Standard_Integer): void;
+  static Reparametrize(U1: Standard_Real, U2: Standard_Real, Knots: NCollection_Array1<double>): void;
+  static Reverse_1(Knots: NCollection_Array1<double>): void;
+  static Reverse_2(Mults: NCollection_Array1<int>): void;
+  static Reverse_3(Poles: NCollection_Array1<gp_Pnt>, Last: Standard_Integer): void;
+  static Reverse_4(Poles: NCollection_Array1<gp_Pnt2d>, Last: Standard_Integer): void;
+  static Reverse_5(Weights: NCollection_Array1<double>, Last: Standard_Integer): void;
+  static IsRational(Weights: NCollection_Array1<double>, I1: Standard_Integer, I2: Standard_Integer, Epsilon: Standard_Real): Standard_Boolean;
+  static MaxDegree(): Standard_Integer;
+  static Eval_1(U: Standard_Real, Degree: Standard_Integer, Knots: Standard_Real, Dimension: Standard_Integer, Poles: Standard_Real): void;
+  static BoorScheme(U: Standard_Real, Degree: Standard_Integer, Knots: Standard_Real, Dimension: Standard_Integer, Poles: Standard_Real, Depth: Standard_Integer, Length: Standard_Integer): void;
+  static AntiBoorScheme(U: Standard_Real, Degree: Standard_Integer, Knots: Standard_Real, Dimension: Standard_Integer, Poles: Standard_Real, Depth: Standard_Integer, Length: Standard_Integer, Tolerance: Standard_Real): Standard_Boolean;
+  static Derivative(Degree: Standard_Integer, Knots: Standard_Real, Dimension: Standard_Integer, Length: Standard_Integer, Order: Standard_Integer, Poles: Standard_Real): void;
+  static Bohm(U: Standard_Real, Degree: Standard_Integer, N: Standard_Integer, Knots: Standard_Real, Dimension: Standard_Integer, Poles: Standard_Real): void;
+  static NoWeights(): any;
+  static NoMults(): any;
+  static MaxUnitWeightsSize(): Standard_Integer;
+  static UnitWeights(theNbElems: Standard_Integer): any;
+  static UnitWeightsData(): Standard_Real;
+  static BuildKnots(Degree: Standard_Integer, Index: Standard_Integer, Periodic: Standard_Boolean, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, LK: Standard_Real): void;
+  static PoleIndex(Degree: Standard_Integer, Index: Standard_Integer, Periodic: Standard_Boolean, Mults: NCollection_Array1<int>): Standard_Integer;
+  static BuildEval_1(Degree: Standard_Integer, Index: Standard_Integer, Poles: NCollection_Array1<double>, Weights: NCollection_Array1<double>, LP: Standard_Real): void;
+  static BuildEval_2(Degree: Standard_Integer, Index: Standard_Integer, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, LP: Standard_Real): void;
+  static BuildEval_3(Degree: Standard_Integer, Index: Standard_Integer, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, LP: Standard_Real): void;
+  static BuildBoor(Index: Standard_Integer, Length: Standard_Integer, Dimension: Standard_Integer, Poles: NCollection_Array1<double>, LP: Standard_Real): void;
+  static BoorIndex(Index: Standard_Integer, Length: Standard_Integer, Depth: Standard_Integer): Standard_Integer;
+  static GetPole(Index: Standard_Integer, Length: Standard_Integer, Depth: Standard_Integer, Dimension: Standard_Integer, LocPoles: Standard_Real, Position: Standard_Integer, Pole: NCollection_Array1<double>): void;
+  static PrepareInsertKnots(Degree: Standard_Integer, Periodic: Standard_Boolean, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, AddKnots: NCollection_Array1<double>, AddMults: NCollection_Array1<int>, NbPoles: Standard_Integer, NbKnots: Standard_Integer, Epsilon: Standard_Real, Add: Standard_Boolean): Standard_Boolean;
+  static InsertKnots_1(Degree: Standard_Integer, Periodic: Standard_Boolean, Dimension: Standard_Integer, Poles: NCollection_Array1<double>, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, AddKnots: NCollection_Array1<double>, AddMults: NCollection_Array1<int>, NewPoles: NCollection_Array1<double>, NewKnots: NCollection_Array1<double>, NewMults: NCollection_Array1<int>, Epsilon: Standard_Real, Add: Standard_Boolean): void;
+  static InsertKnots_2(Degree: Standard_Integer, Periodic: Standard_Boolean, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, AddKnots: NCollection_Array1<double>, AddMults: NCollection_Array1<int>, NewPoles: NCollection_Array1<gp_Pnt>, NewWeights: NCollection_Array1<double>, NewKnots: NCollection_Array1<double>, NewMults: NCollection_Array1<int>, Epsilon: Standard_Real, Add: Standard_Boolean): void;
+  static InsertKnots_3(Degree: Standard_Integer, Periodic: Standard_Boolean, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, AddKnots: NCollection_Array1<double>, AddMults: NCollection_Array1<int>, NewPoles: NCollection_Array1<gp_Pnt2d>, NewWeights: NCollection_Array1<double>, NewKnots: NCollection_Array1<double>, NewMults: NCollection_Array1<int>, Epsilon: Standard_Real, Add: Standard_Boolean): void;
+  static InsertKnot_1(UIndex: Standard_Integer, U: Standard_Real, UMult: Standard_Integer, Degree: Standard_Integer, Periodic: Standard_Boolean, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, NewPoles: NCollection_Array1<gp_Pnt>, NewWeights: NCollection_Array1<double>): void;
+  static InsertKnot_2(UIndex: Standard_Integer, U: Standard_Real, UMult: Standard_Integer, Degree: Standard_Integer, Periodic: Standard_Boolean, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, NewPoles: NCollection_Array1<gp_Pnt2d>, NewWeights: NCollection_Array1<double>): void;
+  static RaiseMultiplicity_1(KnotIndex: Standard_Integer, Mult: Standard_Integer, Degree: Standard_Integer, Periodic: Standard_Boolean, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, NewPoles: NCollection_Array1<gp_Pnt>, NewWeights: NCollection_Array1<double>): void;
+  static RaiseMultiplicity_2(KnotIndex: Standard_Integer, Mult: Standard_Integer, Degree: Standard_Integer, Periodic: Standard_Boolean, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, NewPoles: NCollection_Array1<gp_Pnt2d>, NewWeights: NCollection_Array1<double>): void;
+  static RemoveKnot_1(Index: Standard_Integer, Mult: Standard_Integer, Degree: Standard_Integer, Periodic: Standard_Boolean, Dimension: Standard_Integer, Poles: NCollection_Array1<double>, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, NewPoles: NCollection_Array1<double>, NewKnots: NCollection_Array1<double>, NewMults: NCollection_Array1<int>, Tolerance: Standard_Real): Standard_Boolean;
+  static RemoveKnot_2(Index: Standard_Integer, Mult: Standard_Integer, Degree: Standard_Integer, Periodic: Standard_Boolean, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, NewPoles: NCollection_Array1<gp_Pnt>, NewWeights: NCollection_Array1<double>, NewKnots: NCollection_Array1<double>, NewMults: NCollection_Array1<int>, Tolerance: Standard_Real): Standard_Boolean;
+  static RemoveKnot_3(Index: Standard_Integer, Mult: Standard_Integer, Degree: Standard_Integer, Periodic: Standard_Boolean, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, NewPoles: NCollection_Array1<gp_Pnt2d>, NewWeights: NCollection_Array1<double>, NewKnots: NCollection_Array1<double>, NewMults: NCollection_Array1<int>, Tolerance: Standard_Real): Standard_Boolean;
+  static IncreaseDegreeCountKnots(Degree: Standard_Integer, NewDegree: Standard_Integer, Periodic: Standard_Boolean, Mults: NCollection_Array1<int>): Standard_Integer;
+  static IncreaseDegree_1(Degree: Standard_Integer, NewDegree: Standard_Integer, Periodic: Standard_Boolean, Dimension: Standard_Integer, Poles: NCollection_Array1<double>, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, NewPoles: NCollection_Array1<double>, NewKnots: NCollection_Array1<double>, NewMults: NCollection_Array1<int>): void;
+  static IncreaseDegree_2(Degree: Standard_Integer, NewDegree: Standard_Integer, Periodic: Standard_Boolean, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, NewPoles: NCollection_Array1<gp_Pnt>, NewWeights: NCollection_Array1<double>, NewKnots: NCollection_Array1<double>, NewMults: NCollection_Array1<int>): void;
+  static IncreaseDegree_3(Degree: Standard_Integer, NewDegree: Standard_Integer, Periodic: Standard_Boolean, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, NewPoles: NCollection_Array1<gp_Pnt2d>, NewWeights: NCollection_Array1<double>, NewKnots: NCollection_Array1<double>, NewMults: NCollection_Array1<int>): void;
+  static IncreaseDegree_4(NewDegree: Standard_Integer, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, NewPoles: NCollection_Array1<gp_Pnt>, NewWeights: NCollection_Array1<double>): void;
+  static IncreaseDegree_5(theNewDegree: Standard_Integer, thePoles: NCollection_Array1<gp_Pnt2d>, theWeights: NCollection_Array1<double>, theNewPoles: NCollection_Array1<gp_Pnt2d>, theNewWeights: NCollection_Array1<double>): void;
+  static PrepareUnperiodize(Degree: Standard_Integer, Mults: NCollection_Array1<int>, NbKnots: Standard_Integer, NbPoles: Standard_Integer): void;
+  static Unperiodize_1(Degree: Standard_Integer, Dimension: Standard_Integer, Mults: NCollection_Array1<int>, Knots: NCollection_Array1<double>, Poles: NCollection_Array1<double>, NewMults: NCollection_Array1<int>, NewKnots: NCollection_Array1<double>, NewPoles: NCollection_Array1<double>): void;
+  static Unperiodize_2(Degree: Standard_Integer, Mults: NCollection_Array1<int>, Knots: NCollection_Array1<double>, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, NewMults: NCollection_Array1<int>, NewKnots: NCollection_Array1<double>, NewPoles: NCollection_Array1<gp_Pnt>, NewWeights: NCollection_Array1<double>): void;
+  static Unperiodize_3(Degree: Standard_Integer, Mults: NCollection_Array1<int>, Knots: NCollection_Array1<double>, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, NewMults: NCollection_Array1<int>, NewKnots: NCollection_Array1<double>, NewPoles: NCollection_Array1<gp_Pnt2d>, NewWeights: NCollection_Array1<double>): void;
+  static PrepareTrimming(Degree: Standard_Integer, Periodic: Standard_Boolean, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, U1: Standard_Real, U2: Standard_Real, NbKnots: Standard_Integer, NbPoles: Standard_Integer): void;
+  static Trimming_1(Degree: Standard_Integer, Periodic: Standard_Boolean, Dimension: Standard_Integer, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, Poles: NCollection_Array1<double>, U1: Standard_Real, U2: Standard_Real, NewKnots: NCollection_Array1<double>, NewMults: NCollection_Array1<int>, NewPoles: NCollection_Array1<double>): void;
+  static Trimming_2(Degree: Standard_Integer, Periodic: Standard_Boolean, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, U1: Standard_Real, U2: Standard_Real, NewKnots: NCollection_Array1<double>, NewMults: NCollection_Array1<int>, NewPoles: NCollection_Array1<gp_Pnt>, NewWeights: NCollection_Array1<double>): void;
+  static Trimming_3(Degree: Standard_Integer, Periodic: Standard_Boolean, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, U1: Standard_Real, U2: Standard_Real, NewKnots: NCollection_Array1<double>, NewMults: NCollection_Array1<int>, NewPoles: NCollection_Array1<gp_Pnt2d>, NewWeights: NCollection_Array1<double>): void;
+  static D0_1(U: Standard_Real, Index: Standard_Integer, Degree: Standard_Integer, Periodic: Standard_Boolean, Poles: NCollection_Array1<double>, Weights: NCollection_Array1<double>, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, P: Standard_Real): void;
+  static D0_2(U: Standard_Real, Index: Standard_Integer, Degree: Standard_Integer, Periodic: Standard_Boolean, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, P: gp_Pnt): void;
+  static D0_3(U: Standard_Real, UIndex: Standard_Integer, Degree: Standard_Integer, Periodic: Standard_Boolean, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, P: gp_Pnt2d): void;
+  static D0_4(U: Standard_Real, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, P: gp_Pnt): void;
+  static D0_5(U: Standard_Real, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, P: gp_Pnt2d): void;
+  static D1_1(U: Standard_Real, Index: Standard_Integer, Degree: Standard_Integer, Periodic: Standard_Boolean, Poles: NCollection_Array1<double>, Weights: NCollection_Array1<double>, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, P: Standard_Real, V: Standard_Real): void;
+  static D1_2(U: Standard_Real, Index: Standard_Integer, Degree: Standard_Integer, Periodic: Standard_Boolean, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, P: gp_Pnt, V: gp_Vec): void;
+  static D1_3(U: Standard_Real, UIndex: Standard_Integer, Degree: Standard_Integer, Periodic: Standard_Boolean, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, P: gp_Pnt2d, V: gp_Vec2d): void;
+  static D1_4(U: Standard_Real, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, P: gp_Pnt, V: gp_Vec): void;
+  static D1_5(U: Standard_Real, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, P: gp_Pnt2d, V: gp_Vec2d): void;
+  static D2_1(U: Standard_Real, Index: Standard_Integer, Degree: Standard_Integer, Periodic: Standard_Boolean, Poles: NCollection_Array1<double>, Weights: NCollection_Array1<double>, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, P: Standard_Real, V1: Standard_Real, V2: Standard_Real): void;
+  static D2_2(U: Standard_Real, Index: Standard_Integer, Degree: Standard_Integer, Periodic: Standard_Boolean, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, P: gp_Pnt, V1: gp_Vec, V2: gp_Vec): void;
+  static D2_3(U: Standard_Real, UIndex: Standard_Integer, Degree: Standard_Integer, Periodic: Standard_Boolean, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, P: gp_Pnt2d, V1: gp_Vec2d, V2: gp_Vec2d): void;
+  static D2_4(U: Standard_Real, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, P: gp_Pnt, V1: gp_Vec, V2: gp_Vec): void;
+  static D2_5(U: Standard_Real, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, P: gp_Pnt2d, V1: gp_Vec2d, V2: gp_Vec2d): void;
+  static D3_1(U: Standard_Real, Index: Standard_Integer, Degree: Standard_Integer, Periodic: Standard_Boolean, Poles: NCollection_Array1<double>, Weights: NCollection_Array1<double>, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, P: Standard_Real, V1: Standard_Real, V2: Standard_Real, V3: Standard_Real): void;
+  static D3_2(U: Standard_Real, Index: Standard_Integer, Degree: Standard_Integer, Periodic: Standard_Boolean, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, P: gp_Pnt, V1: gp_Vec, V2: gp_Vec, V3: gp_Vec): void;
+  static D3_3(U: Standard_Real, UIndex: Standard_Integer, Degree: Standard_Integer, Periodic: Standard_Boolean, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, P: gp_Pnt2d, V1: gp_Vec2d, V2: gp_Vec2d, V3: gp_Vec2d): void;
+  static D3_4(U: Standard_Real, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, P: gp_Pnt, V1: gp_Vec, V2: gp_Vec, V3: gp_Vec): void;
+  static D3_5(U: Standard_Real, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, P: gp_Pnt2d, V1: gp_Vec2d, V2: gp_Vec2d, V3: gp_Vec2d): void;
+  static EvalBsplineBasis(DerivativeOrder: Standard_Integer, Order: Standard_Integer, FlatKnots: NCollection_Array1<double>, Parameter: Standard_Real, FirstNonZeroBsplineIndex: Standard_Integer, BsplineBasis: math_Matrix, isPeriodic: Standard_Boolean): Standard_Integer;
+  static BuildBSpMatrix(Parameters: NCollection_Array1<double>, OrderArray: NCollection_Array1<int>, FlatKnots: NCollection_Array1<double>, Degree: Standard_Integer, Matrix: math_Matrix, UpperBandWidth: Standard_Integer, LowerBandWidth: Standard_Integer): Standard_Integer;
+  static FactorBandedMatrix(Matrix: math_Matrix, UpperBandWidth: Standard_Integer, LowerBandWidth: Standard_Integer, PivotIndexProblem: Standard_Integer): Standard_Integer;
+  static SolveBandedSystem_1(Matrix: math_Matrix, UpperBandWidth: Standard_Integer, LowerBandWidth: Standard_Integer, ArrayDimension: Standard_Integer, Array: Standard_Real): Standard_Integer;
+  static SolveBandedSystem_2(Matrix: math_Matrix, UpperBandWidth: Standard_Integer, LowerBandWidth: Standard_Integer, Array: NCollection_Array1<gp_Pnt2d>): Standard_Integer;
+  static SolveBandedSystem_3(Matrix: math_Matrix, UpperBandWidth: Standard_Integer, LowerBandWidth: Standard_Integer, Array: NCollection_Array1<gp_Pnt>): Standard_Integer;
+  static SolveBandedSystem_4(Matrix: math_Matrix, UpperBandWidth: Standard_Integer, LowerBandWidth: Standard_Integer, HomogenousFlag: Standard_Boolean, ArrayDimension: Standard_Integer, Array: Standard_Real, Weights: Standard_Real): Standard_Integer;
+  static SolveBandedSystem_5(Matrix: math_Matrix, UpperBandWidth: Standard_Integer, LowerBandWidth: Standard_Integer, HomogenousFlag: Standard_Boolean, Array: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>): Standard_Integer;
+  static SolveBandedSystem_6(Matrix: math_Matrix, UpperBandWidth: Standard_Integer, LowerBandWidth: Standard_Integer, HomogeneousFlag: Standard_Boolean, Array: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>): Standard_Integer;
+  static MergeBSplineKnots(Tolerance: Standard_Real, StartValue: Standard_Real, EndValue: Standard_Real, Degree1: Standard_Integer, Knots1: NCollection_Array1<double>, Mults1: NCollection_Array1<int>, Degree2: Standard_Integer, Knots2: NCollection_Array1<double>, Mults2: NCollection_Array1<int>, NumPoles: Standard_Integer, NewKnots: any, NewMults: any): void;
+  static FunctionReparameterise_1(Function: BSplCLib_EvaluatorFunction, BSplineDegree: Standard_Integer, BSplineFlatKnots: NCollection_Array1<double>, PolesDimension: Standard_Integer, Poles: Standard_Real, FlatKnots: NCollection_Array1<double>, NewDegree: Standard_Integer, NewPoles: Standard_Real, theStatus: Standard_Integer): void;
+  static FunctionReparameterise_2(Function: BSplCLib_EvaluatorFunction, BSplineDegree: Standard_Integer, BSplineFlatKnots: NCollection_Array1<double>, Poles: NCollection_Array1<double>, FlatKnots: NCollection_Array1<double>, NewDegree: Standard_Integer, NewPoles: NCollection_Array1<double>, theStatus: Standard_Integer): void;
+  static FunctionReparameterise_3(Function: BSplCLib_EvaluatorFunction, BSplineDegree: Standard_Integer, BSplineFlatKnots: NCollection_Array1<double>, Poles: NCollection_Array1<gp_Pnt>, FlatKnots: NCollection_Array1<double>, NewDegree: Standard_Integer, NewPoles: NCollection_Array1<gp_Pnt>, theStatus: Standard_Integer): void;
+  static FunctionReparameterise_4(Function: BSplCLib_EvaluatorFunction, BSplineDegree: Standard_Integer, BSplineFlatKnots: NCollection_Array1<double>, Poles: NCollection_Array1<gp_Pnt2d>, FlatKnots: NCollection_Array1<double>, NewDegree: Standard_Integer, NewPoles: NCollection_Array1<gp_Pnt2d>, theStatus: Standard_Integer): void;
+  static FunctionMultiply_1(Function: BSplCLib_EvaluatorFunction, BSplineDegree: Standard_Integer, BSplineFlatKnots: NCollection_Array1<double>, PolesDimension: Standard_Integer, Poles: Standard_Real, FlatKnots: NCollection_Array1<double>, NewDegree: Standard_Integer, NewPoles: Standard_Real, theStatus: Standard_Integer): void;
+  static FunctionMultiply_2(Function: BSplCLib_EvaluatorFunction, BSplineDegree: Standard_Integer, BSplineFlatKnots: NCollection_Array1<double>, Poles: NCollection_Array1<double>, FlatKnots: NCollection_Array1<double>, NewDegree: Standard_Integer, NewPoles: NCollection_Array1<double>, theStatus: Standard_Integer): void;
+  static FunctionMultiply_3(Function: BSplCLib_EvaluatorFunction, BSplineDegree: Standard_Integer, BSplineFlatKnots: NCollection_Array1<double>, Poles: NCollection_Array1<gp_Pnt2d>, FlatKnots: NCollection_Array1<double>, NewDegree: Standard_Integer, NewPoles: NCollection_Array1<gp_Pnt2d>, theStatus: Standard_Integer): void;
+  static FunctionMultiply_4(Function: BSplCLib_EvaluatorFunction, BSplineDegree: Standard_Integer, BSplineFlatKnots: NCollection_Array1<double>, Poles: NCollection_Array1<gp_Pnt>, FlatKnots: NCollection_Array1<double>, NewDegree: Standard_Integer, NewPoles: NCollection_Array1<gp_Pnt>, theStatus: Standard_Integer): void;
+  static Eval_2(U: Standard_Real, PeriodicFlag: Standard_Boolean, DerivativeRequest: Standard_Integer, ExtrapMode: Standard_Integer, Degree: Standard_Integer, FlatKnots: NCollection_Array1<double>, ArrayDimension: Standard_Integer, Poles: Standard_Real, Result: Standard_Real): void;
+  static Eval_3(U: Standard_Real, PeriodicFlag: Standard_Boolean, DerivativeRequest: Standard_Integer, ExtrapMode: Standard_Integer, Degree: Standard_Integer, FlatKnots: NCollection_Array1<double>, ArrayDimension: Standard_Integer, Poles: Standard_Real, Weights: Standard_Real, PolesResult: Standard_Real, WeightsResult: Standard_Real): void;
+  static Eval_4(U: Standard_Real, PeriodicFlag: Standard_Boolean, HomogeneousFlag: Standard_Boolean, ExtrapMode: Standard_Integer, Degree: Standard_Integer, FlatKnots: NCollection_Array1<double>, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, Point: gp_Pnt, Weight: Standard_Real): void;
+  static Eval_5(U: Standard_Real, PeriodicFlag: Standard_Boolean, HomogeneousFlag: Standard_Boolean, ExtrapMode: Standard_Integer, Degree: Standard_Integer, FlatKnots: NCollection_Array1<double>, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, Point: gp_Pnt2d, Weight: Standard_Real): void;
+  static TangExtendToConstraint(FlatKnots: NCollection_Array1<double>, C1Coefficient: Standard_Real, NumPoles: Standard_Integer, Poles: Standard_Real, Dimension: Standard_Integer, Degree: Standard_Integer, ConstraintPoint: NCollection_Array1<double>, Continuity: Standard_Integer, After: Standard_Boolean, NbPolesResult: Standard_Integer, NbKnotsRsult: Standard_Integer, KnotsResult: Standard_Real, PolesResult: Standard_Real): void;
+  static CacheD0_1(U: Standard_Real, Degree: Standard_Integer, CacheParameter: Standard_Real, SpanLenght: Standard_Real, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, Point: gp_Pnt): void;
+  static CacheD0_2(U: Standard_Real, Degree: Standard_Integer, CacheParameter: Standard_Real, SpanLenght: Standard_Real, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, Point: gp_Pnt2d): void;
+  static CoefsD0_1(U: Standard_Real, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, Point: gp_Pnt): void;
+  static CoefsD0_2(U: Standard_Real, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, Point: gp_Pnt2d): void;
+  static CacheD1_1(U: Standard_Real, Degree: Standard_Integer, CacheParameter: Standard_Real, SpanLenght: Standard_Real, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, Point: gp_Pnt, Vec: gp_Vec): void;
+  static CacheD1_2(U: Standard_Real, Degree: Standard_Integer, CacheParameter: Standard_Real, SpanLenght: Standard_Real, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, Point: gp_Pnt2d, Vec: gp_Vec2d): void;
+  static CoefsD1_1(U: Standard_Real, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, Point: gp_Pnt, Vec: gp_Vec): void;
+  static CoefsD1_2(U: Standard_Real, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, Point: gp_Pnt2d, Vec: gp_Vec2d): void;
+  static CacheD2_1(U: Standard_Real, Degree: Standard_Integer, CacheParameter: Standard_Real, SpanLenght: Standard_Real, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, Point: gp_Pnt, Vec1: gp_Vec, Vec2: gp_Vec): void;
+  static CacheD2_2(U: Standard_Real, Degree: Standard_Integer, CacheParameter: Standard_Real, SpanLenght: Standard_Real, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, Point: gp_Pnt2d, Vec1: gp_Vec2d, Vec2: gp_Vec2d): void;
+  static CoefsD2_1(U: Standard_Real, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, Point: gp_Pnt, Vec1: gp_Vec, Vec2: gp_Vec): void;
+  static CoefsD2_2(U: Standard_Real, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, Point: gp_Pnt2d, Vec1: gp_Vec2d, Vec2: gp_Vec2d): void;
+  static CacheD3_1(U: Standard_Real, Degree: Standard_Integer, CacheParameter: Standard_Real, SpanLenght: Standard_Real, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, Point: gp_Pnt, Vec1: gp_Vec, Vec2: gp_Vec, Vec3: gp_Vec): void;
+  static CacheD3_2(U: Standard_Real, Degree: Standard_Integer, CacheParameter: Standard_Real, SpanLenght: Standard_Real, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, Point: gp_Pnt2d, Vec1: gp_Vec2d, Vec2: gp_Vec2d, Vec3: gp_Vec2d): void;
+  static CoefsD3_1(U: Standard_Real, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, Point: gp_Pnt, Vec1: gp_Vec, Vec2: gp_Vec, Vec3: gp_Vec): void;
+  static CoefsD3_2(U: Standard_Real, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, Point: gp_Pnt2d, Vec1: gp_Vec2d, Vec2: gp_Vec2d, Vec3: gp_Vec2d): void;
+  static BuildCache_1(U: Standard_Real, InverseOfSpanDomain: Standard_Real, PeriodicFlag: Standard_Boolean, Degree: Standard_Integer, FlatKnots: NCollection_Array1<double>, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, CachePoles: NCollection_Array1<gp_Pnt>, CacheWeights: NCollection_Array1<double>): void;
+  static BuildCache_2(U: Standard_Real, InverseOfSpanDomain: Standard_Real, PeriodicFlag: Standard_Boolean, Degree: Standard_Integer, FlatKnots: NCollection_Array1<double>, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, CachePoles: NCollection_Array1<gp_Pnt2d>, CacheWeights: NCollection_Array1<double>): void;
+  static BuildCache_3(theParameter: Standard_Real, theSpanDomain: Standard_Real, thePeriodicFlag: Standard_Boolean, theDegree: Standard_Integer, theSpanIndex: Standard_Integer, theFlatKnots: NCollection_Array1<double>, thePoles: NCollection_Array1<gp_Pnt>, theWeights: NCollection_Array1<double>, theCacheArray: NCollection_Array2<double>): void;
+  static BuildCache_4(theParameter: Standard_Real, theSpanDomain: Standard_Real, thePeriodicFlag: Standard_Boolean, theDegree: Standard_Integer, theSpanIndex: Standard_Integer, theFlatKnots: NCollection_Array1<double>, thePoles: NCollection_Array1<gp_Pnt2d>, theWeights: NCollection_Array1<double>, theCacheArray: NCollection_Array2<double>): void;
+  static PolesCoefficients_1(Poles: NCollection_Array1<gp_Pnt2d>, CachePoles: NCollection_Array1<gp_Pnt2d>): void;
+  static PolesCoefficients_2(Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, CachePoles: NCollection_Array1<gp_Pnt2d>, CacheWeights: NCollection_Array1<double>): void;
+  static PolesCoefficients_3(Poles: NCollection_Array1<gp_Pnt>, CachePoles: NCollection_Array1<gp_Pnt>): void;
+  static PolesCoefficients_4(Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, CachePoles: NCollection_Array1<gp_Pnt>, CacheWeights: NCollection_Array1<double>): void;
+  static FlatBezierKnots(Degree: Standard_Integer): Standard_Real;
+  static BuildSchoenbergPoints(Degree: Standard_Integer, FlatKnots: NCollection_Array1<double>, Parameters: NCollection_Array1<double>): void;
+  static Interpolate_1(Degree: Standard_Integer, FlatKnots: NCollection_Array1<double>, Parameters: NCollection_Array1<double>, ContactOrderArray: NCollection_Array1<int>, Poles: NCollection_Array1<gp_Pnt>, InversionProblem: Standard_Integer): void;
+  static Interpolate_2(Degree: Standard_Integer, FlatKnots: NCollection_Array1<double>, Parameters: NCollection_Array1<double>, ContactOrderArray: NCollection_Array1<int>, Poles: NCollection_Array1<gp_Pnt2d>, InversionProblem: Standard_Integer): void;
+  static Interpolate_3(Degree: Standard_Integer, FlatKnots: NCollection_Array1<double>, Parameters: NCollection_Array1<double>, ContactOrderArray: NCollection_Array1<int>, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, InversionProblem: Standard_Integer): void;
+  static Interpolate_4(Degree: Standard_Integer, FlatKnots: NCollection_Array1<double>, Parameters: NCollection_Array1<double>, ContactOrderArray: NCollection_Array1<int>, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, InversionProblem: Standard_Integer): void;
+  static Interpolate_5(Degree: Standard_Integer, FlatKnots: NCollection_Array1<double>, Parameters: NCollection_Array1<double>, ContactOrderArray: NCollection_Array1<int>, ArrayDimension: Standard_Integer, Poles: Standard_Real, InversionProblem: Standard_Integer): void;
+  static Interpolate_6(Degree: Standard_Integer, FlatKnots: NCollection_Array1<double>, Parameters: NCollection_Array1<double>, ContactOrderArray: NCollection_Array1<int>, ArrayDimension: Standard_Integer, Poles: Standard_Real, Weights: Standard_Real, InversionProblem: Standard_Integer): void;
+  static MovePoint_1(U: Standard_Real, Displ: gp_Vec2d, Index1: Standard_Integer, Index2: Standard_Integer, Degree: Standard_Integer, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, FlatKnots: NCollection_Array1<double>, FirstIndex: Standard_Integer, LastIndex: Standard_Integer, NewPoles: NCollection_Array1<gp_Pnt2d>): void;
+  static MovePoint_2(U: Standard_Real, Displ: gp_Vec, Index1: Standard_Integer, Index2: Standard_Integer, Degree: Standard_Integer, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, FlatKnots: NCollection_Array1<double>, FirstIndex: Standard_Integer, LastIndex: Standard_Integer, NewPoles: NCollection_Array1<gp_Pnt>): void;
+  static MovePointAndTangent_1(U: Standard_Real, ArrayDimension: Standard_Integer, Delta: Standard_Real, DeltaDerivative: Standard_Real, Tolerance: Standard_Real, Degree: Standard_Integer, StartingCondition: Standard_Integer, EndingCondition: Standard_Integer, Poles: Standard_Real, Weights: NCollection_Array1<double>, FlatKnots: NCollection_Array1<double>, NewPoles: Standard_Real, ErrorStatus: Standard_Integer): void;
+  static MovePointAndTangent_2(U: Standard_Real, Delta: gp_Vec, DeltaDerivative: gp_Vec, Tolerance: Standard_Real, Degree: Standard_Integer, StartingCondition: Standard_Integer, EndingCondition: Standard_Integer, Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, FlatKnots: NCollection_Array1<double>, NewPoles: NCollection_Array1<gp_Pnt>, ErrorStatus: Standard_Integer): void;
+  static MovePointAndTangent_3(U: Standard_Real, Delta: gp_Vec2d, DeltaDerivative: gp_Vec2d, Tolerance: Standard_Real, Degree: Standard_Integer, StartingCondition: Standard_Integer, EndingCondition: Standard_Integer, Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, FlatKnots: NCollection_Array1<double>, NewPoles: NCollection_Array1<gp_Pnt2d>, ErrorStatus: Standard_Integer): void;
+  static Resolution_1(PolesArray: Standard_Real, ArrayDimension: Standard_Integer, NumPoles: Standard_Integer, Weights: NCollection_Array1<double>, FlatKnots: NCollection_Array1<double>, Degree: Standard_Integer, Tolerance3D: Standard_Real, UTolerance: Standard_Real): void;
+  static Resolution_2(Poles: NCollection_Array1<gp_Pnt>, Weights: NCollection_Array1<double>, NumPoles: Standard_Integer, FlatKnots: NCollection_Array1<double>, Degree: Standard_Integer, Tolerance3D: Standard_Real, UTolerance: Standard_Real): void;
+  static Resolution_3(Poles: NCollection_Array1<gp_Pnt2d>, Weights: NCollection_Array1<double>, NumPoles: Standard_Integer, FlatKnots: NCollection_Array1<double>, Degree: Standard_Integer, Tolerance3D: Standard_Real, UTolerance: Standard_Real): void;
+  static Intervals(theKnots: NCollection_Array1<double>, theMults: NCollection_Array1<int>, theDegree: Standard_Integer, isPeriodic: Standard_Boolean, theContinuity: Standard_Integer, theFirst: Standard_Real, theLast: Standard_Real, theTolerance: Standard_Real, theIntervals: NCollection_Array1<double>): Standard_Integer;
+  delete(): void;
+}
+
 export declare class TopLoc_Location {
   IsIdentity(): Standard_Boolean;
   Identity(): void;
@@ -2561,6 +2719,22 @@ export declare class GeomConvert_CompCurveToBSplineCurve {
 
   export declare class GeomConvert_CompCurveToBSplineCurve_2 extends GeomConvert_CompCurveToBSplineCurve {
     constructor(BasisCurve: any, Parameterisation: Convert_ParameterisationType);
+  }
+
+export declare class GeomConvert_ApproxCurve {
+  Curve(): any;
+  IsDone(): Standard_Boolean;
+  HasResult(): Standard_Boolean;
+  MaxError(): Standard_Real;
+  delete(): void;
+}
+
+  export declare class GeomConvert_ApproxCurve_1 extends GeomConvert_ApproxCurve {
+    constructor(Curve: any, Tol3d: Standard_Real, Order: GeomAbs_Shape, MaxSegments: Standard_Integer, MaxDegree: Standard_Integer);
+  }
+
+  export declare class GeomConvert_ApproxCurve_2 extends GeomConvert_ApproxCurve {
+    constructor(Curve: any, Tol3d: Standard_Real, Order: GeomAbs_Shape, MaxSegments: Standard_Integer, MaxDegree: Standard_Integer);
   }
 
 export declare class GCPnts_QuasiUniformDeflection {
@@ -3938,6 +4112,138 @@ export declare class Geom_ElementarySurface extends Geom_Surface {
   DynamicType(): any;
   delete(): void;
 }
+
+export declare class Geom_BSplineSurface extends Geom_BoundedSurface {
+  HasEvalRepresentation(): Standard_Boolean;
+  EvalRepresentation(): any;
+  SetEvalRepresentation(theDesc: any): void;
+  ClearEvalRepresentation(): void;
+  ExchangeUV(): void;
+  SetUPeriodic(): void;
+  SetVPeriodic(): void;
+  PeriodicNormalization(U: Standard_Real, V: Standard_Real): void;
+  SetUOrigin(Index: Standard_Integer): void;
+  SetVOrigin(Index: Standard_Integer): void;
+  SetUNotPeriodic(): void;
+  SetVNotPeriodic(): void;
+  UReverse(): void;
+  VReverse(): void;
+  UReversedParameter(U: Standard_Real): Standard_Real;
+  VReversedParameter(V: Standard_Real): Standard_Real;
+  IncreaseDegree(UDegree: Standard_Integer, VDegree: Standard_Integer): void;
+  InsertUKnots(Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, ParametricTolerance: Standard_Real, Add: Standard_Boolean): void;
+  InsertVKnots(Knots: NCollection_Array1<double>, Mults: NCollection_Array1<int>, ParametricTolerance: Standard_Real, Add: Standard_Boolean): void;
+  RemoveUKnot(Index: Standard_Integer, M: Standard_Integer, Tolerance: Standard_Real): Standard_Boolean;
+  RemoveVKnot(Index: Standard_Integer, M: Standard_Integer, Tolerance: Standard_Real): Standard_Boolean;
+  IncreaseUMultiplicity_1(UIndex: Standard_Integer, M: Standard_Integer): void;
+  IncreaseUMultiplicity_2(FromI1: Standard_Integer, ToI2: Standard_Integer, M: Standard_Integer): void;
+  IncrementUMultiplicity(FromI1: Standard_Integer, ToI2: Standard_Integer, Step: Standard_Integer): void;
+  IncreaseVMultiplicity_1(VIndex: Standard_Integer, M: Standard_Integer): void;
+  IncreaseVMultiplicity_2(FromI1: Standard_Integer, ToI2: Standard_Integer, M: Standard_Integer): void;
+  IncrementVMultiplicity(FromI1: Standard_Integer, ToI2: Standard_Integer, Step: Standard_Integer): void;
+  InsertUKnot(U: Standard_Real, M: Standard_Integer, ParametricTolerance: Standard_Real, Add: Standard_Boolean): void;
+  InsertVKnot(V: Standard_Real, M: Standard_Integer, ParametricTolerance: Standard_Real, Add: Standard_Boolean): void;
+  Segment(U1: Standard_Real, U2: Standard_Real, V1: Standard_Real, V2: Standard_Real, theUTolerance: Standard_Real, theVTolerance: Standard_Real): void;
+  CheckAndSegment(U1: Standard_Real, U2: Standard_Real, V1: Standard_Real, V2: Standard_Real, theUTolerance: Standard_Real, theVTolerance: Standard_Real): void;
+  SetUKnot_1(UIndex: Standard_Integer, K: Standard_Real): void;
+  SetUKnots(UK: NCollection_Array1<double>): void;
+  SetUKnot_2(UIndex: Standard_Integer, K: Standard_Real, M: Standard_Integer): void;
+  SetVKnot_1(VIndex: Standard_Integer, K: Standard_Real): void;
+  SetVKnots(VK: NCollection_Array1<double>): void;
+  SetVKnot_2(VIndex: Standard_Integer, K: Standard_Real, M: Standard_Integer): void;
+  LocateU(U: Standard_Real, ParametricTolerance: Standard_Real, I1: Standard_Integer, I2: Standard_Integer, WithKnotRepetition: Standard_Boolean): void;
+  LocateV(V: Standard_Real, ParametricTolerance: Standard_Real, I1: Standard_Integer, I2: Standard_Integer, WithKnotRepetition: Standard_Boolean): void;
+  SetPole_1(UIndex: Standard_Integer, VIndex: Standard_Integer, P: gp_Pnt): void;
+  SetPole_2(UIndex: Standard_Integer, VIndex: Standard_Integer, P: gp_Pnt, Weight: Standard_Real): void;
+  SetPoleCol_1(VIndex: Standard_Integer, CPoles: NCollection_Array1<gp_Pnt>): void;
+  SetPoleCol_2(VIndex: Standard_Integer, CPoles: NCollection_Array1<gp_Pnt>, CPoleWeights: NCollection_Array1<double>): void;
+  SetPoleRow_1(UIndex: Standard_Integer, CPoles: NCollection_Array1<gp_Pnt>, CPoleWeights: NCollection_Array1<double>): void;
+  SetPoleRow_2(UIndex: Standard_Integer, CPoles: NCollection_Array1<gp_Pnt>): void;
+  SetWeight(UIndex: Standard_Integer, VIndex: Standard_Integer, Weight: Standard_Real): void;
+  SetWeightCol(VIndex: Standard_Integer, CPoleWeights: NCollection_Array1<double>): void;
+  SetWeightRow(UIndex: Standard_Integer, CPoleWeights: NCollection_Array1<double>): void;
+  MovePoint(U: Standard_Real, V: Standard_Real, P: gp_Pnt, UIndex1: Standard_Integer, UIndex2: Standard_Integer, VIndex1: Standard_Integer, VIndex2: Standard_Integer, UFirstIndex: Standard_Integer, ULastIndex: Standard_Integer, VFirstIndex: Standard_Integer, VLastIndex: Standard_Integer): void;
+  IsUClosed(): Standard_Boolean;
+  IsVClosed(): Standard_Boolean;
+  IsCNu(N: Standard_Integer): Standard_Boolean;
+  IsCNv(N: Standard_Integer): Standard_Boolean;
+  IsUPeriodic(): Standard_Boolean;
+  IsURational(): Standard_Boolean;
+  IsVPeriodic(): Standard_Boolean;
+  IsVRational(): Standard_Boolean;
+  Bounds(U1: Standard_Real, U2: Standard_Real, V1: Standard_Real, V2: Standard_Real): void;
+  Continuity(): GeomAbs_Shape;
+  FirstUKnotIndex(): Standard_Integer;
+  FirstVKnotIndex(): Standard_Integer;
+  LastUKnotIndex(): Standard_Integer;
+  LastVKnotIndex(): Standard_Integer;
+  NbUKnots(): Standard_Integer;
+  NbUPoles(): Standard_Integer;
+  NbVKnots(): Standard_Integer;
+  NbVPoles(): Standard_Integer;
+  Pole(UIndex: Standard_Integer, VIndex: Standard_Integer): gp_Pnt;
+  Poles_1(P: NCollection_Array2<gp_Pnt>): void;
+  Poles_2(): any;
+  UDegree(): Standard_Integer;
+  UKnot(UIndex: Standard_Integer): Standard_Real;
+  UKnotDistribution(): GeomAbs_BSplKnotDistribution;
+  UKnots_1(Ku: NCollection_Array1<double>): void;
+  UKnots_2(): any;
+  UKnotSequence_1(Ku: NCollection_Array1<double>): void;
+  UKnotSequence_2(): any;
+  UMultiplicity(UIndex: Standard_Integer): Standard_Integer;
+  UMultiplicities_1(Mu: NCollection_Array1<int>): void;
+  UMultiplicities_2(): any;
+  VDegree(): Standard_Integer;
+  VKnot(VIndex: Standard_Integer): Standard_Real;
+  VKnotDistribution(): GeomAbs_BSplKnotDistribution;
+  VKnots_1(Kv: NCollection_Array1<double>): void;
+  VKnots_2(): any;
+  VKnotSequence_1(Kv: NCollection_Array1<double>): void;
+  VKnotSequence_2(): any;
+  VMultiplicity(VIndex: Standard_Integer): Standard_Integer;
+  VMultiplicities_1(Mv: NCollection_Array1<int>): void;
+  VMultiplicities_2(): any;
+  Weight(UIndex: Standard_Integer, VIndex: Standard_Integer): Standard_Real;
+  Weights_1(W: NCollection_Array2<double>): void;
+  WeightsArray(): any;
+  Weights_2(): any;
+  EvalD0(U: Standard_Real, V: Standard_Real): gp_Pnt;
+  EvalD1(U: Standard_Real, V: Standard_Real): any;
+  EvalD2(U: Standard_Real, V: Standard_Real): any;
+  EvalD3(U: Standard_Real, V: Standard_Real): any;
+  EvalDN(U: Standard_Real, V: Standard_Real, Nu: Standard_Integer, Nv: Standard_Integer): gp_Vec;
+  LocalD0(U: Standard_Real, V: Standard_Real, FromUK1: Standard_Integer, ToUK2: Standard_Integer, FromVK1: Standard_Integer, ToVK2: Standard_Integer, P: gp_Pnt): void;
+  LocalD1(U: Standard_Real, V: Standard_Real, FromUK1: Standard_Integer, ToUK2: Standard_Integer, FromVK1: Standard_Integer, ToVK2: Standard_Integer, P: gp_Pnt, D1U: gp_Vec, D1V: gp_Vec): void;
+  LocalD2(U: Standard_Real, V: Standard_Real, FromUK1: Standard_Integer, ToUK2: Standard_Integer, FromVK1: Standard_Integer, ToVK2: Standard_Integer, P: gp_Pnt, D1U: gp_Vec, D1V: gp_Vec, D2U: gp_Vec, D2V: gp_Vec, D2UV: gp_Vec): void;
+  LocalD3(U: Standard_Real, V: Standard_Real, FromUK1: Standard_Integer, ToUK2: Standard_Integer, FromVK1: Standard_Integer, ToVK2: Standard_Integer, P: gp_Pnt, D1U: gp_Vec, D1V: gp_Vec, D2U: gp_Vec, D2V: gp_Vec, D2UV: gp_Vec, D3U: gp_Vec, D3V: gp_Vec, D3UUV: gp_Vec, D3UVV: gp_Vec): void;
+  LocalDN(U: Standard_Real, V: Standard_Real, FromUK1: Standard_Integer, ToUK2: Standard_Integer, FromVK1: Standard_Integer, ToVK2: Standard_Integer, Nu: Standard_Integer, Nv: Standard_Integer): gp_Vec;
+  LocalValue(U: Standard_Real, V: Standard_Real, FromUK1: Standard_Integer, ToUK2: Standard_Integer, FromVK1: Standard_Integer, ToVK2: Standard_Integer): gp_Pnt;
+  UIso_1(U: Standard_Real): any;
+  VIso_1(V: Standard_Real): any;
+  UIso_2(U: Standard_Real, CheckRational: Standard_Boolean): any;
+  VIso_2(V: Standard_Real, CheckRational: Standard_Boolean): any;
+  Transform(T: gp_Trsf): void;
+  static MaxDegree(): Standard_Integer;
+  Resolution(Tolerance3D: Standard_Real, UTolerance: Standard_Real, VTolerance: Standard_Real): void;
+  Copy(): any;
+  static get_type_name(): Standard_Character;
+  static get_type_descriptor(): any;
+  DynamicType(): any;
+  delete(): void;
+}
+
+  export declare class Geom_BSplineSurface_1 extends Geom_BSplineSurface {
+    constructor(Poles: NCollection_Array2<gp_Pnt>, UKnots: NCollection_Array1<double>, VKnots: NCollection_Array1<double>, UMults: NCollection_Array1<int>, VMults: NCollection_Array1<int>, UDegree: Standard_Integer, VDegree: Standard_Integer, UPeriodic: Standard_Boolean, VPeriodic: Standard_Boolean);
+  }
+
+  export declare class Geom_BSplineSurface_2 extends Geom_BSplineSurface {
+    constructor(Poles: NCollection_Array2<gp_Pnt>, Weights: NCollection_Array2<double>, UKnots: NCollection_Array1<double>, VKnots: NCollection_Array1<double>, UMults: NCollection_Array1<int>, VMults: NCollection_Array1<int>, UDegree: Standard_Integer, VDegree: Standard_Integer, UPeriodic: Standard_Boolean, VPeriodic: Standard_Boolean);
+  }
+
+  export declare class Geom_BSplineSurface_3 extends Geom_BSplineSurface {
+    constructor(theOther: Geom_BSplineSurface);
+  }
 
 export declare class Geom_BezierCurve extends Geom_BoundedCurve {
   HasEvalRepresentation(): Standard_Boolean;
@@ -7296,6 +7602,23 @@ export declare class Geom2dAPI_InterCurveCurve {
 
   export declare class Geom2dAPI_InterCurveCurve_3 extends Geom2dAPI_InterCurveCurve {
     constructor(C1: any, Tol: Standard_Real);
+  }
+
+export declare class Geom2dAPI_Interpolate {
+  Load_1(InitialTangent: gp_Vec2d, FinalTangent: gp_Vec2d, Scale: Standard_Boolean): void;
+  Load_2(Tangents: NCollection_Array1<gp_Vec2d>, TangentFlags: any, Scale: Standard_Boolean): void;
+  Perform(): void;
+  Curve(): any;
+  IsDone(): Standard_Boolean;
+  delete(): void;
+}
+
+  export declare class Geom2dAPI_Interpolate_1 extends Geom2dAPI_Interpolate {
+    constructor(Points: any, PeriodicFlag: Standard_Boolean, Tolerance: Standard_Real);
+  }
+
+  export declare class Geom2dAPI_Interpolate_2 extends Geom2dAPI_Interpolate {
+    constructor(Points: any, Parameters: any, PeriodicFlag: Standard_Boolean, Tolerance: Standard_Real);
   }
 
 export declare class Geom2dAPI_ProjectPointOnCurve {
@@ -11179,6 +11502,7 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   Poly_Connect: typeof Poly_Connect;
   Poly_Connect_1: typeof Poly_Connect_1;
   Poly_Connect_2: typeof Poly_Connect_2;
+  BSplCLib: typeof BSplCLib;
   TopLoc_Location: typeof TopLoc_Location;
   TopLoc_Location_1: typeof TopLoc_Location_1;
   TopLoc_Location_2: typeof TopLoc_Location_2;
@@ -11242,6 +11566,9 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   GeomConvert_CompCurveToBSplineCurve: typeof GeomConvert_CompCurveToBSplineCurve;
   GeomConvert_CompCurveToBSplineCurve_1: typeof GeomConvert_CompCurveToBSplineCurve_1;
   GeomConvert_CompCurveToBSplineCurve_2: typeof GeomConvert_CompCurveToBSplineCurve_2;
+  GeomConvert_ApproxCurve: typeof GeomConvert_ApproxCurve;
+  GeomConvert_ApproxCurve_1: typeof GeomConvert_ApproxCurve_1;
+  GeomConvert_ApproxCurve_2: typeof GeomConvert_ApproxCurve_2;
   GCPnts_QuasiUniformDeflection: typeof GCPnts_QuasiUniformDeflection;
   GCPnts_QuasiUniformDeflection_1: typeof GCPnts_QuasiUniformDeflection_1;
   GCPnts_QuasiUniformDeflection_2: typeof GCPnts_QuasiUniformDeflection_2;
@@ -11356,6 +11683,10 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   Geom_CylindricalSurface_1: typeof Geom_CylindricalSurface_1;
   Geom_CylindricalSurface_2: typeof Geom_CylindricalSurface_2;
   Geom_ElementarySurface: typeof Geom_ElementarySurface;
+  Geom_BSplineSurface: typeof Geom_BSplineSurface;
+  Geom_BSplineSurface_1: typeof Geom_BSplineSurface_1;
+  Geom_BSplineSurface_2: typeof Geom_BSplineSurface_2;
+  Geom_BSplineSurface_3: typeof Geom_BSplineSurface_3;
   Geom_BezierCurve: typeof Geom_BezierCurve;
   Geom_BezierCurve_1: typeof Geom_BezierCurve_1;
   Geom_BezierCurve_2: typeof Geom_BezierCurve_2;
@@ -11848,6 +12179,9 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   Geom2dAPI_InterCurveCurve_1: typeof Geom2dAPI_InterCurveCurve_1;
   Geom2dAPI_InterCurveCurve_2: typeof Geom2dAPI_InterCurveCurve_2;
   Geom2dAPI_InterCurveCurve_3: typeof Geom2dAPI_InterCurveCurve_3;
+  Geom2dAPI_Interpolate: typeof Geom2dAPI_Interpolate;
+  Geom2dAPI_Interpolate_1: typeof Geom2dAPI_Interpolate_1;
+  Geom2dAPI_Interpolate_2: typeof Geom2dAPI_Interpolate_2;
   Geom2dAPI_ProjectPointOnCurve: typeof Geom2dAPI_ProjectPointOnCurve;
   Geom2dAPI_ProjectPointOnCurve_1: typeof Geom2dAPI_ProjectPointOnCurve_1;
   Geom2dAPI_ProjectPointOnCurve_2: typeof Geom2dAPI_ProjectPointOnCurve_2;
