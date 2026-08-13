@@ -138,6 +138,9 @@ _additionalBindCodeSymbols = {
   'Handle_Geom_TrimmedCurve', 'Handle_Geom_Circle', 'Handle_Geom_Surface',
   'Handle_Poly_Triangulation', 'Handle_Poly_PolygonOnTriangulation',
   'Handle_TColgp_HArray1OfPnt',
+  # Interpolation input arrays registered in additionalBindCode
+  'TColStd_HArray1OfBoolean', 'Handle_TColStd_HArray1OfBoolean',
+  'TColgp_Array2OfPnt',
 }
 
 def filterClasses(child, customBuild):

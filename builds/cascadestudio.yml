@@ -537,6 +537,64 @@ mainBuild:
       // its map argument resolves against the registration above.)
     }
 
+    // Constructible heap arrays for GeomAPI_Interpolate /
+    // GeomAPI_PointsToBSplineSurface inputs (the algorithms and the Handle
+    // wrappers are generated; the concrete array types are not).
+    #include <NCollection_HArray1.hxx>
+    #include <NCollection_Array2.hxx>
+    typedef NCollection_HArray1<gp_Pnt> TColgp_HArray1OfPnt;
+    typedef NCollection_HArray1<bool> TColStd_HArray1OfBoolean;
+    typedef opencascade::handle<TColStd_HArray1OfBoolean> Handle_TColStd_HArray1OfBoolean;
+    typedef NCollection_Array2<gp_Pnt> TColgp_Array2OfPnt;
+    EMSCRIPTEN_BINDINGS(AdditionalBindCode_InterpolationArrays) {
+      class_<TColgp_HArray1OfPnt>("TColgp_HArray1OfPnt")
+        .function("SetValue", +[](TColgp_HArray1OfPnt& self, int idx, const gp_Pnt& val) { self.SetValue(idx, val); })
+        .function("Value", +[](const TColgp_HArray1OfPnt& self, int idx) -> const gp_Pnt& { return self.Value(idx); }, allow_raw_pointers())
+        .function("Lower", &TColgp_HArray1OfPnt::Lower)
+        .function("Upper", &TColgp_HArray1OfPnt::Upper)
+        ;
+      struct TColgp_HArray1OfPnt_2 : public TColgp_HArray1OfPnt {
+        TColgp_HArray1OfPnt_2(const int lo, const int hi) : TColgp_HArray1OfPnt(lo, hi) {}
+      };
+      class_<TColgp_HArray1OfPnt_2, base<TColgp_HArray1OfPnt>>("TColgp_HArray1OfPnt_2")
+        .constructor<const int, const int>()
+        ;
+      class_<TColStd_HArray1OfBoolean>("TColStd_HArray1OfBoolean")
+        .function("SetValue", +[](TColStd_HArray1OfBoolean& self, int idx, bool val) { self.SetValue(idx, val); })
+        .function("Value", +[](const TColStd_HArray1OfBoolean& self, int idx) -> bool { return self.Value(idx); })
+        ;
+      struct TColStd_HArray1OfBoolean_2 : public TColStd_HArray1OfBoolean {
+        TColStd_HArray1OfBoolean_2(const int lo, const int hi) : TColStd_HArray1OfBoolean(lo, hi) {}
+      };
+      class_<TColStd_HArray1OfBoolean_2, base<TColStd_HArray1OfBoolean>>("TColStd_HArray1OfBoolean_2")
+        .constructor<const int, const int>()
+        ;
+      // (HANDLE_BINDINGS macro is #undef'd above — register the handle inline)
+      class_<Handle_TColStd_HArray1OfBoolean>("Handle_TColStd_HArray1OfBoolean")
+        .function("IsNull", &Handle_TColStd_HArray1OfBoolean::IsNull)
+        .function("Nullify", &Handle_TColStd_HArray1OfBoolean::Nullify)
+        .function("get", &Handle_TColStd_HArray1OfBoolean::get, allow_raw_pointers())
+        ;
+      struct Handle_TColStd_HArray1OfBoolean_2 : public Handle_TColStd_HArray1OfBoolean {
+        Handle_TColStd_HArray1OfBoolean_2(const TColStd_HArray1OfBoolean* p) : Handle_TColStd_HArray1OfBoolean(p) {}
+      };
+      class_<Handle_TColStd_HArray1OfBoolean_2, base<Handle_TColStd_HArray1OfBoolean>>("Handle_TColStd_HArray1OfBoolean_2")
+        .constructor<const TColStd_HArray1OfBoolean*>()
+        ;
+      class_<TColgp_Array2OfPnt>("TColgp_Array2OfPnt")
+        .function("SetValue", +[](TColgp_Array2OfPnt& self, int row, int col, const gp_Pnt& val) { self.SetValue(row, col, val); })
+        .function("Value", +[](const TColgp_Array2OfPnt& self, int row, int col) -> const gp_Pnt& { return self.Value(row, col); }, allow_raw_pointers())
+        .function("NbRows", &TColgp_Array2OfPnt::NbRows)
+        .function("NbColumns", &TColgp_Array2OfPnt::NbColumns)
+        ;
+      struct TColgp_Array2OfPnt_2 : public TColgp_Array2OfPnt {
+        TColgp_Array2OfPnt_2(const int r1, const int r2, const int c1, const int c2) : TColgp_Array2OfPnt(r1, r2, c1, c2) {}
+      };
+      class_<TColgp_Array2OfPnt_2, base<TColgp_Array2OfPnt>>("TColgp_Array2OfPnt_2")
+        .constructor<const int, const int, const int, const int>()
+        ;
+    }
+
     // BRepAlgoAPI_Algo is an abstract base class with a protected destructor.
     // Its auto-generated binding .o gets stripped by LTO. Register it here so
     // derived classes (Cut, Fuse, etc.) can resolve their base type chain.
