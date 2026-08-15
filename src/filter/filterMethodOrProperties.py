@@ -370,6 +370,26 @@ def filterMethodOrProperty(theClass, methodOrProperty):
       if "BSplKnotDistribution" in _arg.type.spelling:
         return False
 
+  # The 2-D geometric-constraint solvers (Gcc) expose
+  #   void WhichQualifier(Standard_Integer, GccEnt_Position&, GccEnt_Position&) const
+  # which returns the per-solution qualifiers through non-const enum
+  # references. Embind cannot bind an enum out-param (bind.h:531 "non-const
+  # lvalue reference to type 'GccEnt_Position' cannot bind to a temporary"),
+  # and that ONE method was enough to fail the whole binding file — which is
+  # why the entire Geom2dGcc/GccAna family was silently missing from the
+  # module. Same precedent as the BSplCLib enum out-params above.
+  if methodOrProperty.kind in [
+    clang.cindex.CursorKind.CXX_METHOD,
+    clang.cindex.CursorKind.FUNCTION_DECL,
+  ]:
+    try:
+      for _arg in methodOrProperty.get_arguments():
+        _ts = _arg.type.spelling
+        if "GccEnt_Position" in _ts and "&" in _ts and not _ts.startswith("const"):
+          return False
+    except Exception:
+      pass
+
   # OCCT 8.0.1 declares this static overload in TCollection_AsciiString.hxx
   # (line ~1415) but never defines it — declare-without-define upstream bug:
   # wasm-ld: error: undefined symbol: TCollection_AsciiString::IsEqual(TCollection_AsciiString const&, char const*)

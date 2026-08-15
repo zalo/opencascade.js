@@ -234,6 +234,8 @@ mainBuild:
     - symbol: BinTools
     - symbol: Bnd_Box
     - symbol: Bnd_OBB
+    - symbol: Extrema_ExtAlgo
+    - symbol: Extrema_ExtFlag
     - symbol: Extrema_ExtPC
     - symbol: Font_FontAspect
     - symbol: Font_FontMgr
@@ -244,6 +246,7 @@ mainBuild:
     - symbol: GC_MakeArcOfEllipse
     - symbol: GC_MakeArcOfHyperbola
     - symbol: GC_MakeArcOfParabola
+    - symbol: ChFi2d_FilletAlgo
     - symbol: GccEnt_Position
     - symbol: Geom2dAPI_InterCurveCurve
     - symbol: Geom2dAPI_ProjectPointOnCurve
@@ -293,6 +296,7 @@ mainBuild:
     - symbol: HLRBRep_HLRToShape
     - symbol: IGESControl_Controller
     - symbol: IntAna2d_AnaIntersection
+    - symbol: IntAna2d_IntPoint
     - symbol: Interface_Static
     - symbol: LocOpe_DPrism
     - symbol: Message
@@ -341,7 +345,10 @@ mainBuild:
     - symbol: gce_MakeLin
     - symbol: gp_Circ
     - symbol: gp_Circ2d
+    - symbol: gp_Cylinder
     - symbol: gp_Elips
+    - symbol: gp_Sphere
+    - symbol: gp_Torus
     - symbol: gp_EulerSequence
     - symbol: gp_GTrsf
     - symbol: gp_Hypr
@@ -972,6 +979,130 @@ mainBuild:
       HANDLE_BINDINGS(Handle_TColgp_HArray1OfPnt, TColgp_HArray1OfPnt)
     }
     #undef HANDLE_BINDINGS
+
+    // ---------------------------------------------------------------------
+    // OCJS_Out — scalar OUT-PARAMETER accessors.
+    //
+    // Embind passes primitives BY VALUE, so any OCCT method that returns
+    // results through `Standard_Real&` is callable but silently useless from
+    // JS. These wrappers run the call on the C++ side and hand the values back
+    // as a JS object. gp_Pnt2d& out-params work through Embind (class refs are
+    // pointers to the JS-owned object), but returning them here keeps each
+    // solution a single crossing.
+    //
+    // Geom2dGcc_*::Tangency1/2/3(Index, ParSol&, ParArg&, PntSol&) is the
+    // reason this exists: build123d's ConstrainedArcs/ConstrainedLines select
+    // and trim solutions by exactly those two parameters.
+    // ---------------------------------------------------------------------
+    #include <Geom2dGcc_Circ2d2TanRad.hxx>
+    #include <Geom2dGcc_Circ2d2TanOn.hxx>
+    #include <Geom2dGcc_Circ2d3Tan.hxx>
+    #include <Geom2dGcc_Circ2dTanCen.hxx>
+    #include <Geom2dGcc_Circ2dTanOnRad.hxx>
+    #include <Geom2dGcc_Lin2dTanObl.hxx>
+    #include <GeomAPI_ProjectPointOnSurf.hxx>
+    #include <ChFi2d_FilletAlgo.hxx>
+    #include <TopoDS_Edge.hxx>
+    #include <gp_Pnt2d.hxx>
+
+    namespace {
+      inline emscripten::val gccTangencyOut(double parSol, double parArg, const gp_Pnt2d& pnt) {
+        emscripten::val out = emscripten::val::object();
+        out.set("parSol", parSol);
+        out.set("parArg", parArg);
+        out.set("x", pnt.X());
+        out.set("y", pnt.Y());
+        return out;
+      }
+      // Separate per-arity templates: Circ2dTanCen/Circ2dTanOnRad/Lin2dTanObl
+      // only declare Tangency1, and only Circ2d3Tan declares Tangency3, so a
+      // single `which`-switching template would not compile for all of them.
+      template <typename Solver>
+      emscripten::val gccTangency1(const Solver& s, int index) {
+        double parSol = 0.0, parArg = 0.0; gp_Pnt2d pnt;
+        s.Tangency1(index, parSol, parArg, pnt);
+        return gccTangencyOut(parSol, parArg, pnt);
+      }
+      template <typename Solver>
+      emscripten::val gccTangency2(const Solver& s, int index) {
+        double parSol = 0.0, parArg = 0.0; gp_Pnt2d pnt;
+        s.Tangency2(index, parSol, parArg, pnt);
+        return gccTangencyOut(parSol, parArg, pnt);
+      }
+      template <typename Solver>
+      emscripten::val gccTangency3(const Solver& s, int index) {
+        double parSol = 0.0, parArg = 0.0; gp_Pnt2d pnt;
+        s.Tangency3(index, parSol, parArg, pnt);
+        return gccTangencyOut(parSol, parArg, pnt);
+      }
+    }
+
+    class OCJS_Out {
+    public:
+      static emscripten::val Circ2d2TanRad_Tangency1(const Geom2dGcc_Circ2d2TanRad& s, int i) { return gccTangency1(s, i); }
+      static emscripten::val Circ2d2TanRad_Tangency2(const Geom2dGcc_Circ2d2TanRad& s, int i) { return gccTangency2(s, i); }
+      static emscripten::val Circ2d2TanOn_Tangency1(const Geom2dGcc_Circ2d2TanOn& s, int i) { return gccTangency1(s, i); }
+      static emscripten::val Circ2d2TanOn_Tangency2(const Geom2dGcc_Circ2d2TanOn& s, int i) { return gccTangency2(s, i); }
+      static emscripten::val Circ2d3Tan_Tangency1(const Geom2dGcc_Circ2d3Tan& s, int i) { return gccTangency1(s, i); }
+      static emscripten::val Circ2d3Tan_Tangency2(const Geom2dGcc_Circ2d3Tan& s, int i) { return gccTangency2(s, i); }
+      static emscripten::val Circ2d3Tan_Tangency3(const Geom2dGcc_Circ2d3Tan& s, int i) { return gccTangency3(s, i); }
+      static emscripten::val Circ2dTanCen_Tangency1(const Geom2dGcc_Circ2dTanCen& s, int i) { return gccTangency1(s, i); }
+      static emscripten::val Circ2dTanOnRad_Tangency1(const Geom2dGcc_Circ2dTanOnRad& s, int i) { return gccTangency1(s, i); }
+      static emscripten::val Lin2dTanObl_Tangency1(const Geom2dGcc_Lin2dTanObl& s, int i) { return gccTangency1(s, i); }
+
+      // GeomAPI_ProjectPointOnSurf::LowerDistanceParameters(U&, V&) — the (u, v)
+      // of the closest point, which is what build123d reads for the
+      // surface-point overloads of Face.normal_at / location_at.
+      static emscripten::val ProjectPointOnSurf_LowerDistanceParameters(const GeomAPI_ProjectPointOnSurf& p) {
+        double u = 0.0, v = 0.0;
+        p.LowerDistanceParameters(u, v);
+        emscripten::val out = emscripten::val::object();
+        out.set("u", u);
+        out.set("v", v);
+        return out;
+      }
+      // ChFi2d_FilletAlgo::Result(pnt, TopoDS_Edge& e1, TopoDS_Edge& e2) hands
+      // back the two TRIMMED input edges through references and returns the
+      // fillet arc. build123d's Wire.fillet_2d needs all three. TopoDS_Edge&
+      // out-params would work through Embind, but returning the triple keeps
+      // one crossing per corner and matches the shape of the other helpers.
+      static emscripten::val FilletAlgo_Result(ChFi2d_FilletAlgo& algo, const gp_Pnt& p) {
+        TopoDS_Edge e1, e2;
+        TopoDS_Edge fillet = algo.Result(p, e1, e2);
+        emscripten::val out = emscripten::val::object();
+        out.set("fillet", fillet);
+        out.set("trimmed1", e1);
+        out.set("trimmed2", e2);
+        return out;
+      }
+      static emscripten::val ProjectPointOnSurf_Parameters(const GeomAPI_ProjectPointOnSurf& p, int index) {
+        double u = 0.0, v = 0.0;
+        p.Parameters(index, u, v);
+        emscripten::val out = emscripten::val::object();
+        out.set("u", u);
+        out.set("v", v);
+        return out;
+      }
+    };
+
+    EMSCRIPTEN_BINDINGS(AdditionalBindCode_OCJS_Out) {
+      class_<OCJS_Out>("OCJS_Out")
+        .constructor<>()
+        .class_function("Circ2d2TanRad_Tangency1", &OCJS_Out::Circ2d2TanRad_Tangency1, allow_raw_pointers())
+        .class_function("Circ2d2TanRad_Tangency2", &OCJS_Out::Circ2d2TanRad_Tangency2, allow_raw_pointers())
+        .class_function("Circ2d2TanOn_Tangency1", &OCJS_Out::Circ2d2TanOn_Tangency1, allow_raw_pointers())
+        .class_function("Circ2d2TanOn_Tangency2", &OCJS_Out::Circ2d2TanOn_Tangency2, allow_raw_pointers())
+        .class_function("Circ2d3Tan_Tangency1", &OCJS_Out::Circ2d3Tan_Tangency1, allow_raw_pointers())
+        .class_function("Circ2d3Tan_Tangency2", &OCJS_Out::Circ2d3Tan_Tangency2, allow_raw_pointers())
+        .class_function("Circ2d3Tan_Tangency3", &OCJS_Out::Circ2d3Tan_Tangency3, allow_raw_pointers())
+        .class_function("Circ2dTanCen_Tangency1", &OCJS_Out::Circ2dTanCen_Tangency1, allow_raw_pointers())
+        .class_function("Circ2dTanOnRad_Tangency1", &OCJS_Out::Circ2dTanOnRad_Tangency1, allow_raw_pointers())
+        .class_function("Lin2dTanObl_Tangency1", &OCJS_Out::Lin2dTanObl_Tangency1, allow_raw_pointers())
+        .class_function("FilletAlgo_Result", &OCJS_Out::FilletAlgo_Result, allow_raw_pointers())
+        .class_function("ProjectPointOnSurf_LowerDistanceParameters", &OCJS_Out::ProjectPointOnSurf_LowerDistanceParameters, allow_raw_pointers())
+        .class_function("ProjectPointOnSurf_Parameters", &OCJS_Out::ProjectPointOnSurf_Parameters, allow_raw_pointers())
+        ;
+    }
 
 additionalCppCode: |
   typedef Handle(IMeshTools_Context) Handle_IMeshTools_Context;

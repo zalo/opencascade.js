@@ -1,5 +1,44 @@
 # Changelog
 
+## cascadestudio-v3-occt801 (fork, unreleased)
+
+### 2-D geometric constraint solvers, quadric surfaces and scalar out-params
+
+* **The whole `Geom2dGcc` / `GccAna` family now builds.** Every binding file in
+  those packages was failing to compile on ONE method —
+  `WhichQualifier(Standard_Integer, GccEnt_Position&, GccEnt_Position&)`, which
+  returns its results through non-const enum references
+  (`bind.h:531: non-const lvalue reference to type 'GccEnt_Position' cannot bind
+  to a temporary`). The symbols were listed in `builds/cascadestudio.yml` but
+  silently absent from the module. `src/filter/filterMethodOrProperties.py` now
+  drops any method with a non-const `GccEnt_Position&` parameter (the same
+  precedent as the BSplCLib enum out-params), and the 24 affected binding files
+  were regenerated. Newly available: `Geom2dGcc_Circ2d2TanRad`,
+  `_Circ2d2TanOn`, `_Circ2d3Tan`, `_Circ2dTanCen`, `_Circ2dTanOnRad`,
+  `_Lin2d2Tan`, `_Lin2dTanObl` (plus the `Geo`/`Iter` implementation classes and
+  the whole `GccAna_*` set).
+* Added `Extrema_ExtAlgo` and `Extrema_ExtFlag`: every
+  `GeomAPI_ProjectPointOnSurf` constructor/`Init` takes an `Extrema_ExtAlgo`, so
+  the class was registered but not constructible.
+* Added `gp_Cylinder`, `gp_Sphere` and `gp_Torus`, which makes
+  `Adaptor3d_Surface::Cylinder()/Sphere()/Torus()` (and therefore a face's own
+  axis/centre/radius) reachable.
+* Added `ChFi2d_FilletAlgo` (the 2-D corner-fillet solver behind build123d's
+  `Wire.fillet_2d`) and `IntAna2d_IntPoint`.
+* New hand-registered helper class **`OCJS_Out`** (`additionalBindCode`), for
+  OCCT methods that return results through `Standard_Real&` — Embind passes
+  primitives by value, so those calls are reachable but useless from JS:
+  * `Circ2d2TanRad_Tangency1/2`, `Circ2d2TanOn_Tangency1/2`,
+    `Circ2d3Tan_Tangency1/2/3`, `Circ2dTanCen_Tangency1`,
+    `Circ2dTanOnRad_Tangency1`, `Lin2dTanObl_Tangency1` — each returns
+    `{parSol, parArg, x, y}`;
+  * `FilletAlgo_Result` — `{fillet, trimmed1, trimmed2}` from
+    `ChFi2d_FilletAlgo::Result`;
+  * `ProjectPointOnSurf_LowerDistanceParameters` / `_Parameters` — `{u, v}`.
+  Registered in `src/generateBindings.py`'s `_additionalBindCodeSymbols` so the
+  generator does not emit a duplicate.
+
+
 ## v1.1.4 (unreleased)
 version only used for testing on npm
 

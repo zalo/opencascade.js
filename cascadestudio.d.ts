@@ -1364,6 +1364,48 @@ export declare class gp_GTrsf {
     constructor(theM: gp_Mat, theV: gp_XYZ);
   }
 
+export declare class gp_Cylinder {
+  SetAxis(theA1: gp_Ax1): void;
+  SetLocation(theLoc: gp_Pnt): void;
+  SetPosition(theA3: gp_Ax3): void;
+  SetRadius(theR: Standard_Real): void;
+  UReverse(): void;
+  VReverse(): void;
+  Direct(): Standard_Boolean;
+  Axis(): gp_Ax1;
+  Coefficients(theA1: Standard_Real, theA2: Standard_Real, theA3: Standard_Real, theB1: Standard_Real, theB2: Standard_Real, theB3: Standard_Real, theC1: Standard_Real, theC2: Standard_Real, theC3: Standard_Real, theD: Standard_Real): void;
+  Location(): gp_Pnt;
+  Position(): gp_Ax3;
+  Radius(): Standard_Real;
+  XAxis(): gp_Ax1;
+  YAxis(): gp_Ax1;
+  Mirror_1(theP: gp_Pnt): void;
+  Mirrored_1(theP: gp_Pnt): gp_Cylinder;
+  Mirror_2(theA1: gp_Ax1): void;
+  Mirrored_2(theA1: gp_Ax1): gp_Cylinder;
+  Mirror_3(theA2: gp_Ax2): void;
+  Mirrored_3(theA2: gp_Ax2): gp_Cylinder;
+  Rotate(theA1: gp_Ax1, theAng: Standard_Real): void;
+  Rotated(theA1: gp_Ax1, theAng: Standard_Real): gp_Cylinder;
+  Scale(theP: gp_Pnt, theS: Standard_Real): void;
+  Scaled(theP: gp_Pnt, theS: Standard_Real): gp_Cylinder;
+  Transform(theT: gp_Trsf): void;
+  Transformed(theT: gp_Trsf): gp_Cylinder;
+  Translate_1(theV: gp_Vec): void;
+  Translated_1(theV: gp_Vec): gp_Cylinder;
+  Translate_2(theP1: gp_Pnt, theP2: gp_Pnt): void;
+  Translated_2(theP1: gp_Pnt, theP2: gp_Pnt): gp_Cylinder;
+  delete(): void;
+}
+
+  export declare class gp_Cylinder_1 extends gp_Cylinder {
+    constructor();
+  }
+
+  export declare class gp_Cylinder_2 extends gp_Cylinder {
+    constructor(theA3: gp_Ax3, theRadius: Standard_Real);
+  }
+
 export declare class gp_Pnt {
   SetCoord_1(theIndex: Standard_Integer, theXi: Standard_Real): void;
   SetCoord_2(theXp: Standard_Real, theYp: Standard_Real, theZp: Standard_Real): void;
@@ -1630,6 +1672,52 @@ export declare type gp_EulerSequence = {
   gp_Intrinsic_ZYZ: {};
 }
 
+export declare class gp_Torus {
+  SetAxis(theA1: gp_Ax1): void;
+  SetLocation(theLoc: gp_Pnt): void;
+  SetMajorRadius(theMajorRadius: Standard_Real): void;
+  SetMinorRadius(theMinorRadius: Standard_Real): void;
+  SetPosition(theA3: gp_Ax3): void;
+  Area(): Standard_Real;
+  UReverse(): void;
+  VReverse(): void;
+  Direct(): Standard_Boolean;
+  Axis(): gp_Ax1;
+  Coefficients(theCoef: NCollection_Array1<double>): void;
+  Location(): gp_Pnt;
+  Position(): gp_Ax3;
+  MajorRadius(): Standard_Real;
+  MinorRadius(): Standard_Real;
+  Volume(): Standard_Real;
+  XAxis(): gp_Ax1;
+  YAxis(): gp_Ax1;
+  Mirror_1(theP: gp_Pnt): void;
+  Mirrored_1(theP: gp_Pnt): gp_Torus;
+  Mirror_2(theA1: gp_Ax1): void;
+  Mirrored_2(theA1: gp_Ax1): gp_Torus;
+  Mirror_3(theA2: gp_Ax2): void;
+  Mirrored_3(theA2: gp_Ax2): gp_Torus;
+  Rotate(theA1: gp_Ax1, theAng: Standard_Real): void;
+  Rotated(theA1: gp_Ax1, theAng: Standard_Real): gp_Torus;
+  Scale(theP: gp_Pnt, theS: Standard_Real): void;
+  Scaled(theP: gp_Pnt, theS: Standard_Real): gp_Torus;
+  Transform(theT: gp_Trsf): void;
+  Transformed(theT: gp_Trsf): gp_Torus;
+  Translate_1(theV: gp_Vec): void;
+  Translated_1(theV: gp_Vec): gp_Torus;
+  Translate_2(theP1: gp_Pnt, theP2: gp_Pnt): void;
+  Translated_2(theP1: gp_Pnt, theP2: gp_Pnt): gp_Torus;
+  delete(): void;
+}
+
+  export declare class gp_Torus_1 extends gp_Torus {
+    constructor();
+  }
+
+  export declare class gp_Torus_2 extends gp_Torus {
+    constructor(theA3: gp_Ax3, theMajorRadius: Standard_Real, theMinorRadius: Standard_Real);
+  }
+
 export declare class gp_Parab {
   SetAxis(theA1: gp_Ax1): void;
   SetFocal(theFocal: Standard_Real): void;
@@ -1819,6 +1907,48 @@ export declare class gp_Elips {
 
   export declare class gp_Elips_2 extends gp_Elips {
     constructor(theA2: gp_Ax2, theMajorRadius: Standard_Real, theMinorRadius: Standard_Real);
+  }
+
+export declare class gp_Sphere {
+  SetLocation(theLoc: gp_Pnt): void;
+  SetPosition(theA3: gp_Ax3): void;
+  SetRadius(theR: Standard_Real): void;
+  Area(): Standard_Real;
+  Coefficients(theA1: Standard_Real, theA2: Standard_Real, theA3: Standard_Real, theB1: Standard_Real, theB2: Standard_Real, theB3: Standard_Real, theC1: Standard_Real, theC2: Standard_Real, theC3: Standard_Real, theD: Standard_Real): void;
+  UReverse(): void;
+  VReverse(): void;
+  Direct(): Standard_Boolean;
+  Location(): gp_Pnt;
+  Position(): gp_Ax3;
+  Radius(): Standard_Real;
+  Volume(): Standard_Real;
+  XAxis(): gp_Ax1;
+  YAxis(): gp_Ax1;
+  Mirror_1(theP: gp_Pnt): void;
+  Mirrored_1(theP: gp_Pnt): gp_Sphere;
+  Mirror_2(theA1: gp_Ax1): void;
+  Mirrored_2(theA1: gp_Ax1): gp_Sphere;
+  Mirror_3(theA2: gp_Ax2): void;
+  Mirrored_3(theA2: gp_Ax2): gp_Sphere;
+  Rotate(theA1: gp_Ax1, theAng: Standard_Real): void;
+  Rotated(theA1: gp_Ax1, theAng: Standard_Real): gp_Sphere;
+  Scale(theP: gp_Pnt, theS: Standard_Real): void;
+  Scaled(theP: gp_Pnt, theS: Standard_Real): gp_Sphere;
+  Transform(theT: gp_Trsf): void;
+  Transformed(theT: gp_Trsf): gp_Sphere;
+  Translate_1(theV: gp_Vec): void;
+  Translated_1(theV: gp_Vec): gp_Sphere;
+  Translate_2(theP1: gp_Pnt, theP2: gp_Pnt): void;
+  Translated_2(theP1: gp_Pnt, theP2: gp_Pnt): gp_Sphere;
+  delete(): void;
+}
+
+  export declare class gp_Sphere_1 extends gp_Sphere {
+    constructor();
+  }
+
+  export declare class gp_Sphere_2 extends gp_Sphere {
+    constructor(theA3: gp_Ax3, theRadius: Standard_Real);
   }
 
 export declare class gp_Lin2d {
@@ -2617,6 +2747,28 @@ export declare class gce_MakeLin extends gce_Root {
     constructor(P1: gp_Pnt, P2: gp_Pnt);
   }
 
+export declare class IntAna2d_IntPoint {
+  SetValue_1(X: Standard_Real, Y: Standard_Real, U1: Standard_Real, U2: Standard_Real): void;
+  SetValue_2(X: Standard_Real, Y: Standard_Real, U1: Standard_Real): void;
+  Value(): gp_Pnt2d;
+  SecondIsImplicit(): Standard_Boolean;
+  ParamOnFirst(): Standard_Real;
+  ParamOnSecond(): Standard_Real;
+  delete(): void;
+}
+
+  export declare class IntAna2d_IntPoint_1 extends IntAna2d_IntPoint {
+    constructor(X: Standard_Real, Y: Standard_Real, U1: Standard_Real, U2: Standard_Real);
+  }
+
+  export declare class IntAna2d_IntPoint_2 extends IntAna2d_IntPoint {
+    constructor(X: Standard_Real, Y: Standard_Real, U1: Standard_Real);
+  }
+
+  export declare class IntAna2d_IntPoint_3 extends IntAna2d_IntPoint {
+    constructor();
+  }
+
 export declare class IntAna2d_AnaIntersection {
   Perform_1(L1: gp_Lin2d, L2: gp_Lin2d): void;
   Perform_2(C1: gp_Circ2d, C2: gp_Circ2d): void;
@@ -2670,6 +2822,17 @@ export declare class IntAna2d_AnaIntersection {
   export declare class IntAna2d_AnaIntersection_9 extends IntAna2d_AnaIntersection {
     constructor(H: gp_Hypr2d, C: IntAna2d_Conic);
   }
+
+export declare type Extrema_ExtFlag = {
+  Extrema_ExtFlag_MIN: {};
+  Extrema_ExtFlag_MAX: {};
+  Extrema_ExtFlag_MINMAX: {};
+}
+
+export declare type Extrema_ExtAlgo = {
+  Extrema_ExtAlgo_Grad: {};
+  Extrema_ExtAlgo_Tree: {};
+}
 
 export declare class GeomConvert {
   constructor();
@@ -9282,6 +9445,27 @@ export declare class BRepFilletAPI_MakeFillet2d extends BRepBuilderAPI_MakeShape
     constructor(F: TopoDS_Face);
   }
 
+export declare class ChFi2d_FilletAlgo {
+  Init_1(theWire: TopoDS_Wire, thePlane: gp_Pln): void;
+  Init_2(theEdge1: TopoDS_Edge, theEdge2: TopoDS_Edge, thePlane: gp_Pln): void;
+  Perform(theRadius: Standard_Real): Standard_Boolean;
+  NbResults(thePoint: gp_Pnt): Standard_Integer;
+  Result(thePoint: gp_Pnt, theEdge1: TopoDS_Edge, theEdge2: TopoDS_Edge, iSolution: Standard_Integer): TopoDS_Edge;
+  delete(): void;
+}
+
+  export declare class ChFi2d_FilletAlgo_1 extends ChFi2d_FilletAlgo {
+    constructor();
+  }
+
+  export declare class ChFi2d_FilletAlgo_2 extends ChFi2d_FilletAlgo {
+    constructor(theWire: TopoDS_Wire, thePlane: gp_Pln);
+  }
+
+  export declare class ChFi2d_FilletAlgo_3 extends ChFi2d_FilletAlgo {
+    constructor(theEdge1: TopoDS_Edge, theEdge2: TopoDS_Edge, thePlane: gp_Pln);
+  }
+
 export declare class BRepFeat_Form extends BRepBuilderAPI_MakeShape {
   Modified(F: TopoDS_Shape): any;
   Generated(S: TopoDS_Shape): any;
@@ -11430,6 +11614,9 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   gp_GTrsf_1: typeof gp_GTrsf_1;
   gp_GTrsf_2: typeof gp_GTrsf_2;
   gp_GTrsf_3: typeof gp_GTrsf_3;
+  gp_Cylinder: typeof gp_Cylinder;
+  gp_Cylinder_1: typeof gp_Cylinder_1;
+  gp_Cylinder_2: typeof gp_Cylinder_2;
   gp_Pnt: typeof gp_Pnt;
   gp_Pnt_1: typeof gp_Pnt_1;
   gp_Pnt_2: typeof gp_Pnt_2;
@@ -11452,6 +11639,9 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   gp_Vec2d_4: typeof gp_Vec2d_4;
   gp_Vec2d_5: typeof gp_Vec2d_5;
   gp_EulerSequence: gp_EulerSequence;
+  gp_Torus: typeof gp_Torus;
+  gp_Torus_1: typeof gp_Torus_1;
+  gp_Torus_2: typeof gp_Torus_2;
   gp_Parab: typeof gp_Parab;
   gp_Parab_1: typeof gp_Parab_1;
   gp_Parab_2: typeof gp_Parab_2;
@@ -11467,6 +11657,9 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   gp_Elips: typeof gp_Elips;
   gp_Elips_1: typeof gp_Elips_1;
   gp_Elips_2: typeof gp_Elips_2;
+  gp_Sphere: typeof gp_Sphere;
+  gp_Sphere_1: typeof gp_Sphere_1;
+  gp_Sphere_2: typeof gp_Sphere_2;
   gp_Lin2d: typeof gp_Lin2d;
   gp_Lin2d_1: typeof gp_Lin2d_1;
   gp_Lin2d_2: typeof gp_Lin2d_2;
@@ -11549,6 +11742,10 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   gce_MakeLin_2: typeof gce_MakeLin_2;
   gce_MakeLin_3: typeof gce_MakeLin_3;
   gce_MakeLin_4: typeof gce_MakeLin_4;
+  IntAna2d_IntPoint: typeof IntAna2d_IntPoint;
+  IntAna2d_IntPoint_1: typeof IntAna2d_IntPoint_1;
+  IntAna2d_IntPoint_2: typeof IntAna2d_IntPoint_2;
+  IntAna2d_IntPoint_3: typeof IntAna2d_IntPoint_3;
   IntAna2d_AnaIntersection: typeof IntAna2d_AnaIntersection;
   IntAna2d_AnaIntersection_1: typeof IntAna2d_AnaIntersection_1;
   IntAna2d_AnaIntersection_2: typeof IntAna2d_AnaIntersection_2;
@@ -11559,6 +11756,8 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   IntAna2d_AnaIntersection_7: typeof IntAna2d_AnaIntersection_7;
   IntAna2d_AnaIntersection_8: typeof IntAna2d_AnaIntersection_8;
   IntAna2d_AnaIntersection_9: typeof IntAna2d_AnaIntersection_9;
+  Extrema_ExtFlag: Extrema_ExtFlag;
+  Extrema_ExtAlgo: Extrema_ExtAlgo;
   GeomConvert: typeof GeomConvert;
   GeomConvert_BSplineCurveToBezierCurve: typeof GeomConvert_BSplineCurveToBezierCurve;
   GeomConvert_BSplineCurveToBezierCurve_1: typeof GeomConvert_BSplineCurveToBezierCurve_1;
@@ -12381,6 +12580,10 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   BRepFilletAPI_MakeFillet2d: typeof BRepFilletAPI_MakeFillet2d;
   BRepFilletAPI_MakeFillet2d_1: typeof BRepFilletAPI_MakeFillet2d_1;
   BRepFilletAPI_MakeFillet2d_2: typeof BRepFilletAPI_MakeFillet2d_2;
+  ChFi2d_FilletAlgo: typeof ChFi2d_FilletAlgo;
+  ChFi2d_FilletAlgo_1: typeof ChFi2d_FilletAlgo_1;
+  ChFi2d_FilletAlgo_2: typeof ChFi2d_FilletAlgo_2;
+  ChFi2d_FilletAlgo_3: typeof ChFi2d_FilletAlgo_3;
   BRepFeat_Form: typeof BRepFeat_Form;
   BRepFeat_SplitShape: typeof BRepFeat_SplitShape;
   BRepFeat_SplitShape_1: typeof BRepFeat_SplitShape_1;

@@ -118,6 +118,7 @@ def mkdirp(name: str) -> None:
 # to avoid duplicate Embind registrations.
 _additionalBindCodeSymbols = {
   'TopoDS_Cast', 'OCJS',  # Custom helper classes
+  'OCJS_Out',             # Scalar out-parameter accessors (additionalBindCode only)
   'TopTools_ListOfShape',  # NCollection_List<TopoDS_Shape>
   'BRepAlgoAPI_Algo',      # Base class (protected destructor)
   'BRepAlgoAPI_BuilderAlgo',  # Base class (preamble compile error)
