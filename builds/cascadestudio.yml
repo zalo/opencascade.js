@@ -375,7 +375,7 @@ mainBuild:
     - "-sEXPORT_ES6=1"
 
     - "-sEXPORTED_RUNTIME_METHODS=['FS']"
-    - "-sINITIAL_MEMORY=100MB"
+    - "-sINITIAL_MEMORY=32MB"
     - "-sMAXIMUM_MEMORY=4GB"
     - "-sALLOW_MEMORY_GROWTH=1"
     - "-sUSE_FREETYPE=1"
