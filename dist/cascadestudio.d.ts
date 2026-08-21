@@ -1456,6 +1456,57 @@ export declare class gp_Pnt {
     constructor(theXp: Standard_Real, theYp: Standard_Real, theZp: Standard_Real);
   }
 
+export declare class gp_Mat {
+  SetCol(theCol: Standard_Integer, theValue: gp_XYZ): void;
+  SetCols(theCol1: gp_XYZ, theCol2: gp_XYZ, theCol3: gp_XYZ): void;
+  SetCross(theRef: gp_XYZ): void;
+  SetDiagonal(theX1: Standard_Real, theX2: Standard_Real, theX3: Standard_Real): void;
+  SetDot(theRef: gp_XYZ): void;
+  SetIdentity(): void;
+  SetRotation(theAxis: gp_XYZ, theAng: Standard_Real): void;
+  SetRow(theRow: Standard_Integer, theValue: gp_XYZ): void;
+  SetRows(theRow1: gp_XYZ, theRow2: gp_XYZ, theRow3: gp_XYZ): void;
+  SetScale(theS: Standard_Real): void;
+  SetValue(theRow: Standard_Integer, theCol: Standard_Integer, theValue: Standard_Real): void;
+  Column(theCol: Standard_Integer): gp_XYZ;
+  Determinant(): Standard_Real;
+  Diagonal(): gp_XYZ;
+  Row(theRow: Standard_Integer): gp_XYZ;
+  Value(theRow: Standard_Integer, theCol: Standard_Integer): Standard_Real;
+  ChangeValue(theRow: Standard_Integer, theCol: Standard_Integer): Standard_Real;
+  IsSingular(): Standard_Boolean;
+  Add(theOther: gp_Mat): void;
+  Added(theOther: gp_Mat): gp_Mat;
+  Divide(theScalar: Standard_Real): void;
+  Divided(theScalar: Standard_Real): gp_Mat;
+  Invert(): void;
+  Inverted(): gp_Mat;
+  Multiplied_1(theOther: gp_Mat): gp_Mat;
+  Multiply_1(theOther: gp_Mat): void;
+  PreMultiply(theOther: gp_Mat): void;
+  Multiplied_2(theScalar: Standard_Real): gp_Mat;
+  Multiply_2(theScalar: Standard_Real): void;
+  Power(N: Standard_Integer): void;
+  Powered(theN: Standard_Integer): gp_Mat;
+  Subtract(theOther: gp_Mat): void;
+  Subtracted(theOther: gp_Mat): gp_Mat;
+  Transpose(): void;
+  Transposed(): gp_Mat;
+  delete(): void;
+}
+
+  export declare class gp_Mat_1 extends gp_Mat {
+    constructor();
+  }
+
+  export declare class gp_Mat_2 extends gp_Mat {
+    constructor(theA11: Standard_Real, theA12: Standard_Real, theA13: Standard_Real, theA21: Standard_Real, theA22: Standard_Real, theA23: Standard_Real, theA31: Standard_Real, theA32: Standard_Real, theA33: Standard_Real);
+  }
+
+  export declare class gp_Mat_3 extends gp_Mat {
+    constructor(theCol1: gp_XYZ, theCol2: gp_XYZ, theCol3: gp_XYZ);
+  }
+
 export declare class gp_Quaternion {
   IsEqual(theOther: gp_Quaternion): Standard_Boolean;
   SetRotation_1(theVecFrom: gp_Vec, theVecTo: gp_Vec): void;
@@ -2823,6 +2874,21 @@ export declare class IntAna2d_AnaIntersection {
     constructor(H: gp_Hypr2d, C: IntAna2d_Conic);
   }
 
+export declare class Extrema_POnCurv {
+  SetValues(theU: Standard_Real, theP: gp_Pnt): void;
+  Value(): gp_Pnt;
+  Parameter(): Standard_Real;
+  delete(): void;
+}
+
+  export declare class Extrema_POnCurv_1 extends Extrema_POnCurv {
+    constructor();
+  }
+
+  export declare class Extrema_POnCurv_2 extends Extrema_POnCurv {
+    constructor(theU: Standard_Real, theP: gp_Pnt);
+  }
+
 export declare type Extrema_ExtFlag = {
   Extrema_ExtFlag_MIN: {};
   Extrema_ExtFlag_MAX: {};
@@ -3062,6 +3128,20 @@ export declare class GeomProjLib {
   delete(): void;
 }
 
+export declare class GProp_PrincipalProps {
+  constructor()
+  HasSymmetryAxis_1(): Standard_Boolean;
+  HasSymmetryAxis_2(aTol: Standard_Real): Standard_Boolean;
+  HasSymmetryPoint_1(): Standard_Boolean;
+  HasSymmetryPoint_2(aTol: Standard_Real): Standard_Boolean;
+  Moments(Ixx: Standard_Real, Iyy: Standard_Real, Izz: Standard_Real): void;
+  FirstAxisOfInertia(): gp_Vec;
+  SecondAxisOfInertia(): gp_Vec;
+  ThirdAxisOfInertia(): gp_Vec;
+  RadiusOfGyration(Rxx: Standard_Real, Ryy: Standard_Real, Rzz: Standard_Real): void;
+  delete(): void;
+}
+
 export declare class GProp_GProps {
   Add(Item: GProp_GProps, Density: Standard_Real): void;
   Mass(): Standard_Real;
@@ -3081,6 +3161,29 @@ export declare class GProp_GProps {
   export declare class GProp_GProps_2 extends GProp_GProps {
     constructor(SystemLocation: gp_Pnt);
   }
+
+export declare class BRepTools_History extends Standard_Transient {
+  constructor()
+  static IsSupportedType(theShape: TopoDS_Shape): Standard_Boolean;
+  AddGenerated(theInitial: TopoDS_Shape, theGenerated: TopoDS_Shape): void;
+  AddModified(theInitial: TopoDS_Shape, theModified: TopoDS_Shape): void;
+  Remove(theRemoved: TopoDS_Shape): void;
+  ReplaceGenerated(theInitial: TopoDS_Shape, theGenerated: TopoDS_Shape): void;
+  ReplaceModified(theInitial: TopoDS_Shape, theModified: TopoDS_Shape): void;
+  Clear(): void;
+  Generated(theInitial: TopoDS_Shape): any;
+  Modified(theInitial: TopoDS_Shape): any;
+  IsRemoved(theInitial: TopoDS_Shape): Standard_Boolean;
+  HasGenerated(): Standard_Boolean;
+  HasModified(): Standard_Boolean;
+  HasRemoved(): Standard_Boolean;
+  Merge_1(theHistory23: any): void;
+  Merge_2(theHistory23: BRepTools_History): void;
+  static get_type_name(): Standard_Character;
+  static get_type_descriptor(): any;
+  DynamicType(): any;
+  delete(): void;
+}
 
 export declare class BRepTools_WireExplorer {
   Init_1(W: TopoDS_Wire): void;
@@ -4812,6 +4915,13 @@ export declare type TopAbs_Orientation = {
   TopAbs_EXTERNAL: {};
 }
 
+export declare type TopAbs_State = {
+  TopAbs_IN: {};
+  TopAbs_OUT: {};
+  TopAbs_ON: {};
+  TopAbs_UNKNOWN: {};
+}
+
 export declare class GeomAdaptor_TransformedSurface extends Adaptor3d_Surface {
   static get_type_name(): Standard_Character;
   static get_type_descriptor(): any;
@@ -5200,6 +5310,30 @@ export declare class Handle_Geom2d_Line {
 
   export declare class Handle_Geom2d_Line_4 extends Handle_Geom2d_Line {
     constructor(theHandle: Handle_Geom2d_Line);
+  }
+
+export declare class Handle_BRepTools_History {
+  Nullify(): void;
+  IsNull(): boolean;
+  reset(thePtr: BRepTools_History): void;
+  get(): BRepTools_History;
+  delete(): void;
+}
+
+  export declare class Handle_BRepTools_History_1 extends Handle_BRepTools_History {
+    constructor();
+  }
+
+  export declare class Handle_BRepTools_History_2 extends Handle_BRepTools_History {
+    constructor(thePtr: BRepTools_History);
+  }
+
+  export declare class Handle_BRepTools_History_3 extends Handle_BRepTools_History {
+    constructor(theHandle: Handle_BRepTools_History);
+  }
+
+  export declare class Handle_BRepTools_History_4 extends Handle_BRepTools_History {
+    constructor(theHandle: Handle_BRepTools_History);
   }
 
 export declare class Handle_Geom_Conic {
@@ -5610,6 +5744,71 @@ export declare class Handle_CDM_Document {
     constructor(theHandle: Handle_CDM_Document);
   }
 
+export declare class TopTools_IndexedMapOfShape extends NCollection_BaseMap {
+  IndexedItems(): IndexedItemsView;
+  Exchange(theOther: TopTools_IndexedMapOfShape): void;
+  GetHasher(): TopTools_ShapeMapHasher;
+  Assign(theOther: TopTools_IndexedMapOfShape): TopTools_IndexedMapOfShape;
+  ReSize_1(theExtent: size_t): void;
+  ReSize_2(theExtent: number): void;
+  Add_1(theKey1: TopoDS_Shape): number;
+  Add_2(theKey1: TopoDS_Shape): number;
+  Added_1(theKey1: TopoDS_Shape): TopoDS_Shape;
+  Added_2(theKey1: TopoDS_Shape): TopoDS_Shape;
+  Contains(theKey1: TopoDS_Shape): boolean;
+  Contained(theKey1: TopoDS_Shape): any;
+  Substitute_1(theIndex: size_t, theKey1: TopoDS_Shape): void;
+  Substitute_2(theIndex: number, theKey1: TopoDS_Shape): void;
+  Swap_1(theIndex1: size_t, theIndex2: size_t): void;
+  Swap_2(theIndex1: number, theIndex2: number): void;
+  RemoveLast(): void;
+  RemoveFromIndex_1(theIndex: size_t): void;
+  RemoveFromIndex_2(theIndex: number): void;
+  RemoveKey(theKey1: TopoDS_Shape): boolean;
+  FindKey_1(theIndex: size_t): TopoDS_Shape;
+  FindKey_2(theIndex: number): TopoDS_Shape;
+  FindIndex(theKey1: TopoDS_Shape): number;
+  Clear_1(doReleaseMemory: boolean): void;
+  Clear_2(theAllocator: any): void;
+  delete(): void;
+}
+
+  export declare class TopTools_IndexedMapOfShape_1 extends TopTools_IndexedMapOfShape {
+    constructor();
+  }
+
+  export declare class TopTools_IndexedMapOfShape_2 extends TopTools_IndexedMapOfShape {
+    constructor(theNbBuckets: size_t, theAllocator: any);
+  }
+
+  export declare class TopTools_IndexedMapOfShape_3 extends TopTools_IndexedMapOfShape {
+    constructor(theNbBuckets: number, theAllocator: any);
+  }
+
+  export declare class TopTools_IndexedMapOfShape_4 extends TopTools_IndexedMapOfShape {
+    constructor(theHasher: TopTools_ShapeMapHasher, theNbBuckets: size_t, theAllocator: any);
+  }
+
+  export declare class TopTools_IndexedMapOfShape_5 extends TopTools_IndexedMapOfShape {
+    constructor(theHasher: TopTools_ShapeMapHasher, theNbBuckets: number, theAllocator: any);
+  }
+
+  export declare class TopTools_IndexedMapOfShape_6 extends TopTools_IndexedMapOfShape {
+    constructor(theHasher: TopTools_ShapeMapHasher, theNbBuckets: size_t, theAllocator: any);
+  }
+
+  export declare class TopTools_IndexedMapOfShape_7 extends TopTools_IndexedMapOfShape {
+    constructor(theHasher: TopTools_ShapeMapHasher, theNbBuckets: number, theAllocator: any);
+  }
+
+  export declare class TopTools_IndexedMapOfShape_8 extends TopTools_IndexedMapOfShape {
+    constructor(theOther: TopTools_IndexedMapOfShape);
+  }
+
+  export declare class TopTools_IndexedMapOfShape_9 extends TopTools_IndexedMapOfShape {
+    constructor(theOther: TopTools_IndexedMapOfShape);
+  }
+
 export declare class Handle_TDocStd_Document {
   Nullify(): void;
   IsNull(): boolean;
@@ -5728,6 +5927,30 @@ export declare class Handle_Interface_Static {
 
   export declare class Handle_Interface_Static_4 extends Handle_Interface_Static {
     constructor(theHandle: Handle_Interface_Static);
+  }
+
+export declare class Handle_TopTools_HSequenceOfShape {
+  Nullify(): void;
+  IsNull(): boolean;
+  reset(thePtr: TopTools_HSequenceOfShape): void;
+  get(): TopTools_HSequenceOfShape;
+  delete(): void;
+}
+
+  export declare class Handle_TopTools_HSequenceOfShape_1 extends Handle_TopTools_HSequenceOfShape {
+    constructor();
+  }
+
+  export declare class Handle_TopTools_HSequenceOfShape_2 extends Handle_TopTools_HSequenceOfShape {
+    constructor(thePtr: TopTools_HSequenceOfShape);
+  }
+
+  export declare class Handle_TopTools_HSequenceOfShape_3 extends Handle_TopTools_HSequenceOfShape {
+    constructor(theHandle: Handle_TopTools_HSequenceOfShape);
+  }
+
+  export declare class Handle_TopTools_HSequenceOfShape_4 extends Handle_TopTools_HSequenceOfShape {
+    constructor(theHandle: Handle_TopTools_HSequenceOfShape);
   }
 
 export declare class Handle_Geom2d_Circle {
@@ -6546,6 +6769,30 @@ export declare class Handle_IFSelect_WorkSession {
     constructor(theHandle: Handle_IFSelect_WorkSession);
   }
 
+export declare class Handle_TColStd_HArray2OfReal {
+  Nullify(): void;
+  IsNull(): boolean;
+  reset(thePtr: TColStd_HArray2OfReal): void;
+  get(): TColStd_HArray2OfReal;
+  delete(): void;
+}
+
+  export declare class Handle_TColStd_HArray2OfReal_1 extends Handle_TColStd_HArray2OfReal {
+    constructor();
+  }
+
+  export declare class Handle_TColStd_HArray2OfReal_2 extends Handle_TColStd_HArray2OfReal {
+    constructor(thePtr: TColStd_HArray2OfReal);
+  }
+
+  export declare class Handle_TColStd_HArray2OfReal_3 extends Handle_TColStd_HArray2OfReal {
+    constructor(theHandle: Handle_TColStd_HArray2OfReal);
+  }
+
+  export declare class Handle_TColStd_HArray2OfReal_4 extends Handle_TColStd_HArray2OfReal {
+    constructor(theHandle: Handle_TColStd_HArray2OfReal);
+  }
+
 export declare class Handle_Geom_Plane {
   Nullify(): void;
   IsNull(): boolean;
@@ -6856,6 +7103,30 @@ export declare class Handle_Geom2d_Geometry {
 
   export declare class Handle_Geom2d_Geometry_4 extends Handle_Geom2d_Geometry {
     constructor(theHandle: Handle_Geom2d_Geometry);
+  }
+
+export declare class Handle_TColgp_HArray2OfPnt {
+  Nullify(): void;
+  IsNull(): boolean;
+  reset(thePtr: TColgp_HArray2OfPnt): void;
+  get(): TColgp_HArray2OfPnt;
+  delete(): void;
+}
+
+  export declare class Handle_TColgp_HArray2OfPnt_1 extends Handle_TColgp_HArray2OfPnt {
+    constructor();
+  }
+
+  export declare class Handle_TColgp_HArray2OfPnt_2 extends Handle_TColgp_HArray2OfPnt {
+    constructor(thePtr: TColgp_HArray2OfPnt);
+  }
+
+  export declare class Handle_TColgp_HArray2OfPnt_3 extends Handle_TColgp_HArray2OfPnt {
+    constructor(theHandle: Handle_TColgp_HArray2OfPnt);
+  }
+
+  export declare class Handle_TColgp_HArray2OfPnt_4 extends Handle_TColgp_HArray2OfPnt {
+    constructor(theHandle: Handle_TColgp_HArray2OfPnt);
   }
 
 export declare class Handle_Adaptor3d_Curve {
@@ -8968,6 +9239,38 @@ export declare type BRepOffset_Mode = {
   BRepOffset_RectoVerso: {};
 }
 
+export declare class BRepOffset_MakeOffset {
+  Initialize(S: TopoDS_Shape, Offset: Standard_Real, Tol: Standard_Real, Mode: BRepOffset_Mode, Intersection: Standard_Boolean, SelfInter: Standard_Boolean, Join: GeomAbs_JoinType, Thickening: Standard_Boolean, RemoveIntEdges: Standard_Boolean): void;
+  Clear(): void;
+  AllowLinearization(theIsAllowed: Standard_Boolean): void;
+  AddFace(F: TopoDS_Face): void;
+  SetOffsetOnFace(F: TopoDS_Face, Off: Standard_Real): void;
+  MakeOffsetShape(theRange: Message_ProgressRange): void;
+  MakeThickSolid(theRange: Message_ProgressRange): void;
+  IsDone(): Standard_Boolean;
+  Shape(): TopoDS_Shape;
+  InitShape(): TopoDS_Shape;
+  Error(): BRepOffset_Error;
+  OffsetFacesFromShapes(): BRepAlgo_Image;
+  GetJoinType(): GeomAbs_JoinType;
+  OffsetEdgesFromShapes(): BRepAlgo_Image;
+  ClosingFaces(): any;
+  CheckInputData(theRange: Message_ProgressRange): Standard_Boolean;
+  GetBadShape(): TopoDS_Shape;
+  Generated(theS: TopoDS_Shape): any;
+  Modified(theS: TopoDS_Shape): any;
+  IsDeleted(S: TopoDS_Shape): Standard_Boolean;
+  delete(): void;
+}
+
+  export declare class BRepOffset_MakeOffset_1 extends BRepOffset_MakeOffset {
+    constructor();
+  }
+
+  export declare class BRepOffset_MakeOffset_2 extends BRepOffset_MakeOffset {
+    constructor(S: TopoDS_Shape, Offset: Standard_Real, Tol: Standard_Real, Mode: BRepOffset_Mode, Intersection: Standard_Boolean, SelfInter: Standard_Boolean, Join: GeomAbs_JoinType, Thickening: Standard_Boolean, RemoveIntEdges: Standard_Boolean, theRange: Message_ProgressRange);
+  }
+
 export declare class BRepMesh_DiscretRoot extends Standard_Transient {
   SetShape(theShape: TopoDS_Shape): void;
   Shape(): TopoDS_Shape;
@@ -9264,6 +9567,18 @@ export declare class BRepProj_Projection {
   export declare class BRepProj_Projection_2 extends BRepProj_Projection {
     constructor(Wire: TopoDS_Shape, Shape: TopoDS_Shape, P: gp_Pnt);
   }
+
+export declare class BRepAlgo {
+  constructor();
+  static ConcatenateWire(Wire: TopoDS_Wire, Option: GeomAbs_Shape, AngularTolerance: Standard_Real): TopoDS_Wire;
+  static ConcatenateWireC0(Wire: TopoDS_Wire): TopoDS_Edge;
+  static ConvertWire(theWire: TopoDS_Wire, theAngleTolerance: Standard_Real, theFace: TopoDS_Face): TopoDS_Wire;
+  static ConvertFace(theFace: TopoDS_Face, theAngleTolerance: Standard_Real): TopoDS_Face;
+  static IsValid_1(S: TopoDS_Shape): Standard_Boolean;
+  static IsValid_2(theArgs: NCollection_List<TopoDS_Shape>, theResult: TopoDS_Shape, closedSolid: Standard_Boolean, GeomCtrl: Standard_Boolean): Standard_Boolean;
+  static IsTopologicallyValid(S: TopoDS_Shape): Standard_Boolean;
+  delete(): void;
+}
 
 export declare type BRepFill_TypeOfContact = {
   BRepFill_NoContact: {};
@@ -11621,6 +11936,10 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   gp_Pnt_1: typeof gp_Pnt_1;
   gp_Pnt_2: typeof gp_Pnt_2;
   gp_Pnt_3: typeof gp_Pnt_3;
+  gp_Mat: typeof gp_Mat;
+  gp_Mat_1: typeof gp_Mat_1;
+  gp_Mat_2: typeof gp_Mat_2;
+  gp_Mat_3: typeof gp_Mat_3;
   gp_Quaternion: typeof gp_Quaternion;
   gp_Quaternion_1: typeof gp_Quaternion_1;
   gp_Quaternion_2: typeof gp_Quaternion_2;
@@ -11756,6 +12075,9 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   IntAna2d_AnaIntersection_7: typeof IntAna2d_AnaIntersection_7;
   IntAna2d_AnaIntersection_8: typeof IntAna2d_AnaIntersection_8;
   IntAna2d_AnaIntersection_9: typeof IntAna2d_AnaIntersection_9;
+  Extrema_POnCurv: typeof Extrema_POnCurv;
+  Extrema_POnCurv_1: typeof Extrema_POnCurv_1;
+  Extrema_POnCurv_2: typeof Extrema_POnCurv_2;
   Extrema_ExtFlag: Extrema_ExtFlag;
   Extrema_ExtAlgo: Extrema_ExtAlgo;
   GeomConvert: typeof GeomConvert;
@@ -11797,9 +12119,11 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   GCPnts_TangentialDeflection_4: typeof GCPnts_TangentialDeflection_4;
   GCPnts_TangentialDeflection_5: typeof GCPnts_TangentialDeflection_5;
   GeomProjLib: typeof GeomProjLib;
+  GProp_PrincipalProps: typeof GProp_PrincipalProps;
   GProp_GProps: typeof GProp_GProps;
   GProp_GProps_1: typeof GProp_GProps_1;
   GProp_GProps_2: typeof GProp_GProps_2;
+  BRepTools_History: typeof BRepTools_History;
   BRepTools_WireExplorer: typeof BRepTools_WireExplorer;
   BRepTools_WireExplorer_1: typeof BRepTools_WireExplorer_1;
   BRepTools_WireExplorer_2: typeof BRepTools_WireExplorer_2;
@@ -11914,6 +12238,7 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   Geom_Circle_2: typeof Geom_Circle_2;
   TopAbs_ShapeEnum: TopAbs_ShapeEnum;
   TopAbs_Orientation: TopAbs_Orientation;
+  TopAbs_State: TopAbs_State;
   GeomAdaptor_TransformedSurface: typeof GeomAdaptor_TransformedSurface;
   GeomAdaptor_TransformedSurface_1: typeof GeomAdaptor_TransformedSurface_1;
   GeomAdaptor_TransformedSurface_2: typeof GeomAdaptor_TransformedSurface_2;
@@ -11937,6 +12262,11 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   Handle_Geom2d_Line_2: typeof Handle_Geom2d_Line_2;
   Handle_Geom2d_Line_3: typeof Handle_Geom2d_Line_3;
   Handle_Geom2d_Line_4: typeof Handle_Geom2d_Line_4;
+  Handle_BRepTools_History: typeof Handle_BRepTools_History;
+  Handle_BRepTools_History_1: typeof Handle_BRepTools_History_1;
+  Handle_BRepTools_History_2: typeof Handle_BRepTools_History_2;
+  Handle_BRepTools_History_3: typeof Handle_BRepTools_History_3;
+  Handle_BRepTools_History_4: typeof Handle_BRepTools_History_4;
   Handle_Geom_Conic: typeof Handle_Geom_Conic;
   Handle_Geom_Conic_1: typeof Handle_Geom_Conic_1;
   Handle_Geom_Conic_2: typeof Handle_Geom_Conic_2;
@@ -12022,6 +12352,16 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   Handle_CDM_Document_2: typeof Handle_CDM_Document_2;
   Handle_CDM_Document_3: typeof Handle_CDM_Document_3;
   Handle_CDM_Document_4: typeof Handle_CDM_Document_4;
+  TopTools_IndexedMapOfShape: typeof TopTools_IndexedMapOfShape;
+  TopTools_IndexedMapOfShape_1: typeof TopTools_IndexedMapOfShape_1;
+  TopTools_IndexedMapOfShape_2: typeof TopTools_IndexedMapOfShape_2;
+  TopTools_IndexedMapOfShape_3: typeof TopTools_IndexedMapOfShape_3;
+  TopTools_IndexedMapOfShape_4: typeof TopTools_IndexedMapOfShape_4;
+  TopTools_IndexedMapOfShape_5: typeof TopTools_IndexedMapOfShape_5;
+  TopTools_IndexedMapOfShape_6: typeof TopTools_IndexedMapOfShape_6;
+  TopTools_IndexedMapOfShape_7: typeof TopTools_IndexedMapOfShape_7;
+  TopTools_IndexedMapOfShape_8: typeof TopTools_IndexedMapOfShape_8;
+  TopTools_IndexedMapOfShape_9: typeof TopTools_IndexedMapOfShape_9;
   Handle_TDocStd_Document: typeof Handle_TDocStd_Document;
   Handle_TDocStd_Document_1: typeof Handle_TDocStd_Document_1;
   Handle_TDocStd_Document_2: typeof Handle_TDocStd_Document_2;
@@ -12047,6 +12387,11 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   Handle_Interface_Static_2: typeof Handle_Interface_Static_2;
   Handle_Interface_Static_3: typeof Handle_Interface_Static_3;
   Handle_Interface_Static_4: typeof Handle_Interface_Static_4;
+  Handle_TopTools_HSequenceOfShape: typeof Handle_TopTools_HSequenceOfShape;
+  Handle_TopTools_HSequenceOfShape_1: typeof Handle_TopTools_HSequenceOfShape_1;
+  Handle_TopTools_HSequenceOfShape_2: typeof Handle_TopTools_HSequenceOfShape_2;
+  Handle_TopTools_HSequenceOfShape_3: typeof Handle_TopTools_HSequenceOfShape_3;
+  Handle_TopTools_HSequenceOfShape_4: typeof Handle_TopTools_HSequenceOfShape_4;
   Handle_Geom2d_Circle: typeof Handle_Geom2d_Circle;
   Handle_Geom2d_Circle_1: typeof Handle_Geom2d_Circle_1;
   Handle_Geom2d_Circle_2: typeof Handle_Geom2d_Circle_2;
@@ -12217,6 +12562,11 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   Handle_IFSelect_WorkSession_2: typeof Handle_IFSelect_WorkSession_2;
   Handle_IFSelect_WorkSession_3: typeof Handle_IFSelect_WorkSession_3;
   Handle_IFSelect_WorkSession_4: typeof Handle_IFSelect_WorkSession_4;
+  Handle_TColStd_HArray2OfReal: typeof Handle_TColStd_HArray2OfReal;
+  Handle_TColStd_HArray2OfReal_1: typeof Handle_TColStd_HArray2OfReal_1;
+  Handle_TColStd_HArray2OfReal_2: typeof Handle_TColStd_HArray2OfReal_2;
+  Handle_TColStd_HArray2OfReal_3: typeof Handle_TColStd_HArray2OfReal_3;
+  Handle_TColStd_HArray2OfReal_4: typeof Handle_TColStd_HArray2OfReal_4;
   Handle_Geom_Plane: typeof Handle_Geom_Plane;
   Handle_Geom_Plane_1: typeof Handle_Geom_Plane_1;
   Handle_Geom_Plane_2: typeof Handle_Geom_Plane_2;
@@ -12282,6 +12632,11 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   Handle_Geom2d_Geometry_2: typeof Handle_Geom2d_Geometry_2;
   Handle_Geom2d_Geometry_3: typeof Handle_Geom2d_Geometry_3;
   Handle_Geom2d_Geometry_4: typeof Handle_Geom2d_Geometry_4;
+  Handle_TColgp_HArray2OfPnt: typeof Handle_TColgp_HArray2OfPnt;
+  Handle_TColgp_HArray2OfPnt_1: typeof Handle_TColgp_HArray2OfPnt_1;
+  Handle_TColgp_HArray2OfPnt_2: typeof Handle_TColgp_HArray2OfPnt_2;
+  Handle_TColgp_HArray2OfPnt_3: typeof Handle_TColgp_HArray2OfPnt_3;
+  Handle_TColgp_HArray2OfPnt_4: typeof Handle_TColgp_HArray2OfPnt_4;
   Handle_Adaptor3d_Curve: typeof Handle_Adaptor3d_Curve;
   Handle_Adaptor3d_Curve_1: typeof Handle_Adaptor3d_Curve_1;
   Handle_Adaptor3d_Curve_2: typeof Handle_Adaptor3d_Curve_2;
@@ -12513,6 +12868,9 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   BRepOffsetAPI_MakePipeShell: typeof BRepOffsetAPI_MakePipeShell;
   BRepOffsetAPI_MakeThickSolid: typeof BRepOffsetAPI_MakeThickSolid;
   BRepOffset_Mode: BRepOffset_Mode;
+  BRepOffset_MakeOffset: typeof BRepOffset_MakeOffset;
+  BRepOffset_MakeOffset_1: typeof BRepOffset_MakeOffset_1;
+  BRepOffset_MakeOffset_2: typeof BRepOffset_MakeOffset_2;
   BRepMesh_DiscretRoot: typeof BRepMesh_DiscretRoot;
   BRepPrimAPI_MakeSphere: typeof BRepPrimAPI_MakeSphere;
   BRepPrimAPI_MakeSphere_1: typeof BRepPrimAPI_MakeSphere_1;
@@ -12571,6 +12929,7 @@ export type OpenCascadeInstance = {FS: typeof FS} & {
   BRepProj_Projection: typeof BRepProj_Projection;
   BRepProj_Projection_1: typeof BRepProj_Projection_1;
   BRepProj_Projection_2: typeof BRepProj_Projection_2;
+  BRepAlgo: typeof BRepAlgo;
   BRepFill_TypeOfContact: BRepFill_TypeOfContact;
   BRepFill: typeof BRepFill;
   ChFi3d_FilletShape: ChFi3d_FilletShape;
