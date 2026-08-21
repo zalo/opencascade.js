@@ -115,9 +115,12 @@ def filterClass(theClass, additionalInfo=None):
   if theClass.spelling == "BRepGProp_VinertGK":
     return False
 
-  # error: undefined symbol: _ZNK21BRepOffset_MakeOffset10GetAnalyseEv
-  if theClass.spelling == "BRepOffset_MakeOffset":
-    return False
+  # BRepOffset_MakeOffset used to be blocklisted here for
+  # "undefined symbol: _ZNK21BRepOffset_MakeOffset10GetAnalyseEv".
+  # Root cause: GetAnalyse() is declared Standard_EXPORT in the header but
+  # never defined anywhere in OCCT 8.0.1 — a dead declaration. That single
+  # method is now dropped in filterMethodOrProperties.py and the rest of the
+  # class binds fine (build123d needs ctor/Initialize/MakeOffsetShape/Shape).
 
   # error: undefined symbol: _ZNK32BRepOffsetAPI_FindContigousEdges7NbEdgesEv
   if theClass.spelling == "BRepOffsetAPI_FindContigousEdges":

@@ -2,6 +2,72 @@
 
 ## cascadestudio-v3-occt801 (fork, unreleased)
 
+### Upstream build123d topology surface (the 44 MISSING OCP items)
+
+Closes every fork ask in the upstream-topology spike's FORK-ASKS.md (the
+3.3% of upstream build123d topology call sites that had no binding), except
+the explicitly-not-recommended `NCollection_Utf8String` kernel-text path.
+
+* **`BRepOffset_MakeOffset` now builds** (the class behind build123d's
+  `offset_topods_face` AND lite's COMPROMISE(thicken)). Root cause of the old
+  "undefined symbol: `_ZNK21BRepOffset_MakeOffset10GetAnalyseEv`" blocklist
+  entry: OCCT 8.0.1 declares `GetAnalyse()` `Standard_EXPORT` in the header
+  but never defines it anywhere — a dead declaration.
+  `src/filter/filterMethodOrProperties.py` now drops just that method (the
+  Geom2dGcc `WhichQualifier` precedent), the class blocklist entry in
+  `src/filter/filterClasses.py` is gone, and the binding was regenerated:
+  ctor(S, Offset, Tol, Mode, Intersection, SelfInter, Join, Thickening,
+  RemoveIntEdges, ProgressRange), `Initialize`, `MakeOffsetShape`,
+  `MakeThickSolid`, `IsDone`, `Shape`, `Generated/Modified/IsDeleted` all bind.
+* **`Extrema_ExtPC` is hand-registered in additionalBindCode.** In OCCT 8.0.1
+  it is a C++ `using` alias of the `Extrema_GGExtPC<...>` template
+  (`TYPE_ALIAS_DECL`), which the generator's `TYPEDEF_DECL` walk cannot see —
+  that is why no binding was ever generated despite the yml listing it. All
+  its methods are inline template code, so the hand registration has no link
+  dependencies: `Extrema_ExtPC_1/_2(P, C)/_3(P, C, Uinf, Usup)`, `Initialize`,
+  `Perform`, `IsDone`, `NbExt`, `SquareDistance`, `IsMin`, `Point` (returns
+  the newly-linked generated `Extrema_POnCurv`: `Parameter`/`Value`). NOTE:
+  the algorithm stores a POINTER to the adaptor curve — keep it alive.
+* Newly linked generated bindings (they always compiled; nothing requested
+  them): `GProp_PrincipalProps` (principal axes of inertia — `Moments` is an
+  out-param method, see `OCJS_Out.PrincipalProps_Moments`), `gp_Mat` (returned
+  by the already-bound `GProp_GProps.MatrixOfInertia`), `BRepAlgo`
+  (`ConvertFace` for build123d's `Face.to_arcs`), `BRepTools_History` +
+  `Handle_BRepTools_History` (`Modified/Generated/IsRemoved` for the
+  `Solid.extrude_until` history walk), `TopAbs_State` (`TopAbs_IN` point
+  membership), `Extrema_POnCurv`, and `TopTools_IndexedMapOfShape` (the
+  generated myMain.h-typedef binding compiles fine and was removed from
+  `_additionalBindCodeSymbols`; `TopExp.MapShapes_1/_2` fill it and `Extent`
+  comes from the `NCollection_BaseMap` base).
+* **Collection typedefs hand-registered in additionalBindCode** — their
+  generated bindings fail on dependent types ("use of undeclared identifier
+  'SequenceType'", the Array1 `value_type` failure family):
+  `TColgp_HArray2OfPnt` / `TColStd_HArray2OfReal` (ctor(r1,r2,c1,c2),
+  SetValue/Value/NbRows/NbColumns — `Face.make_bezier_surface` inputs),
+  `TopTools_HSequenceOfShape` and `TopTools_SequenceOfShape` (ctor, Append,
+  Length, Value). Their generated `Handle_*` bindings DO compile and are now
+  linked via the yml; `Handle_X_2(seq)` wraps a raw instance, which is how
+  `ShapeAnalysis_FreeBounds.ConnectEdgesToWires` (already bound — retires
+  lite's COMPROMISE(edges-to-wires)) is fed.
+* Additions to existing hand bindings: `TopTools_ListOfShape` gains
+  `Extent`, `IsEmpty`, `Last`, `RemoveFirst`; `TopoDS_Cast` gains
+  `CompSolid_1/_2`; `BRepAlgoAPI_BuilderAlgo` (base of Fuse/Cut/Common/
+  Splitter) gains `SetGlue(BOPAlgo_GlueEnum)` for `fuse(glue=)`,
+  `SetToFillHistory`, `HasHistory` and `History()` (returns
+  `Handle_BRepTools_History`).
+* New `OCJS_Out` scalar out-param helpers (pybind returns these as tuples;
+  Embind loses `Standard_Real&`): `BRepTool_Range(edge)` → `{first, last}`
+  (12 call sites), `BRepTools_UVBounds(face)` → `{umin, umax, vmin, vmax}`
+  (8 sites), `BRepTool_CurveOnSurface(edge, face)` → `{curve2d, first, last}`
+  (curve2d is a `Handle_Geom2d_Curve`), `GProp_StaticMoments(props)` →
+  `{ix, iy, iz}`, `PrincipalProps_Moments(pprops)` → `{ixx, iyy, izz}`,
+  `BRepExtrema_ParOnEdgeS2(dss, i)` → `{t}`,
+  `Geom2dAPI_ProjectPointOnCurve_Parameter(p, i)` → `{u}`,
+  `GeomAPI_ExtremaCurveCurve_Parameters(ecc, i)` → `{u1, u2}`.
+* NOT bound (deliberate, per FORK-ASKS): `NCollection_Utf8String` /
+  kernel-text (`StdPrs_BRepTextBuilder` glyph queries) — no system fonts
+  exist in wasm; `make_text` stays on the opentype.js path.
+
 ### 2-D geometric constraint solvers, quadric surfaces and scalar out-params
 
 * **The whole `Geom2dGcc` / `GccAna` family now builds.** Every binding file in

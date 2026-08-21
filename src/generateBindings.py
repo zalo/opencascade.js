@@ -128,7 +128,10 @@ _additionalBindCodeSymbols = {
   'TColgp_Array1OfVec', 'TColStd_Array1OfReal', 'TColStd_Array1OfInteger',
   'TColgp_HArray1OfPnt',
   # NCollection types not directly used
-  'TopTools_IndexedMapOfShape', 'Poly_Array1OfTriangle',
+  # (TopTools_IndexedMapOfShape was here until the upstream-topology round:
+  # its generated myMain.h binding compiles fine and is now linked via the
+  # yml — TopExp.MapShapes_1/_2 fill it, Extent comes from NCollection_BaseMap)
+  'Poly_Array1OfTriangle',
   # Indexed data maps registered in additionalBindCode (generator cannot
   # process NCollection_IndexedDataMap typedefs with default template args)
   'TopTools_IndexedDataMapOfShapeListOfShape', 'TColStd_IndexedDataMapOfStringString',
@@ -149,6 +152,16 @@ _additionalBindCodeSymbols = {
   'TColStd_HArray1OfInteger', 'Handle_TColStd_HArray1OfInteger',
   'TColgp_HArray1OfPnt2d', 'Handle_TColgp_HArray1OfPnt2d',
   'TColStd_HArray1OfReal', 'Handle_TColStd_HArray1OfReal',
+  # Upstream-topology round: registered in additionalBindCode because the
+  # generated bindings fail — Extrema_ExtPC is a C++ `using` alias of the
+  # Extrema_GGExtPC template (TYPE_ALIAS_DECL, invisible to the generator's
+  # TYPEDEF_DECL walk), and the myMain.h collection typedefs below fail to
+  # compile on dependent types (`use of undeclared identifier 'SequenceType'`,
+  # same family as the Array1 value_type failures). Their generated Handle_*
+  # bindings DO compile and are linked via the yml.
+  'Extrema_ExtPC',
+  'TColgp_HArray2OfPnt', 'TColStd_HArray2OfReal',
+  'TopTools_HSequenceOfShape', 'TopTools_SequenceOfShape',
 }
 
 def filterClasses(child, customBuild):

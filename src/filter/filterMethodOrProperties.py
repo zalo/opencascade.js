@@ -398,6 +398,17 @@ def filterMethodOrProperty(theClass, methodOrProperty):
     if len(_args) == 2 and "char" in _args[1]:
       return False
 
+  # OCCT 8.0.1 declares BRepOffset_MakeOffset::GetAnalyse() in the header
+  # (Standard_EXPORT, BRepOffset_MakeOffset.hxx:92) but no definition exists
+  # anywhere in the sources — another declare-without-define upstream bug:
+  # wasm-ld: error: undefined symbol: _ZNK21BRepOffset_MakeOffset10GetAnalyseEv
+  # This ONE dead declaration was why the whole class was blocklisted in
+  # filterClasses.py (and why build123d's offset_topods_face / lite's
+  # COMPROMISE(thicken) had no kernel path). Drop just the method and let the
+  # rest of the class bind — same precedent as the Geom2dGcc WhichQualifier fix.
+  if theClass.spelling == "BRepOffset_MakeOffset" and methodOrProperty.spelling == "GetAnalyse":
+    return False
+
   # wasm-ld: error: /opencascade.js/build/bindings/OpenGl/OpenGl_ShaderProgram.hxx/OpenGl_ShaderProgram.cpp.o: undefined symbol: OpenGl_ShaderProgram::compileShaderVerbose(opencascade::handle<OpenGl_Context> const&, opencascade::handle<OpenGl_ShaderObject> const&, TCollection_AsciiString const&, bool)
   if theClass.spelling == "OpenGl_ShaderProgram" and methodOrProperty.spelling == "compileShaderVerbose":
     return False

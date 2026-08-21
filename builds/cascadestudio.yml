@@ -367,6 +367,29 @@ mainBuild:
     - symbol: GeomConvert_ApproxCurve
     - symbol: Geom_BSplineSurface
 
+    # ------------------------------------------------------------------
+    # Upstream build123d TOPOLOGY layer (FORK-ASKS round): the classes the
+    # 44 MISSING OCP items live on. BRepOffset_MakeOffset and Extrema_ExtPC
+    # were already listed above but silently absent — BRepOffset_MakeOffset
+    # was blocklisted for a dead GetAnalyse() declaration (now a method-level
+    # exclusion in filterMethodOrProperties.py), and Extrema_ExtPC is a
+    # `using` alias the generator cannot see (hand-registered in
+    # additionalBindCode below, together with TColgp_HArray2OfPnt,
+    # TColStd_HArray2OfReal, TopTools_HSequenceOfShape and
+    # TopTools_SequenceOfShape, whose generated bindings fail on dependent
+    # types). Their generated Handle_ bindings DO compile — listed here.
+    # ------------------------------------------------------------------
+    - symbol: BRepAlgo
+    - symbol: BRepTools_History
+    - symbol: Extrema_POnCurv
+    - symbol: GProp_PrincipalProps
+    - symbol: gp_Mat
+    - symbol: TopAbs_State
+    - symbol: TopTools_IndexedMapOfShape
+    - symbol: Handle_TColgp_HArray2OfPnt
+    - symbol: Handle_TColStd_HArray2OfReal
+    - symbol: Handle_TopTools_HSequenceOfShape
+
   emccFlags:
     - "-flto"
     - "-fexceptions"
@@ -394,6 +417,7 @@ mainBuild:
     #include <TopoDS_Shell.hxx>
     #include <TopoDS_Solid.hxx>
     #include <TopoDS_Compound.hxx>
+    #include <TopoDS_CompSolid.hxx>
     #include <Standard_Failure.hxx>
     #include <functional>
     #include <BRepAlgoAPI_Cut.hxx>
@@ -418,6 +442,8 @@ mainBuild:
       static       TopoDS_Solid&     Solid_2(TopoDS_Shape& S)        { return ::TopoDS::Solid(S); }
       static const TopoDS_Compound&  Compound_1(const TopoDS_Shape& S) { return ::TopoDS::Compound(S); }
       static       TopoDS_Compound&  Compound_2(TopoDS_Shape& S)      { return ::TopoDS::Compound(S); }
+      static const TopoDS_CompSolid& CompSolid_1(const TopoDS_Shape& S) { return ::TopoDS::CompSolid(S); }
+      static       TopoDS_CompSolid& CompSolid_2(TopoDS_Shape& S)      { return ::TopoDS::CompSolid(S); }
     };
     class OCJS {
     public:
@@ -498,6 +524,8 @@ mainBuild:
         .class_function("Solid_2", &TopoDS_Cast::Solid_2, allow_raw_pointers())
         .class_function("Compound_1", &TopoDS_Cast::Compound_1, allow_raw_pointers())
         .class_function("Compound_2", &TopoDS_Cast::Compound_2, allow_raw_pointers())
+        .class_function("CompSolid_1", &TopoDS_Cast::CompSolid_1, allow_raw_pointers())
+        .class_function("CompSolid_2", &TopoDS_Cast::CompSolid_2, allow_raw_pointers())
         ;
     }
     EMSCRIPTEN_BINDINGS(AdditionalBindCode_OCJS) {
@@ -520,6 +548,11 @@ mainBuild:
         .function("Size", &TopTools_ListOfShape::Size)
         .function("Clear", +[](TopTools_ListOfShape& self) { self.Clear(); })
         .function("First", +[](TopTools_ListOfShape& self) -> const TopoDS_Shape& { return self.First(); }, allow_raw_pointers())
+        // Upstream build123d topology bookkeeping (Shape.split, boolean walks)
+        .function("Extent", +[](const TopTools_ListOfShape& self) -> int { return self.Extent(); })
+        .function("IsEmpty", +[](const TopTools_ListOfShape& self) -> bool { return self.IsEmpty(); })
+        .function("Last", +[](TopTools_ListOfShape& self) -> const TopoDS_Shape& { return self.Last(); }, allow_raw_pointers())
+        .function("RemoveFirst", +[](TopTools_ListOfShape& self) { self.RemoveFirst(); })
         ;
     }
 
@@ -758,12 +791,21 @@ mainBuild:
     // Auto-generated binding fails to compile (preamble includes all OCCT headers).
     // Only needed as a base class registration for BRepAlgoAPI_BooleanOperation.
     #include <BRepAlgoAPI_BuilderAlgo.hxx>
+    #include <BRepTools_History.hxx>
+    #include <BOPAlgo_GlueEnum.hxx>
     namespace emscripten { namespace internal { template<> void raw_destructor<BRepAlgoAPI_BuilderAlgo>(BRepAlgoAPI_BuilderAlgo* ptr) { /* do nothing */ } } }
     EMSCRIPTEN_BINDINGS(AdditionalBindCode_BRepAlgoAPI_BuilderAlgo) {
       class_<BRepAlgoAPI_BuilderAlgo, base<BRepAlgoAPI_Algo>>("BRepAlgoAPI_BuilderAlgo")
         .function("SetArguments", &BRepAlgoAPI_BuilderAlgo::SetArguments, allow_raw_pointers())
         .function("SetNonDestructive", +[](BRepAlgoAPI_BuilderAlgo& self, bool f) { self.SetNonDestructive(f); })
         .function("NonDestructive", &BRepAlgoAPI_BuilderAlgo::NonDestructive)
+        // Upstream build123d: fuse(glue=) and the Solid.extrude_until history
+        // walk (Handle_BRepTools_History + BRepTools_History are generated
+        // bindings pulled in via the yml).
+        .function("SetGlue", +[](BRepAlgoAPI_BuilderAlgo& self, BOPAlgo_GlueEnum g) { self.SetGlue(g); })
+        .function("SetToFillHistory", +[](BRepAlgoAPI_BuilderAlgo& self, bool f) { self.SetToFillHistory(f); })
+        .function("HasHistory", +[](const BRepAlgoAPI_BuilderAlgo& self) -> bool { return self.HasHistory(); })
+        .function("History", +[](const BRepAlgoAPI_BuilderAlgo& self) -> opencascade::handle<BRepTools_History> { return self.History(); })
         ;
     }
 
@@ -981,6 +1023,106 @@ mainBuild:
     #undef HANDLE_BINDINGS
 
     // ---------------------------------------------------------------------
+    // Upstream build123d TOPOLOGY layer (FORK-ASKS round).
+    //
+    // Extrema_ExtPC is a C++ `using` alias of the Extrema_GGExtPC template in
+    // OCCT 8.0.1 (TYPE_ALIAS_DECL — invisible to the generator's TYPEDEF_DECL
+    // walk, so no binding was ever generated). All of its methods are inline
+    // template code, so a hand registration has no link dependencies.
+    // NOTE: the algorithm stores a POINTER to the curve — keep the
+    // Adaptor3d_Curve (e.g. BRepAdaptor_CompCurve) alive during use.
+    //
+    // The collection typedefs (TColgp_HArray2OfPnt, TColStd_HArray2OfReal,
+    // TopTools_HSequenceOfShape, TopTools_SequenceOfShape) have generated
+    // bindings that fail to compile on dependent types ("use of undeclared
+    // identifier 'SequenceType'" — same family as the Array1 value_type
+    // failures), so the minimal surface build123d calls is registered here.
+    // Their generated Handle_* bindings compile fine and are linked via the
+    // yml (Handle_X_2 constructs from a raw pointer of the classes below,
+    // which is how ShapeAnalysis_FreeBounds::ConnectEdgesToWires is fed).
+    // ---------------------------------------------------------------------
+    #include <Extrema_ExtPC.hxx>
+    #include <Extrema_POnCurv.hxx>
+    #include <Adaptor3d_Curve.hxx>
+    #include <NCollection_HArray2.hxx>
+    #include <NCollection_Sequence.hxx>
+    #include <NCollection_HSequence.hxx>
+    typedef NCollection_HArray2<gp_Pnt> TColgp_HArray2OfPnt;
+    typedef NCollection_HArray2<double> TColStd_HArray2OfReal;
+    typedef NCollection_Sequence<TopoDS_Shape> TopTools_SequenceOfShape;
+    typedef NCollection_HSequence<TopoDS_Shape> TopTools_HSequenceOfShape;
+    EMSCRIPTEN_BINDINGS(AdditionalBindCode_UpstreamTopology) {
+      class_<Extrema_ExtPC>("Extrema_ExtPC")
+        .function("Initialize", +[](Extrema_ExtPC& self, const Adaptor3d_Curve& C, double Uinf, double Usup) { self.Initialize(C, Uinf, Usup); })
+        .function("Perform", +[](Extrema_ExtPC& self, const gp_Pnt& P) { self.Perform(P); })
+        .function("IsDone", +[](const Extrema_ExtPC& self) -> bool { return self.IsDone(); })
+        .function("NbExt", +[](const Extrema_ExtPC& self) -> int { return self.NbExt(); })
+        .function("SquareDistance", +[](const Extrema_ExtPC& self, int N) -> double { return self.SquareDistance(N); })
+        .function("IsMin", +[](const Extrema_ExtPC& self, int N) -> bool { return self.IsMin(N); })
+        .function("Point", +[](const Extrema_ExtPC& self, int N) -> const Extrema_POnCurv& { return self.Point(N); }, allow_raw_pointers())
+        ;
+      struct Extrema_ExtPC_1 : public Extrema_ExtPC {
+        Extrema_ExtPC_1() : Extrema_ExtPC() {}
+      };
+      class_<Extrema_ExtPC_1, base<Extrema_ExtPC>>("Extrema_ExtPC_1")
+        .constructor<>()
+        ;
+      struct Extrema_ExtPC_2 : public Extrema_ExtPC {
+        Extrema_ExtPC_2(const gp_Pnt& P, const Adaptor3d_Curve& C) : Extrema_ExtPC(P, C) {}
+      };
+      class_<Extrema_ExtPC_2, base<Extrema_ExtPC>>("Extrema_ExtPC_2")
+        .constructor<const gp_Pnt&, const Adaptor3d_Curve&>()
+        ;
+      struct Extrema_ExtPC_3 : public Extrema_ExtPC {
+        Extrema_ExtPC_3(const gp_Pnt& P, const Adaptor3d_Curve& C, const double Uinf, const double Usup) : Extrema_ExtPC(P, C, Uinf, Usup) {}
+      };
+      class_<Extrema_ExtPC_3, base<Extrema_ExtPC>>("Extrema_ExtPC_3")
+        .constructor<const gp_Pnt&, const Adaptor3d_Curve&, const double, const double>()
+        ;
+
+      class_<TColgp_HArray2OfPnt>("TColgp_HArray2OfPnt")
+        .function("SetValue", +[](TColgp_HArray2OfPnt& self, int row, int col, const gp_Pnt& val) { self.SetValue(row, col, val); })
+        .function("Value", +[](const TColgp_HArray2OfPnt& self, int row, int col) -> const gp_Pnt& { return self.Value(row, col); }, allow_raw_pointers())
+        // NB: lambdas, not member pointers — &TColgp_HArray2OfPnt::NbRows is
+        // really &NCollection_Array2<gp_Pnt>::NbRows, and Embind binds it to
+        // that (differently-registered) base type, leaving HArray2 without it.
+        .function("NbRows", +[](const TColgp_HArray2OfPnt& self) -> int { return self.NbRows(); })
+        .function("NbColumns", +[](const TColgp_HArray2OfPnt& self) -> int { return self.NbColumns(); })
+        ;
+      struct TColgp_HArray2OfPnt_2 : public TColgp_HArray2OfPnt {
+        TColgp_HArray2OfPnt_2(const int r1, const int r2, const int c1, const int c2) : TColgp_HArray2OfPnt(r1, r2, c1, c2) {}
+      };
+      class_<TColgp_HArray2OfPnt_2, base<TColgp_HArray2OfPnt>>("TColgp_HArray2OfPnt_2")
+        .constructor<const int, const int, const int, const int>()
+        ;
+      class_<TColStd_HArray2OfReal>("TColStd_HArray2OfReal")
+        .function("SetValue", +[](TColStd_HArray2OfReal& self, int row, int col, double val) { self.SetValue(row, col, val); })
+        .function("Value", +[](const TColStd_HArray2OfReal& self, int row, int col) -> double { return self.Value(row, col); })
+        .function("NbRows", +[](const TColStd_HArray2OfReal& self) -> int { return self.NbRows(); })
+        .function("NbColumns", +[](const TColStd_HArray2OfReal& self) -> int { return self.NbColumns(); })
+        ;
+      struct TColStd_HArray2OfReal_2 : public TColStd_HArray2OfReal {
+        TColStd_HArray2OfReal_2(const int r1, const int r2, const int c1, const int c2) : TColStd_HArray2OfReal(r1, r2, c1, c2) {}
+      };
+      class_<TColStd_HArray2OfReal_2, base<TColStd_HArray2OfReal>>("TColStd_HArray2OfReal_2")
+        .constructor<const int, const int, const int, const int>()
+        ;
+
+      class_<TopTools_SequenceOfShape>("TopTools_SequenceOfShape")
+        .constructor<>()
+        .function("Append", +[](TopTools_SequenceOfShape& self, const TopoDS_Shape& S) { self.Append(S); })
+        .function("Length", +[](const TopTools_SequenceOfShape& self) -> int { return self.Length(); })
+        .function("Value", +[](const TopTools_SequenceOfShape& self, int i) -> const TopoDS_Shape& { return self.Value(i); }, allow_raw_pointers())
+        ;
+      class_<TopTools_HSequenceOfShape>("TopTools_HSequenceOfShape")
+        .constructor<>()
+        .function("Append", +[](TopTools_HSequenceOfShape& self, const TopoDS_Shape& S) { self.Append(S); })
+        .function("Length", +[](const TopTools_HSequenceOfShape& self) -> int { return self.Length(); })
+        .function("Value", +[](const TopTools_HSequenceOfShape& self, int i) -> const TopoDS_Shape& { return self.Value(i); }, allow_raw_pointers())
+        ;
+    }
+
+    // ---------------------------------------------------------------------
     // OCJS_Out — scalar OUT-PARAMETER accessors.
     //
     // Embind passes primitives BY VALUE, so any OCCT method that returns
@@ -1004,6 +1146,12 @@ mainBuild:
     #include <ChFi2d_FilletAlgo.hxx>
     #include <TopoDS_Edge.hxx>
     #include <gp_Pnt2d.hxx>
+    #include <GProp_GProps.hxx>
+    #include <GProp_PrincipalProps.hxx>
+    #include <BRepExtrema_DistShapeShape.hxx>
+    #include <Geom2dAPI_ProjectPointOnCurve.hxx>
+    #include <GeomAPI_ExtremaCurveCurve.hxx>
+    #include <Geom2d_Curve.hxx>
 
     namespace {
       inline emscripten::val gccTangencyOut(double parSol, double parArg, const gp_Pnt2d& pnt) {
@@ -1083,6 +1231,86 @@ mainBuild:
         out.set("v", v);
         return out;
       }
+      // -------------------------------------------------------------------
+      // Upstream build123d TOPOLOGY layer out-params (FORK-ASKS round):
+      // pybind returns these as tuples; Embind loses Standard_Real&.
+      // -------------------------------------------------------------------
+      // BRep_Tool::Range(E, First&, Last&) — 12 call sites (HOT).
+      static emscripten::val BRepTool_Range(const TopoDS_Edge& e) {
+        double first = 0.0, last = 0.0;
+        BRep_Tool::Range(e, first, last);
+        emscripten::val out = emscripten::val::object();
+        out.set("first", first);
+        out.set("last", last);
+        return out;
+      }
+      // BRepTools::UVBounds(F, UMin&, UMax&, VMin&, VMax&) — 8 call sites.
+      static emscripten::val BRepTools_UVBounds(const TopoDS_Face& f) {
+        double umin = 0.0, umax = 0.0, vmin = 0.0, vmax = 0.0;
+        BRepTools::UVBounds(f, umin, umax, vmin, vmax);
+        emscripten::val out = emscripten::val::object();
+        out.set("umin", umin);
+        out.set("umax", umax);
+        out.set("vmin", vmin);
+        out.set("vmax", vmax);
+        return out;
+      }
+      // BRep_Tool::CurveOnSurface(E, F, First&, Last&) — pcurve + range.
+      static emscripten::val BRepTool_CurveOnSurface(const TopoDS_Edge& e, const TopoDS_Face& f) {
+        double first = 0.0, last = 0.0;
+        opencascade::handle<Geom2d_Curve> c = BRep_Tool::CurveOnSurface(e, f, first, last);
+        emscripten::val out = emscripten::val::object();
+        out.set("curve2d", c);
+        out.set("first", first);
+        out.set("last", last);
+        return out;
+      }
+      // GProp_GProps::StaticMoments(Ix&, Iy&, Iz&).
+      static emscripten::val GProp_StaticMoments(const GProp_GProps& p) {
+        double ix = 0.0, iy = 0.0, iz = 0.0;
+        p.StaticMoments(ix, iy, iz);
+        emscripten::val out = emscripten::val::object();
+        out.set("ix", ix);
+        out.set("iy", iy);
+        out.set("iz", iz);
+        return out;
+      }
+      // GProp_PrincipalProps::Moments(Ixx&, Iyy&, Izz&) — makes the newly
+      // linked GProp_PrincipalProps binding's principal moments readable.
+      static emscripten::val PrincipalProps_Moments(const GProp_PrincipalProps& p) {
+        double ixx = 0.0, iyy = 0.0, izz = 0.0;
+        p.Moments(ixx, iyy, izz);
+        emscripten::val out = emscripten::val::object();
+        out.set("ixx", ixx);
+        out.set("iyy", iyy);
+        out.set("izz", izz);
+        return out;
+      }
+      // BRepExtrema_DistShapeShape::ParOnEdgeS2(N, t&).
+      static emscripten::val BRepExtrema_ParOnEdgeS2(const BRepExtrema_DistShapeShape& d, int n) {
+        double t = 0.0;
+        d.ParOnEdgeS2(n, t);
+        emscripten::val out = emscripten::val::object();
+        out.set("t", t);
+        return out;
+      }
+      // Geom2dAPI_ProjectPointOnCurve::Parameter(Index, U&).
+      static emscripten::val Geom2dAPI_ProjectPointOnCurve_Parameter(const Geom2dAPI_ProjectPointOnCurve& p, int index) {
+        double u = 0.0;
+        p.Parameter(index, u);
+        emscripten::val out = emscripten::val::object();
+        out.set("u", u);
+        return out;
+      }
+      // GeomAPI_ExtremaCurveCurve::Parameters(Index, U1&, U2&).
+      static emscripten::val GeomAPI_ExtremaCurveCurve_Parameters(const GeomAPI_ExtremaCurveCurve& e, int index) {
+        double u1 = 0.0, u2 = 0.0;
+        e.Parameters(index, u1, u2);
+        emscripten::val out = emscripten::val::object();
+        out.set("u1", u1);
+        out.set("u2", u2);
+        return out;
+      }
     };
 
     EMSCRIPTEN_BINDINGS(AdditionalBindCode_OCJS_Out) {
@@ -1101,6 +1329,14 @@ mainBuild:
         .class_function("FilletAlgo_Result", &OCJS_Out::FilletAlgo_Result, allow_raw_pointers())
         .class_function("ProjectPointOnSurf_LowerDistanceParameters", &OCJS_Out::ProjectPointOnSurf_LowerDistanceParameters, allow_raw_pointers())
         .class_function("ProjectPointOnSurf_Parameters", &OCJS_Out::ProjectPointOnSurf_Parameters, allow_raw_pointers())
+        .class_function("BRepTool_Range", &OCJS_Out::BRepTool_Range, allow_raw_pointers())
+        .class_function("BRepTools_UVBounds", &OCJS_Out::BRepTools_UVBounds, allow_raw_pointers())
+        .class_function("BRepTool_CurveOnSurface", &OCJS_Out::BRepTool_CurveOnSurface, allow_raw_pointers())
+        .class_function("GProp_StaticMoments", &OCJS_Out::GProp_StaticMoments, allow_raw_pointers())
+        .class_function("PrincipalProps_Moments", &OCJS_Out::PrincipalProps_Moments, allow_raw_pointers())
+        .class_function("BRepExtrema_ParOnEdgeS2", &OCJS_Out::BRepExtrema_ParOnEdgeS2, allow_raw_pointers())
+        .class_function("Geom2dAPI_ProjectPointOnCurve_Parameter", &OCJS_Out::Geom2dAPI_ProjectPointOnCurve_Parameter, allow_raw_pointers())
+        .class_function("GeomAPI_ExtremaCurveCurve_Parameters", &OCJS_Out::GeomAPI_ExtremaCurveCurve_Parameters, allow_raw_pointers())
         ;
     }
 
@@ -1125,6 +1361,8 @@ additionalCppCode: |
     static       TopoDS_Solid&     Solid_2(TopoDS_Shape& S)        { return ::TopoDS::Solid(S); }
     static const TopoDS_Compound&  Compound_1(const TopoDS_Shape& S) { return ::TopoDS::Compound(S); }
     static       TopoDS_Compound&  Compound_2(TopoDS_Shape& S)      { return ::TopoDS::Compound(S); }
+    static const TopoDS_CompSolid& CompSolid_1(const TopoDS_Shape& S) { return ::TopoDS::CompSolid(S); }
+    static       TopoDS_CompSolid& CompSolid_2(TopoDS_Shape& S)      { return ::TopoDS::CompSolid(S); }
   };
   #include <BRepAlgoAPI_Cut.hxx>
   #include <BRepAlgoAPI_Fuse.hxx>
