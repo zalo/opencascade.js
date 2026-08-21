@@ -401,6 +401,13 @@ mainBuild:
     - "-sINITIAL_MEMORY=32MB"
     - "-sMAXIMUM_MEMORY=4GB"
     - "-sALLOW_MEMORY_GROWTH=1"
+    # Grow the linear memory in 5% steps instead of emscripten's default 20%
+    # (the ×1.2 "growth ladder"): heavy CAD models produce a large per-run
+    # meshing transient, and every rung the transient crosses is permanent —
+    # measured repeat-run ratchets of ~85-100 MB/run were mostly ladder
+    # overshoot, not live data. memory.grow doesn't copy, so the extra grow
+    # calls are cheap page commits (measured: no eval-time regression).
+    - "-sMEMORY_GROWTH_GEOMETRIC_STEP=0.05"
     - "-sUSE_FREETYPE=1"
     - "-sLLD_REPORT_UNDEFINED"
     - "--no-entry"
