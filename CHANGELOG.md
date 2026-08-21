@@ -2,6 +2,45 @@
 
 ## cascadestudio-v3-occt801 (fork, unreleased)
 
+### Real raw_destructor for DEFINE_STANDARD_ALLOC classes (the "delete() never freed" fix)
+
+`src/bindings.py` used to specialize `emscripten::internal::raw_destructor<T>`
+to a NO-OP for any class with ANY 2-argument `operator delete` — and OCCT's
+`DEFINE_STANDARD_ALLOC` gives *every* kernel class a placement
+`operator delete(void*, void*)` right next to a perfectly usable usual
+delete. Consequence: every embind object returned BY VALUE from a bound
+method (`gp_Pnt` copies from `Poly_Triangulation::Node`, `TopoDS_Shape`
+copies from `TopExp_Explorer::Current` — including their TShape refcounts,
+`gp_Trsf` from `TopLoc_Location::Transformation`, ...) leaked its wasm
+memory forever even when JS called `.delete()`: the call "succeeded" but
+`free` never ran (verified at the heap-byte level). Only the generated
+constructor-overload subclasses (`gp_Pnt_1` & co.), which never hit the
+epilog, ever freed. In CascadeStudio this was the ~0.6-0.9 KB/node/run
+repeat-remesh ratchet (85-100 MB/run on heat_exchanger) and ~40 MB of every
+heavy evaluation.
+
+* The no-op is now emitted only where a delete-expression is genuinely
+  unusable: a non-public destructor, or a class whose ONLY class-specific
+  `operator delete` is the placement form (sized delete counts as usual).
+  2,044 generated class bindings switched from no-op to real destruction.
+* `select_overload<>` return types declared INSIDE the class are now
+  qualified (`Bnd_Box::Limits` — regeneration used to emit the bare `Limits`
+  and fail to compile, silently dropping the whole Bnd_Box binding).
+* `-sMEMORY_GROWTH_GEOMETRIC_STEP=0.05` (see previous commit) keeps the
+  arena within ~5% of true demand; with the destructor fix the two together
+  take a heavy pyodide+real model from 238.5 MB / +85-100 MB-per-repeat to
+  175.9 MB / +18-24 MB-per-repeat, with byte-identical mesh payloads.
+* Ownership rules for callers are UNCHANGED (embind copies class-type
+  const-ref returns, so method returns are owned copies; `Handle_X.get()`
+  raws remain non-owning — deleting them now really double-frees, exactly
+  as the CascadeStudio worker's lifetime discipline already assumed).
+* NOT affected: `Message`, `Quantity_Color`, `Font_FontMgr` (the three
+  pre-existing known compile failures) and the 15 known-failing myMain.h
+  duplicate array bindings (their real bindings come from the
+  additionalBindCode/typedef path).
+
+## cascadestudio-v3-occt801 (fork, unreleased)
+
 ### Upstream build123d topology surface (the 44 MISSING OCP items)
 
 Closes every fork ask in the upstream-topology spike's FORK-ASKS.md (the

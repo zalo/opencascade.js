@@ -195,9 +195,30 @@ class EmbindBindings(Bindings):
     output += "}\n\n"
 
     # Epilog
+    # Suppress embind's raw_destructor (making JS-side .delete() a no-op on
+    # the C++ object) ONLY where a delete-expression is genuinely unusable:
+    # a non-public destructor, or a class whose only class-specific
+    # 'operator delete' is the 2-arg placement form. The old condition
+    # no-op'd EVERY class with ANY 2-arg operator delete — which
+    # DEFINE_STANDARD_ALLOC gives to essentially every OCCT class (its
+    # placement pair sits next to a perfectly usable usual delete), so every
+    # method-returned embind value (gp_Pnt copies, TopoDS_Shape copies with
+    # their TShape refcounts, ...) LEAKED its wasm memory forever even when
+    # user code called .delete(); only the generated constructor-overload
+    # subclasses (gp_Pnt_1 & co., which never hit this epilog) ever freed.
     nonPublicDestructor = any(x.kind == clang.cindex.CursorKind.DESTRUCTOR and not x.access_specifier == clang.cindex.AccessSpecifier.PUBLIC for x in theClass.get_children())
-    placementDelete = next((x for x in theClass.get_children() if x.spelling == "operator delete" and len(list(x.get_arguments())) == 2), None) is not None
-    if nonPublicDestructor or placementDelete:
+    deleteOps = [x for x in theClass.get_children() if x.spelling == "operator delete"]
+    def isUsualDelete(op):
+      args = list(op.get_arguments())
+      if len(args) == 1:
+        return True
+      # sized delete (void*, size_t) is a usual deallocation function;
+      # placement delete (void*, void*) is not
+      if len(args) == 2 and "void" not in args[1].type.spelling:
+        return True
+      return False
+    placementDeleteOnly = bool(deleteOps) and not any(isUsualDelete(op) for op in deleteOps)
+    if nonPublicDestructor or placementDeleteOnly:
       output += "namespace emscripten { namespace internal { template<> void raw_destructor<" + className + ">(" + className + "* ptr) { /* do nothing */ } } }\n"
     return output
 
@@ -420,9 +441,24 @@ class EmbindBindings(Bindings):
         if numOverloads == 1:
           functionBinding = " &" + className + "::" + method.spelling
         else:
+          # A type declared INSIDE the class (e.g. Bnd_Box::Limits) is spelled
+          # unqualified at its use site; select_overload<> lives outside the
+          # class, so template deduction fails without the qualification.
+          resultTypeSpelling = method.result_type.spelling
+          try:
+            resultDecl = method.result_type.get_declaration()
+            if (resultDecl is not None and resultDecl.spelling == resultTypeSpelling
+                and resultDecl.semantic_parent is not None
+                and resultDecl.semantic_parent.kind in (
+                  clang.cindex.CursorKind.CLASS_DECL,
+                  clang.cindex.CursorKind.STRUCT_DECL,
+                  clang.cindex.CursorKind.CLASS_TEMPLATE)):
+              resultTypeSpelling = resultDecl.semantic_parent.spelling + "::" + resultTypeSpelling
+          except Exception:
+            pass
           functionBinding = merge("",
             " select_overload<",
-            normalizeOcctType(self.getTypedefedTemplateTypeAsString(method.result_type.spelling, templateDecl, templateArgs)),
+            normalizeOcctType(self.getTypedefedTemplateTypeAsString(resultTypeSpelling, templateDecl, templateArgs)),
             f'({merge(", ", *map(lambda x: normalizeOcctType(self.getSingleArgumentBinding(True, True, templateDecl, templateArgs)(x)[0]), list(method.get_arguments())))})',
             pick(method.is_const_method(), "const", ""),
             pick(not method.is_static_method(), f", {getClassTypeName(theClass, templateDecl)}", ""),
