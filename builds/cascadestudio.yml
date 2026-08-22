@@ -396,6 +396,25 @@ mainBuild:
     - "-sDISABLE_EXCEPTION_CATCHING=0"
     - "-O3"
     - "-sEXPORT_ES6=1"
+    # No code generation from strings anywhere in the glue. Embind normally
+    # builds every method invoker with `new Function(argNames, body)` and
+    # emval builds its call thunks the same way; Cloudflare Workers (and any
+    # other CSP-locked host) refuse that outright — "Code generation from
+    # strings disallowed for this context" — so the module cannot even finish
+    # registering its classes there. DYNAMIC_EXECUTION=0 makes embind emit
+    # closure-based invokers instead, which costs ~2-4% on call-heavy CAD
+    # evaluation and ~3-8% on the mesh-readback path (measured — numbers in
+    # CHANGELOG.md) and nothing on kernel time. One glue for every consumer:
+    # browser worker, plain Node and workerd.
+    - "-sDYNAMIC_EXECUTION=0"
+    # One module for every consumer. `web` drops emscripten's node and
+    # classic-worker branches (the node branch is actively harmful off-browser:
+    # it reaches for createRequire/fs, and on Cloudflare Workers with
+    # nodejs_compat it would be selected by the mere existence of `process`).
+    # The consumers are a module Web Worker, workerd and plain Node — all of
+    # which hand the wasm over through the `instantiateWasm` hook, so nothing
+    # in the module ever needs to locate or fetch a file.
+    - "-sENVIRONMENT=web"
 
     - "-sEXPORTED_RUNTIME_METHODS=['FS']"
     - "-sINITIAL_MEMORY=32MB"

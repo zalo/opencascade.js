@@ -2,6 +2,58 @@
 
 ## cascadestudio-v3-occt801 (fork, unreleased)
 
+### One eval-free, web-targeted module: `-sDYNAMIC_EXECUTION=0 -sENVIRONMENT=web`
+
+Two link flags in `builds/cascadestudio.yml`, no source change, and the wasm
+binary is **byte-identical** (`sha256 5b998298…c99be` before and after) — only
+the JS glue differs. Motivation: run the SAME module in a browser module
+worker, in plain Node and on Cloudflare Workers.
+
+* **`-sDYNAMIC_EXECUTION=0`.** Embind builds every method invoker with
+  `new Function(argNames, body)`, and emval builds its call thunks the same
+  way. Cloudflare Workers (and any CSP `unsafe-eval`-less host) refuse all
+  code generation from strings — "Code generation from strings disallowed for
+  this context" — so the module could not even finish REGISTERING its classes
+  there. With the flag, emscripten emits closure-based invokers instead: the
+  generated glue now contains **zero** `new Function(` and zero `eval(`
+  (was 2 `new Function` sites; 238,551 B → 236,923 B with this flag alone,
+  235,026 B with `ENVIRONMENT=web` on top).
+  * Measured cost, CascadeStudio's headless engine in Node, A/B interleaved
+    on the same wasm (fastest of 5-7 repeats, which is the stable statistic
+    on this shared machine): parametric-starter model eval 278-289 →
+    289-300 ms (+2-4%), mesh-heavy sphere-with-six-cuts 2248-2272 →
+    2312-2358 ms (+3%), 40-box boolean chain 838-854 → 820-839 ms (no
+    change). Run-to-run MEDIANS are noisier and put the mesh-heavy case up to
+    +8% — triangulation readback is the hottest embind call shape there,
+    which is exactly where a non-specialized invoker should cost the most.
+    Nothing measurable on boot, and no change in memory (51.5 MB after the
+    starter, unchanged). That is cheap enough that the flag is on for EVERY
+    consumer — one glue, no browser/headless split. (For reference, the
+    hand-written closure-invoker patch CascadeStudio used to apply to the
+    shipped glue at bundle time measured the same; that workaround is retired
+    now that the compiler does it.)
+* **`-sENVIRONMENT=web`.** Deliberate, and a deviation from "leave it at the
+  default" worth writing down: the default builds all four environment
+  branches, and the NODE branch is actively harmful off-browser. It is
+  selected by the mere existence of `globalThis.process`, so on Cloudflare
+  Workers with `nodejs_compat` enabled the glue decides it is Node and reaches
+  for `createRequire`/`fs`; the classic-worker branch wants `importScripts`,
+  which module workers do not have (consumers had to shim it just to keep the
+  environment sniff from falling through to SHELL). Every consumer here hands
+  the wasm over through the `instantiateWasm` hook, so nothing in the module
+  ever needs to locate, fetch or read a file, and `web` is sufficient for all
+  three: module Web Worker, workerd, and Node (which only needs `self`
+  aliased to `globalThis`, which the consumer already does). Verifiable in
+  the output: the glue now contains no `import("module"|"fs"|"path"|"url")`,
+  no `createRequire`, no `require("crypto")` and no `importScripts` at all
+  (`ENVIRONMENT_IS_WEB` is a literal `true`, `ENVIRONMENT_IS_WORKER` a
+  literal `false`), and `_scriptName` is plain `import.meta.url`.
+* Sanity, unchanged by both flags: `class Handle_` count in the generated
+  `.d.ts` is still 400 and the file is byte-for-byte the same size
+  (589,661 B) — i.e. `OCJS_INCLUDE_HANDLES=1` still took effect; the same
+  three long-known binding compile failures (`Message`, `Quantity_Color`,
+  `Font_FontMgr`) and no others.
+
 ### Real raw_destructor for DEFINE_STANDARD_ALLOC classes (the "delete() never freed" fix)
 
 `src/bindings.py` used to specialize `emscripten::internal::raw_destructor<T>`
