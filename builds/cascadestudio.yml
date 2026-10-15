@@ -392,8 +392,24 @@ mainBuild:
 
   emccFlags:
     - "-flto"
-    - "-fexceptions"
-    - "-sDISABLE_EXCEPTION_CATCHING=0"
+    # NATIVE wasm exceptions (legacy encoding: try/catch/delegate — Chrome 95,
+    # Firefox 100, Safari 15.2, Node 17, workerd). Emscripten's JS-emulated
+    # exceptions (-fexceptions -sDISABLE_EXCEPTION_CATCHING=0, the model this
+    # build shipped with until 2026-10) route every call that can throw out
+    # through a JS `invoke_*` trampoline — 191k call sites in this kernel —
+    # which was 31% of the code section and most of the per-op overhead:
+    # native EH is 27,021,699 -> 19,659,264 B and 10-73% less CPU per model,
+    # geometry identical (CHANGELOG.md). The JS-emulated build survives as
+    # the debug artifact, builds/cascadestudio-jseh.yml.
+    #
+    # -fwasm-exceptions is a COMPILE flag too: the objects must be compiled
+    # with OCJS_EXCEPTIONS=wasm (the default; see src/buildPaths.py).
+    - "-fwasm-exceptions"
+    # A C++ throw that escapes into JS is a WebAssembly.Exception whose
+    # payload needs the C++ tag; this exports it plus getExceptionMessage(ex)
+    # -> [type, what()] (Standard_Failure::what() is the OCCT message), which
+    # is how CascadeStudio decodes kernel errors on this build. +62 KB.
+    - "-sEXPORT_EXCEPTION_HANDLING_HELPERS"
     - "-O3"
     - "-sEXPORT_ES6=1"
     # No code generation from strings anywhere in the glue. Embind normally
@@ -417,7 +433,25 @@ mainBuild:
     - "-sENVIRONMENT=web"
 
     - "-sEXPORTED_RUNTIME_METHODS=['FS']"
-    - "-sINITIAL_MEMORY=32MB"
+    # 8 MB, not 32: after module init OCCT occupies 4.12 MiB of linear memory
+    # (3.49 MiB static data + .bss, the 512 KB stack below, ~0.13 MiB of
+    # boot heap), a Box -> STEP request touches 4.65 MiB and the
+    # CascadeStudio Python starter model 5.69 MiB (lite) / 7.17 MiB
+    # (upstream build123d), so 8 MB holds a basic request with no growth at
+    # all while the other 24 MB stop being reserved in every isolate (a
+    # Cloudflare Worker gets 128 MB in total). Heavy models grow past 32 MB
+    # either way; the extra 5% growth steps measured free (CHANGELOG.md).
+    - "-sINITIAL_MEMORY=8MB"
+    # The shadow stack sits directly above .data/.bss and grows DOWN into
+    # it, unchecked at -O3. emscripten's 64 KB default overflowed: measured
+    # high-water over the whole 247-script build123d corpus is 83,552 B
+    # (key_cap; maker_coin/tea_cup/toy_truck/ttt-ppp01xx fillets ~82 KB),
+    # and the overflow silently overwrote OCCT statics — that, not heap
+    # corruption, was what killed the STEP writer after maker_coin/tea_cup
+    # fillets and BRepTools::Write after bicycle_tire. 512 KB = 6.3x the
+    # measured peak; costs 448 KB of linear memory (only the used depth is
+    # ever touched) and 448 KB more in a kernel-image snapshot.
+    - "-sSTACK_SIZE=512KB"
     - "-sMAXIMUM_MEMORY=4GB"
     - "-sALLOW_MEMORY_GROWTH=1"
     # Grow the linear memory in 5% steps instead of emscripten's default 20%

@@ -16,10 +16,10 @@ try:
 except ImportError:
   HAS_TQDM = False
 
-from buildPaths import OCJS_ROOT, numJobs
+from buildPaths import OCJS_ROOT, OCJS_BUILD_DIR, numJobs, exceptionFlags
 
-libraryBasePath = OCJS_ROOT + "/build/bindings"
-failureReportPath = OCJS_ROOT + "/build/binding-compile-failures.txt"
+libraryBasePath = OCJS_BUILD_DIR + "/bindings"
+failureReportPath = OCJS_BUILD_DIR + "/binding-compile-failures.txt"
 
 
 def writeFailureReport(failedPaths):
@@ -57,8 +57,7 @@ def buildOneFile(args, item):
       "emcc",
       "-std=c++17",
       "-flto",
-      "-fexceptions",
-      "-sDISABLE_EXCEPTION_CATCHING=0",
+      *exceptionFlags(),
       "-DIGNORE_NO_ATOMICS=1",
       "-DOCCT_NO_PLUGINS",
       "-frtti",
@@ -79,10 +78,15 @@ def buildOneFile(args, item):
   else:
     return ("skipped", item)
 
-def compileCustomCodeBindings(args):
+def compileCustomCodeBindings(args, onlySymbols=None):
+  """onlySymbols: optional set — compile just those myMain.h bindings (the
+  link closure) instead of all ~2500 (OCJS_CUSTOM_CLOSURE_ONLY=1 in
+  buildFromYaml; makes a from-scratch tree for one yml much faster)."""
   filesToBuild = []
   for dirpath, dirnames, filenames in os.walk(libraryBasePath + "/myMain.h"):
     filesToBuild.extend(map(lambda x: dirpath + "/" + x, filter(lambda x: x.endswith(".cpp"), filenames)))
+  if onlySymbols is not None:
+    filesToBuild = [p for p in filesToBuild if os.path.basename(p)[:-4] in onlySymbols]
 
   total = len(filesToBuild)
   print(f"Compiling {total} custom binding files...")

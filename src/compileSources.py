@@ -16,9 +16,9 @@ try:
 except ImportError:
   HAS_TQDM = False
 
-from buildPaths import OCJS_ROOT, OCCT_ROOT, RAPIDJSON_ROOT, FREETYPE_ROOT, numJobs
+from buildPaths import OCJS_ROOT, OCJS_BUILD_DIR, OCCT_ROOT, RAPIDJSON_ROOT, FREETYPE_ROOT, numJobs, exceptionFlags
 
-libraryBasePath = OCJS_ROOT + "/build/sources"
+libraryBasePath = OCJS_BUILD_DIR + "/sources"
 
 # Potentially problematic packages, when used with dynamic linking
 # These files contain function pointer definitions and header files and are therefore likely to cause problems.
@@ -68,8 +68,7 @@ def buildObjectFiles(file, args):
     "emcc",
     lang_std,
     "-flto",
-    "-fexceptions",
-    "-sDISABLE_EXCEPTION_CATCHING=0",
+    *exceptionFlags(),
     "-DIGNORE_NO_ATOMICS=1",
     "-DOCCT_NO_PLUGINS",
     "-DHAVE_RAPIDJSON",

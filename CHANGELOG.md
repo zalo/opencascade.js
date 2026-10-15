@@ -2,6 +2,113 @@
 
 ## cascadestudio-v3-occt801 (fork, unreleased)
 
+### Native wasm exceptions by default; 8 MB initial memory; a 512 KB stack
+
+Branch `cascadestudio-v3-occt801-wasmeh`. Three link-level changes to
+`builds/cascadestudio.yml` plus a second, debug artifact. No OCCT source
+change. The native-EH objects need a full recompile; the debug artifact
+reuses the JS-EH objects.
+
+**Two artifact pairs.** Both have identical bindings: the `.d.ts` is
+byte-identical to the previous release (589,661 B, 400 `class Handle_`, so
+`OCJS_INCLUDE_HANDLES=1` took effect), with the same three long-known binding
+compile failures (`Message`, `Quantity_Color`, `Font_FontMgr`).
+
+| artifact | exceptions | wasm | glue | role |
+|---|---|---:|---:|---|
+| `cascadestudio.{js,wasm,d.ts}` | **native wasm EH**, legacy encoding, `-sEXPORT_EXCEPTION_HANDLING_HELPERS` | **19,659,264 B** (gz 7.09 MB) | 125,011 B | default |
+| `cascadestudio-jseh.{js,wasm,d.ts}` | Emscripten JS-emulated (`-fexceptions -sDISABLE_EXCEPTION_CATCHING=0`), the previous shipping model | 27,021,699 B | 235,036 B | debug / A-B reference |
+
+**Native wasm exceptions.** Emscripten's JS-emulated EH sends every call
+that can throw out through a JS `invoke_*` trampoline: 191,109 call sites
+in this kernel, plus 96,930 landing-pad `__cxa_find_matching_catch` calls.
+That was 31% of the code section and most of the per-op cost. Measured on
+CascadeStudio's headless engine (Node, main-thread CPU, interleaved
+A/B):
+
+| model | JS EH | native EH |
+|---|---:|---:|
+| starter | 234 ms | 102 ms (−57%) |
+| ttt-ppp0101 | 612 ms | 292 ms (−52%) |
+| clock | 5.09 s | 3.62 s (−29%) |
+| heat_exchanger | 12.1-12.5 s | 6.0-6.9 s (≈ −50%) |
+| Box→STEP | 6.3 ms | 3.8 ms |
+
+Geometry is identical: volume, area, length, topology counts and bbox at
+full double precision on 27 corpus scripts plus heat_exchanger and clock.
+
+* Engine floor: Chrome 95, Firefox 100, Safari 15.2, Node 17, workerd.
+  The exnref encoding (`-sWASM_LEGACY_EXCEPTIONS=0`) was measured too. It
+  is 20,274,060 B (bigger) and needs Chrome 137 or Safari 18.4, so it is
+  not used.
+* A throw that escapes into JS is a `WebAssembly.Exception`. Its payload
+  needs the C++ tag, which only `-sEXPORT_EXCEPTION_HANDLING_HELPERS`
+  exports (+62 KB). That flag also adds `getExceptionMessage(ex) -> [type,
+  what()]`, and `Standard_Failure::what()` is OCCT's message.
+  CascadeStudio's failure decode uses it on this build and keeps reading
+  the raw pointer on the debug one.
+* It is a compile flag as well as a link flag. `src/buildPaths.py`'s
+  `OCJS_EXCEPTIONS` (default now `wasm`; `js` for the debug tree) applies
+  to every compile step. `buildFromYaml.py` infers the model from the
+  yml's link flags and refuses a contradicting `OCJS_EXCEPTIONS`.
+  `OCJS_BUILD_DIR` keeps the two object trees apart, because their
+  objects do not link together. `OCJS_CUSTOM_CLOSURE_ONLY=1` compiles
+  only the ~80 link-closure `myMain.h` bindings instead of ~2,500.
+* Build cost from scratch: 5,549 OCCT sources in 7.6 min plus 395 closure
+  bindings in ~9 min (`OCJS_JOBS=12`, `nice 15`), then a 2-4 min LTO link
+  peaking at 6-7 GB RSS.
+
+**`-sSTACK_SIZE=512KB`: the "kernel heap corruption" was a stack
+overflow.** The shadow stack sits directly above `.data`/`.bss` and grows
+down into it, with no check at `-O3`. A canary probe shows emscripten's
+64 KB default was being overrun:
+
+* On the old build, maker_coin, tea_cup, toy_truck (upstream) and
+  ttt-ppp0110 ran the stack to its very bottom.
+* Measured on 1 MB and 512 KB builds, the high-water over the whole
+  247-script build123d corpus is **83,552 B** (key_cap). Native EH and JS
+  EH are within ~300 B of each other.
+* The overflow silently overwrote OCCT statics, which is what
+  CascadeStudio had diagnosed as kernel algorithms corrupting the heap
+  (its COMPROMISE(kernel-heap-reset)).
+
+With 512 KB:
+
+* tea_cup's STEP export succeeds and `kernelHealthy()` stays true. It used
+  to fail with the kernel left poisoned.
+* bicycle_tire exports STEP. It used to be impossible: `BRepTools::Write`
+  died after the ThruSections walls.
+* A corpus run on the 1 MB build ended with zero unhealthy kernels.
+
+512 KB is 6.3× the measured peak. It costs 448 KB of linear memory (only
+the used depth is ever touched) and the same in any snapshot that copies
+the stack region.
+
+**`-sINITIAL_MEMORY=8MB`** (was 32 MB). Linear-memory footprint, measured
+as the last non-zero byte, on this build:
+
+| state | MiB |
+|---|---:|
+| static data + `.bss` | 3.49 |
+| top of the 512 KB stack (heap base) | 4.01 |
+| after module init | 4.12 |
+| after a Box → STEP | 4.65 |
+| after the Python starter model, lite | 5.69 |
+| after the Python starter model, upstream build123d | 7.17 |
+
+So 8 MB serves a basic request without growing. The 24 MB that used to be
+reserved and untouched in every instance is gone, which matters when a
+Cloudflare isolate gets 128 MB in total. Heavy models grow as before, now
+in more 5% steps:
+
+* heat_exchanger reaches 49.1 MB after 36 grows (was 47.6 MB after 8).
+* The upstream corpus model reaches 145.0 MB after 58 grows (was 147.3 MB
+  after 31).
+* The extra `memory.grow` calls cost nothing measurable: interleaved, the
+  debug artifact (8 MB start, 36 grows) ran heat_exchanger in 10.6-13.4 s
+  against 12.1-12.5 s for the old 32 MB build (8 grows). The spread is
+  this machine's load.
+
 ### One eval-free, web-targeted module: `-sDYNAMIC_EXECUTION=0 -sENVIRONMENT=web`
 
 Two link flags in `builds/cascadestudio.yml`, no source change, and the wasm

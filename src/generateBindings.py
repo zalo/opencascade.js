@@ -15,10 +15,10 @@ import os
 from filter.filterPackages import filterPackages
 from functools import partial
 
-from buildPaths import OCJS_ROOT, OCCT_ROOT, numJobs
+from buildPaths import OCJS_ROOT, OCJS_BUILD_DIR, OCCT_ROOT, numJobs
 
-libraryBasePath = OCJS_ROOT + "/build/bindings"
-buildDirectory = OCJS_ROOT + "/build"
+libraryBasePath = OCJS_BUILD_DIR + "/bindings"
+buildDirectory = OCJS_BUILD_DIR
 occtBasePath = OCCT_ROOT + "/src/"
 ocIncludeStatements = os.linesep.join(map(lambda x: "#include \"" + os.path.basename(x) + "\"", list(sorted(ocIncludeFiles))))
 
